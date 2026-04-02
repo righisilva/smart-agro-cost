@@ -82,13 +82,36 @@ const db = new Database("smartagro.db");
 
 // --- Inicializa redes no banco ---
 const networks = {};
+
 for (const [key, n] of Object.entries(networksJson)) {
-    const existing = db.prepare("SELECT id FROM networks WHERE name = ?").get(n.name);
+    // 🔧 Normaliza RPC (funciona para rpc OU rpcs)
+    const rpc = n.rpc || (Array.isArray(n.rpcs) ? n.rpcs[0] : null);
+
+    if (!rpc) {
+        console.warn(`⚠️ Rede ${n.name} sem RPC válido. Ignorando...`);
+        continue;
+    }
+
+    const existing = db
+        .prepare("SELECT id FROM networks WHERE name = ?")
+        .get(n.name);
+
     if (!existing) {
-        const result = db.prepare("INSERT INTO networks (name, token, rpc) VALUES (?, ?, ?)").run(n.name, n.token, n.rpc);
-        networks[n.token] = { id: result.lastInsertRowid, ...n };
+        const result = db
+            .prepare("INSERT INTO networks (name, token, rpc) VALUES (?, ?, ?)")
+            .run(n.name, n.token, rpc);
+
+        networks[n.token] = {
+            id: result.lastInsertRowid,
+            ...n,
+            rpc // garante que existe no objeto final
+        };
     } else {
-        networks[n.token] = { id: existing.id, ...n };
+        networks[n.token] = {
+            id: existing.id,
+            ...n,
+            rpc // padroniza também aqui
+        };
     }
 }
 
@@ -410,7 +433,8 @@ app.get("/api/contracts-list", (req, res) => {
 app.get("/api/networks-list", (req, res) => {
     try {
         const rows = db
-            .prepare("SELECT DISTINCT name FROM networks ORDER BY name")
+            // .prepare("SELECT DISTINCT name FROM networks ORDER BY name")
+            .prepare("SELECT DISTINCT name FROM networks")
             .all();
 
         const redes = rows
@@ -445,7 +469,7 @@ app.get("/api/functions-list", (req, res) => {
             params.contract = contract;
         }
 
-        query += " ORDER BY f.name";
+        // query += " ORDER BY f.name";
 
         const rows = db.prepare(query).all(params);
         res.json(rows.map(r => r.name));

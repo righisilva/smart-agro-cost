@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,26 +22,26 @@
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --transition: all 0.3s ease;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background);
             color: var(--text);
             line-height: 1.6;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         /* Header */
         .dashboard-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -49,29 +50,29 @@
             margin-bottom: 30px;
             box-shadow: var(--shadow);
         }
-        
+
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .header-title h1 {
             font-size: 28px;
             font-weight: 700;
             margin-bottom: 5px;
         }
-        
+
         .header-title p {
             opacity: 0.9;
             font-size: 16px;
         }
-        
+
         .header-actions {
             display: flex;
             gap: 15px;
         }
-        
+
         .btn {
             padding: 10px 20px;
             border-radius: 6px;
@@ -83,26 +84,26 @@
             align-items: center;
             gap: 8px;
         }
-        
+
         .btn-primary {
             background-color: white;
             color: var(--primary);
         }
-        
+
         .btn-primary:hover {
             background-color: #F0F0F0;
         }
-        
+
         .btn-secondary {
             background-color: rgba(255, 255, 255, 0.2);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        
+
         .btn-secondary:hover {
             background-color: rgba(255, 255, 255, 0.3);
         }
-        
+
         /* Filters Section */
         .filters-section {
             background-color: var(--card-bg);
@@ -111,7 +112,7 @@
             margin-bottom: 30px;
             box-shadow: var(--shadow);
         }
-        
+
         .filters-title {
             display: flex;
             align-items: center;
@@ -121,19 +122,19 @@
             font-size: 18px;
             font-weight: 600;
         }
-        
+
         .filters-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
         }
-        
+
         .filter-group {
             display: flex;
             flex-direction: column;
         }
-        
+
         .filter-label {
             font-size: 14px;
             font-weight: 600;
@@ -143,14 +144,15 @@
             align-items: center;
             gap: 5px;
         }
-        
+
         .required::after {
             content: "*";
             color: #d32f2f;
             margin-left: 4px;
         }
-        
-        .filter-select, .filter-input {
+
+        .filter-select,
+        .filter-input {
             padding: 12px 15px;
             border: 1px solid var(--border);
             border-radius: 6px;
@@ -158,13 +160,14 @@
             background-color: white;
             transition: var(--transition);
         }
-        
-        .filter-select:focus, .filter-input:focus {
+
+        .filter-select:focus,
+        .filter-input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
         }
-        
+
         .filter-actions {
             display: flex;
             justify-content: space-between;
@@ -172,12 +175,12 @@
             padding-top: 20px;
             border-top: 1px solid var(--border);
         }
-        
+
         .filter-info {
             font-size: 14px;
             color: var(--text-light);
         }
-        
+
         /* Charts Section */
         .charts-section {
             display: grid;
@@ -185,32 +188,32 @@
             gap: 30px;
             margin-bottom: 40px;
         }
-        
+
         .chart-card {
             background-color: var(--card-bg);
             border-radius: 12px;
             padding: 25px;
             box-shadow: var(--shadow);
         }
-        
+
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
-        
+
         .chart-title {
             font-size: 20px;
             font-weight: 600;
             color: var(--text);
         }
-        
+
         .chart-actions {
             display: flex;
             gap: 10px;
         }
-        
+
         .chart-btn {
             background: none;
             border: 1px solid var(--border);
@@ -223,17 +226,17 @@
             align-items: center;
             gap: 5px;
         }
-        
+
         .chart-btn:hover {
             background-color: var(--background);
         }
-        
+
         .chart-container {
             position: relative;
             height: 400px;
             width: 100%;
         }
-        
+
         /* Stats Cards */
         .stats-section {
             display: grid;
@@ -241,7 +244,7 @@
             gap: 20px;
             margin-bottom: 40px;
         }
-        
+
         .stat-card {
             background-color: var(--card-bg);
             border-radius: 12px;
@@ -251,7 +254,7 @@
             align-items: center;
             gap: 20px;
         }
-        
+
         .stat-icon {
             width: 60px;
             height: 60px;
@@ -262,31 +265,31 @@
             font-size: 24px;
             color: white;
         }
-        
+
         .stat-icon-1 {
             background-color: var(--accent);
         }
-        
+
         .stat-icon-2 {
             background-color: var(--secondary);
         }
-        
+
         .stat-icon-3 {
             background-color: var(--primary);
         }
-        
+
         .stat-content h3 {
             font-size: 14px;
             color: var(--text-light);
             margin-bottom: 5px;
         }
-        
+
         .stat-value {
             font-size: 28px;
             font-weight: 700;
             color: var(--text);
         }
-        
+
         /* Footer */
         .dashboard-footer {
             text-align: center;
@@ -296,7 +299,7 @@
             border-top: 1px solid var(--border);
             margin-top: 30px;
         }
-        
+
         .data-source {
             display: flex;
             align-items: center;
@@ -304,7 +307,7 @@
             gap: 10px;
             margin-bottom: 10px;
         }
-        
+
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
@@ -312,38 +315,39 @@
                 align-items: flex-start;
                 gap: 20px;
             }
-            
+
             .header-actions {
                 width: 100%;
             }
-            
+
             .filters-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .filter-actions {
                 flex-direction: column;
                 gap: 15px;
                 align-items: flex-start;
             }
-            
+
             .chart-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 15px;
             }
-            
+
             .chart-actions {
                 width: 100%;
                 justify-content: space-between;
             }
-            
+
             .chart-container {
                 height: 300px;
             }
         }
     </style>
 </head>
+
 <body>
     <header class="dashboard-header">
         <div class="container">
@@ -363,13 +367,13 @@
             </div>
         </div>
     </header>
-    
+
     <div class="container">
         <section class="filters-section">
             <div class="filters-title">
                 <i class="fas fa-filter"></i> Filtros de Análise
             </div>
-            
+
             <div class="filters-grid">
                 <div class="filter-group">
                     <label class="filter-label required"><i class="fas fa-map-marker-alt"></i> Região</label>
@@ -381,7 +385,7 @@
                         <option value="Alegrete">Alegrete</option>
                     </select>
                 </div>
-                
+
                 <div class="filter-group">
                     <label class="filter-label"><i class="fas fa-tags"></i> Classificação</label>
                     <select class="filter-select" id="filtroClassificacao">
@@ -394,7 +398,8 @@
                         <option value="Agroindústria">Agroindústria</option>
                     </select>
 
-                </div><div class="filter-group">
+                </div>
+                <div class="filter-group">
                     <label class="filter-label">
                         <i class="fas fa-layer-group"></i> Subclassificação
                     </label>
@@ -402,7 +407,7 @@
                         <option value="">Todas as subclassificações</option>
                     </select>
                 </div>
-                
+
                 <div class="filter-group">
                     <label class="filter-label required"><i class="fas fa-home"></i> Familiar</label>
                     <select class="filter-select" id="filtroFamiliar" required>
@@ -411,7 +416,7 @@
                         <option value="0">Não</option>
                     </select>
                 </div>
-                
+
                 <div class="filter-group">
                     <label class="filter-label"><i class="fas fa-file-signature"></i> Somente INC 02/2018</label>
                     <select class="filter-select" id="filtroObrigatorio">
@@ -420,12 +425,13 @@
                         <!-- <option value="0">Não</option> -->
                     </select>
                 </div>
-                
+
                 <div class="filter-group">
                     <label class="filter-label"><i class="fas fa-sort-amount-down"></i> Top N Produtos</label>
-                    <input class="filter-input" type="number" id="filtroTop" min="1" max="50" placeholder="Ex: 10 (opcional)">
+                    <input class="filter-input" type="number" id="filtroTop" min="1" max="50"
+                        placeholder="Ex: 10 (opcional)">
                 </div>
-                
+
                 <div class="filter-group">
                     <label class="filter-label required"><i class="fas fa-sort"></i> Ordenar por</label>
                     <select class="filter-select" id="filtroOrderBy" required>
@@ -435,7 +441,7 @@
                     </select>
                 </div>
             </div>
-            
+
             <div class="filter-actions">
                 <div class="filter-info">
                     <i class="fas fa-info-circle"></i> Campos com * são obrigatórios
@@ -445,7 +451,7 @@
                 </button>
             </div>
         </section>
-        
+
         <section class="stats-section" id="statsContainer">
             <!-- Os cards de estatísticas serão preenchidos dinamicamente -->
             <div class="stat-card">
@@ -458,7 +464,7 @@
                 </div>
             </div>
         </section>
-        
+
         <section class="charts-section">
             <div class="chart-card">
                 <div class="chart-header">
@@ -476,7 +482,7 @@
                     <canvas id="graficoVendas"></canvas>
                 </div>
             </div>
-            
+
             <div class="chart-card">
                 <div class="chart-header">
                     <div class="chart-title">Estabelecimentos por Produto</div>
@@ -493,8 +499,26 @@
                     <canvas id="graficoEstabelecimentos"></canvas>
                 </div>
             </div>
+
+            <!-- NOVO GRÁFICO COMBINADO -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">Análise Combinada: Valor de Vendas vs Estabelecimentos</div>
+                    <div class="chart-actions">
+                        <button class="chart-btn" onclick="alternarTipoGrafico('graficoCombinado')">
+                            <i class="fas fa-chart-bar"></i> Alternar Tipo
+                        </button>
+                        <button class="chart-btn" onclick="downloadChart('graficoCombinado')">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="graficoCombinado"></canvas>
+                </div>
+            </div>
         </section>
-        
+
         <footer class="dashboard-footer">
             <div class="data-source">
                 <i class="fas fa-database"></i>
@@ -505,69 +529,67 @@
             </div>
         </footer>
     </div>
-    
+
     <script>
-        let graficoVendas, graficoEstabelecimentos;
+        let graficoVendas, graficoEstabelecimentos, graficoCombinado;
         let chartTypes = {
             'graficoVendas': 'bar',
-            'graficoEstabelecimentos': 'bar'
+            'graficoEstabelecimentos': 'bar',
+            'graficoCombinado': 'bar'
         };
 
+        const subclassificacoes = {
+            "Agricultura": [
+                "Floricultura",
+                "Horticultura",
+                "Lavouras permanentes",
+                "Lavouras temporárias"
+            ],
+            "Pecuária": [
+                "Animais",
+                "Produtos primários"
+            ],
+            "Silvicultura": ["Não especificada"],
+            "Extração Vegetal": ["Não especificada"],
+            "Aquicultura": ["Não especificada"],
+            "Agroindústria": ["Não especificada"]
+        };
 
+        const filtroClassificacao = document.getElementById("filtroClassificacao");
+        const filtroSubclassificacao = document.getElementById("filtroSubclassificacao");
 
-    const subclassificacoes = {
-        "Agricultura": [
-            "Floricultura",
-            "Horticultura",
-            "Lavouras permanentes",
-            "Lavouras temporárias"
-        ],
-        "Pecuária": [
-            "Animais",
-            "Produtos primários"
-        ],
-        "Silvicultura": ["Não especificada"],
-        "Extração Vegetal": ["Não especificada"],
-        "Aquicultura": ["Não especificada"],
-        "Agroindústria": ["Não especificada"]
-    };
+        filtroClassificacao.addEventListener("change", () => {
+            const classificacao = filtroClassificacao.value;
 
-    const filtroClassificacao = document.getElementById("filtroClassificacao");
-    const filtroSubclassificacao = document.getElementById("filtroSubclassificacao");
+            filtroSubclassificacao.innerHTML =
+                `<option value="">Todas as subclassificações</option>`;
 
-    filtroClassificacao.addEventListener("change", () => {
-        const classificacao = filtroClassificacao.value;
+            if (!classificacao || !subclassificacoes[classificacao]) {
+                filtroSubclassificacao.disabled = true;
+                return;
+            }
 
-        filtroSubclassificacao.innerHTML =
-            `<option value="">Todas as subclassificações</option>`;
+            subclassificacoes[classificacao].forEach(sub => {
+                const option = document.createElement("option");
+                option.value = sub;
+                option.textContent = sub;
+                filtroSubclassificacao.appendChild(option);
+            });
 
-        if (!classificacao || !subclassificacoes[classificacao]) {
-            filtroSubclassificacao.disabled = true;
-            return;
-        }
-
-        subclassificacoes[classificacao].forEach(sub => {
-            const option = document.createElement("option");
-            option.value = sub;
-            option.textContent = sub;
-            filtroSubclassificacao.appendChild(option);
+            filtroSubclassificacao.disabled = false;
         });
-
-        filtroSubclassificacao.disabled = false;
-    });
-
 
         async function atualizarDashboard() {
             // Validar filtros obrigatórios
             const regiao = document.getElementById("filtroRegiao").value;
             const familiar = document.getElementById("filtroFamiliar").value;
             const orderBy = document.getElementById("filtroOrderBy").value;
-            
+
             if (!regiao || familiar === "" || !orderBy) {
                 alert("Por favor, preencha todos os campos obrigatórios (*) antes de atualizar o dashboard.");
                 return;
             }
-            
+
             const classificacao = document.getElementById("filtroClassificacao").value;
             const subclassificacao = document.getElementById("filtroSubclassificacao").value;
             const top = document.getElementById("filtroTop").value;
@@ -587,13 +609,11 @@
             params.append("regiao", regiao);
             params.append("familiar", familiar);
             params.append("orderBy", orderBy);
-            
+
             if (classificacao) params.append("classificacao", classificacao);
             if (subclassificacao) params.append("subclassificacao", subclassificacao);
             if (top) params.append("top", top);
-            
-            // ENVIA o filtro obrigatório independentemente do valor (vazio, 1 ou 0)
-            // Backend precisa tratar "" como "todos" (sim + não)
+
             params.append("obrigatorio", obrigatorio);
 
             try {
@@ -608,19 +628,18 @@
                 let produtosUnicos = new Set();
 
                 dados.forEach(d => {
-                    // Multiplicar valor de vendas por 1000 (os dados estão em milhar)
                     const valorVendas = (d.valor_vendas || 0) * 1000;
                     const estabelecimentos = d.estabelecimentos || 0;
-                    
+
                     vendasPorProduto[d.produto] = (vendasPorProduto[d.produto] || 0) + valorVendas;
                     estabPorProduto[d.produto] = (estabPorProduto[d.produto] || 0) + estabelecimentos;
-                    
+
                     totalVendas += valorVendas;
                     totalEstabelecimentos += estabelecimentos;
                     produtosUnicos.add(d.produto);
                 });
 
-                // Ordenar produtos
+                // Ordenar produtos pelo critério selecionado
                 const produtosOrdenados = Object.keys(vendasPorProduto).sort((a, b) => {
                     if (orderBy === 'valor_vendas') {
                         return vendasPorProduto[b] - vendasPorProduto[a];
@@ -632,11 +651,11 @@
                 // Aplicar limite Top N
                 let dadosVendasParaGrafico = {};
                 let dadosEstabParaGrafico = {};
-                
+
                 if (top && top > 0) {
                     const limite = parseInt(top);
                     const produtosLimitados = produtosOrdenados.slice(0, limite);
-                    
+
                     produtosLimitados.forEach(produto => {
                         dadosVendasParaGrafico[produto] = vendasPorProduto[produto];
                         dadosEstabParaGrafico[produto] = estabPorProduto[produto];
@@ -645,11 +664,14 @@
                     dadosVendasParaGrafico = vendasPorProduto;
                     dadosEstabParaGrafico = estabPorProduto;
                 }
-                
+
                 criarGrafico("graficoVendas", "Valor de Vendas por Produto (R$)", dadosVendasParaGrafico, graficoVendas);
                 criarGrafico("graficoEstabelecimentos", "Estabelecimentos por Produto", dadosEstabParaGrafico, graficoEstabelecimentos);
 
-                // Atualizar cards de estatísticas com cálculos corretos
+                // Criar gráfico combinado
+                criarGraficoCombinado("graficoCombinado", dadosVendasParaGrafico, dadosEstabParaGrafico, graficoCombinado);
+
+                // Atualizar cards de estatísticas
                 atualizarEstatisticas(totalVendas, totalEstabelecimentos, produtosUnicos.size, dados.length, regiao);
 
             } catch (error) {
@@ -663,27 +685,191 @@
                         </div>
                     </div>
                 `;
-                
-                // Limpar gráficos em caso de erro
+
                 if (graficoVendas) graficoVendas.destroy();
                 if (graficoEstabelecimentos) graficoEstabelecimentos.destroy();
+                if (graficoCombinado) graficoCombinado.destroy();
             }
+        }
+
+        function criarGraficoCombinado(canvasId, dadosVendas, dadosEstab, graficoExistente) {
+            const ctx = document.getElementById(canvasId).getContext("2d");
+
+            const labels = Object.keys(dadosVendas);
+            const valoresVendas = Object.values(dadosVendas);
+            const valoresEstab = Object.values(dadosEstab);
+
+            // Normalizar valores de estabelecimentos para a escala do gráfico
+            const maxVendas = Math.max(...valoresVendas);
+            const maxEstab = Math.max(...valoresEstab);
+
+            // Criar dataset para estabelecimentos com escala ajustada
+            const valoresEstabNormalizados = valoresEstab.map(v => (v / maxEstab) * maxVendas);
+
+            if (labels.length === 0) {
+                if (graficoExistente) graficoExistente.destroy();
+
+                const config = {
+                    type: 'bar',
+                    data: {
+                        labels: ['Sem dados'],
+                        datasets: [
+                            {
+                                label: 'Valor de Vendas (R$)',
+                                data: [0],
+                                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1,
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: 'Estabelecimentos',
+                                data: [0],
+                                backgroundColor: 'rgba(76, 175, 80, 0.6)',
+                                borderColor: 'rgba(76, 175, 80, 1)',
+                                borderWidth: 1,
+                                yAxisID: 'y1'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Nenhum dado disponível para os filtros selecionados'
+                            }
+                        }
+                    }
+                };
+
+                graficoCombinado = new Chart(ctx, config);
+                return;
+            }
+
+            const config = {
+                type: chartTypes[canvasId],
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Valor de Vendas (R$)',
+                            data: valoresVendas,
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Estabelecimentos',
+                            data: valoresEstab,
+                            backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                            borderColor: 'rgba(76, 175, 80, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.dataset.label.includes('Valor')) {
+                                        label += new Intl.NumberFormat('pt-BR', {
+                                            style: 'currency',
+                                            currency: 'BRL'
+                                        }).format(context.parsed.y);
+                                    } else {
+                                        label += new Intl.NumberFormat('pt-BR').format(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Valor de Vendas (R$)',
+                                color: '#2196F3'
+                            },
+                            ticks: {
+                                callback: function (value) {
+                                    if (value >= 1000000000) {
+                                        return 'R$ ' + (value / 1000000000).toFixed(1) + 'B';
+                                    } else if (value >= 1000000) {
+                                        return 'R$ ' + (value / 1000000).toFixed(1) + 'M';
+                                    } else if (value >= 1000) {
+                                        return 'R$ ' + (value / 1000).toFixed(0) + 'k';
+                                    }
+                                    return 'R$ ' + value;
+                                }
+                            }
+                        },
+                        y1: {
+                            beginAtZero: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Número de Estabelecimentos',
+                                color: '#4CAF50'
+                            },
+                            ticks: {
+                                callback: function (value) {
+                                    return new Intl.NumberFormat('pt-BR').format(value);
+                                }
+                            },
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                }
+            };
+
+            if (graficoExistente) {
+                graficoExistente.destroy();
+            }
+
+            graficoCombinado = new Chart(ctx, config);
         }
 
         function atualizarEstatisticas(totalVendas, totalEstabelecimentos, produtosUnicos, registros, regiao) {
             const statsContainer = document.getElementById('statsContainer');
-            
-            // Formatar valores
+
             const vendasFormatadas = new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
             }).format(totalVendas);
-            
+
             const estabFormatados = new Intl.NumberFormat('pt-BR').format(totalEstabelecimentos);
             const registrosFormatados = new Intl.NumberFormat('pt-BR').format(registros);
-            
+
             statsContainer.innerHTML = `
                 <div class="stat-card">
                     <div class="stat-icon stat-icon-1">
@@ -729,16 +915,13 @@
 
         function criarGrafico(canvasId, titulo, dados, graficoExistente) {
             const ctx = document.getElementById(canvasId).getContext("2d");
-            
-            // Preparar dados para o gráfico
+
             const labels = Object.keys(dados);
             const valores = Object.values(dados);
-            
-            // Se não houver dados, mostrar mensagem
+
             if (labels.length === 0) {
                 if (graficoExistente) graficoExistente.destroy();
-                
-                // Criar gráfico vazio com mensagem
+
                 const config = {
                     type: 'bar',
                     data: {
@@ -763,7 +946,7 @@
                         }
                     }
                 };
-                
+
                 if (canvasId === "graficoVendas") {
                     graficoVendas = new Chart(ctx, config);
                 } else if (canvasId === "graficoEstabelecimentos") {
@@ -771,10 +954,9 @@
                 }
                 return;
             }
-            
-            // Definir cores baseadas no tipo de gráfico
+
             let backgroundColor, borderColor;
-            
+
             if (canvasId === "graficoVendas") {
                 backgroundColor = 'rgba(54, 162, 235, 0.6)';
                 borderColor = 'rgba(54, 162, 235, 1)';
@@ -800,13 +982,13 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { 
+                        legend: {
                             display: true,
                             position: 'top'
                         },
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     let label = context.dataset.label || '';
                                     if (label) {
                                         label += ': ';
@@ -828,7 +1010,7 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                callback: function(value) {
+                                callback: function (value) {
                                     if (canvasId === 'graficoVendas') {
                                         if (value >= 1000000000) {
                                             return 'R$ ' + (value / 1000000000).toFixed(1) + 'B';
@@ -869,10 +1051,9 @@
             const tipoAtual = chartTypes[canvasId];
             const indexAtual = tipos.indexOf(tipoAtual);
             const novoTipo = tipos[(indexAtual + 1) % tipos.length];
-            
+
             chartTypes[canvasId] = novoTipo;
-            
-            // Recriar gráfico com novo tipo
+
             if (canvasId === 'graficoVendas' && graficoVendas) {
                 const titulo = graficoVendas.data.datasets[0].label;
                 const dados = {};
@@ -887,35 +1068,42 @@
                     dados[label] = graficoEstabelecimentos.data.datasets[0].data[index];
                 });
                 criarGrafico(canvasId, titulo, dados, graficoEstabelecimentos);
+            } else if (canvasId === 'graficoCombinado' && graficoCombinado) {
+                // Para o gráfico combinado, precisamos recriar com os dados atuais
+                const labels = graficoCombinado.data.labels;
+                const valoresVendas = graficoCombinado.data.datasets[0].data;
+                const valoresEstab = graficoCombinado.data.datasets[1].data;
+                const dadosVendas = {};
+                const dadosEstab = {};
+                labels.forEach((label, index) => {
+                    dadosVendas[label] = valoresVendas[index];
+                    dadosEstab[label] = valoresEstab[index];
+                });
+                criarGraficoCombinado(canvasId, dadosVendas, dadosEstab, graficoCombinado);
             }
         }
 
         function downloadChart(canvasId) {
             const canvas = document.getElementById(canvasId);
             const link = document.createElement('a');
-            link.download = `smartagro-${canvasId}-${new Date().toISOString().slice(0,10)}.png`;
+            link.download = `smartagro-${canvasId}-${new Date().toISOString().slice(0, 10)}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         }
 
         function exportarDados() {
             alert('Funcionalidade de exportação de dados será implementada em breve!');
-            // Em uma implementação real, aqui você faria uma requisição para baixar os dados em CSV/Excel
         }
 
-        // Inicializar dashboard com valores padrão
-        document.addEventListener('DOMContentLoaded', function() {
-            // Definir valores padrão para filtros obrigatórios
+        document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('filtroRegiao').value = 'Brasil';
             document.getElementById('filtroFamiliar').value = '1';
             document.getElementById('filtroObrigatorio').value = '';
             document.getElementById('filtroOrderBy').value = 'valor_vendas';
-            
-            // Aguardar um momento antes de carregar os dados
+
             setTimeout(atualizarDashboard, 500);
-            
-            // Adicionar evento de Enter para o campo Top N
-            document.getElementById('filtroTop').addEventListener('keypress', function(e) {
+
+            document.getElementById('filtroTop').addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     atualizarDashboard();
                 }
@@ -923,93 +1111,5 @@
         });
     </script>
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="pt-BR">-->
-<!--<head>-->
-<!--<meta charset="UTF-8">-->
-<!--<title>Dashboard SmartAgro Avançado</title>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
-<!--<style>-->
-<!--body { font-family: Arial, sans-serif; margin: 20px; }-->
-<!--select, label { margin-right: 10px; }-->
-<!--canvas { max-width: 800px; margin-bottom: 40px; }-->
-<!--</style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>Dashboard SmartAgro Avançado</h1>-->
-
-<!--<div>-->
-<!--  <label>Região:-->
-<!--    <select id="filtroRegiao">-->
-<!--      <option value="">Todas</option>-->
-<!--      <option>Brasil</option>-->
-<!--      <option>Sul</option>-->
-<!--      <option>RS</option>-->
-<!--      <option>Alegrete</option>-->
-<!--    </select>-->
-<!--  </label>-->
-
-<!--  <label>Classificação:-->
-<!--    <select id="filtroClassificacao">-->
-<!--      <option value="">Todas</option>-->
-<!--      <option>Agricultura</option>-->
-<!--      <option>Pecuária</option>-->
-<!--      <option>Silvicultura</option>-->
-<!--      <option>Extração Vegetal</option>-->
-<!--      <option>Aquicultura</option>-->
-<!--      <option>Agroindústria</option>-->
-<!--    </select>-->
-<!--  </label>-->
-
-<!--  <label>Familiar:-->
-<!--    <select id="filtroFamiliar">-->
-<!--      <option value="">Todos</option>-->
-<!--      <option value="1">Sim</option>-->
-<!--      <option value="0">Não</option>-->
-<!--    </select>-->
-<!--  </label>-->
-
-<!--  <label>Obrigatório:-->
-<!--    <select id="filtroObrigatorio">-->
-<!--      <option value="">Todos</option>-->
-<!--      <option value="1">Sim</option>-->
-<!--      <option value="0">Não</option>-->
-<!--    </select>-->
-<!--  </label>-->
-  
-<!--  <label>Top N produtos:-->
-<!--    <input type="number" id="filtroTop" min="1" placeholder="Ex: 10">-->
-<!--  </label>-->
-  
-<!--  <label>Ordenar por:-->
-<!--    <select id="filtroOrderBy">-->
-<!--      <option value="valor_vendas">Valor Vendido</option>-->
-<!--      <option value="estabelecimentos">Estabelecimentos</option>-->
-<!--    </select>-->
-<!-- </label>-->
-
-
-
-<!--  <button onclick="atualizarDashboard()">Atualizar</button>-->
-<!--</div>-->
-
-<!--<canvas id="graficoVendas"></canvas>-->
-<!--<canvas id="graficoEstabelecimentos"></canvas>-->
-
-<!--<script src="app.js"></script>-->
-<!--</body>-->
-<!--</html>-->
-

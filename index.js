@@ -120,12 +120,28 @@ async function getHistoricalTokenPrices(tipo_calculo = "last") {
 
 
 async function getLiveTokenPrices() {
-    // const url = `https://api.coingecko.com/api/v3/simple/price?ids=ethereum,binancecoin,pol&vs_currencies=usd,brl`;
-    // const url = `https://api.coingecko.com/api/v3/simple/price?ids=ethereum,binancecoin,matic-network&vs_currencies=usd,brl`;
-    const url = `https://api.coingecko.com/api/v3/simple/price?ids=ethereum,binancecoin,polygon-ecosystem-token&vs_currencies=usd,brl`;
+  const ids = [...new Set(
+    Object.values(networks)
+      .map(net => net.token)
+      .filter(token => typeof token === "string" && token.length > 0)
+  )].join(",");
+
+  if (!ids) {
+    console.warn("⚠️ Nenhum token válido encontrado");
+    return {};
+  }
+
+  console.log("📡 Buscando preços para:", ids);
+
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd,brl`;
+
+  try {
     const res = await axios.get(url);
-    // log(res.data);
     return res.data;
+  } catch (err) {
+    console.error("❌ Erro ao buscar preços:", err.message);
+    return {};
+  }
 }
 
 async function getTokenPrices(periodo = "last") {

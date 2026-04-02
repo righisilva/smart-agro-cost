@@ -610,6 +610,111 @@
             gap: 15px;
         }
 
+        /* Estilos para o container de funções */
+        .functions-container {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background-color: white;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .functions-header {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            background-color: #F8FAFC;
+            display: flex;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .btn-functions-select-all {
+            padding: 6px 12px;
+            font-size: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-functions-select-all:hover {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .functions-list {
+            padding: 8px;
+        }
+
+        .function-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .function-item:hover {
+            background-color: #F8FAFC;
+        }
+
+        .function-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .function-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .function-name {
+            font-size: 14px;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .function-executions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .executions-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .executions-input {
+            width: 70px;
+            padding: 6px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .executions-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .loading-functions {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+        }
+
+
     </style>
 </head>
 <body>
@@ -722,10 +827,18 @@
                     </div>
                     
                     <div class="filter-group">
-                        <label class="filter-label"><i class="fas fa-cogs"></i> Função</label>
-                        <select class="filter-select" id="filtroFuncao">
-                            <option value="">Todas as funções</option>
-                        </select>
+                        <label class="filter-label"><i class="fas fa-cogs"></i> Funções</label>
+                        <div class="functions-container" id="funcoesContainer">
+                            <div class="functions-header">
+                                <button type="button" class="btn-functions-select-all" onclick="selecionarTodasFuncoes(true)">Selecionar
+                                    todas</button>
+                                <button type="button" class="btn-functions-select-all" onclick="selecionarTodasFuncoes(false)">Desmarcar
+                                    todas</button>
+                            </div>
+                            <div id="funcoesList" class="functions-list">
+                                <div class="loading-functions">Carregando funções...</div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="filter-group">
@@ -778,7 +891,7 @@
                         <i class="fas fa-money-bill-wave"></i>
                     </div>
                     <div class="stat-value">-</div>
-                    <div class="stat-label">Custo Médio por Contrato</div>
+                    <div class="stat-label">Custo Médio por Rastreio</div>
                 </div>
                 
                 <div class="stat-card">
@@ -885,6 +998,8 @@
         let grafico = null;
         let currentChartType = 'bar';
         let currentData = [];
+        let funcoesDisponiveis = [];
+
         
         // Carregar filtros dinâmicos
         // Carregar filtros dinâmicos
@@ -932,31 +1047,68 @@
 
         
         // Atualizar funções baseado no contrato selecionado
-        document.getElementById("filtroContrato").addEventListener("change", async function(e) {
+        document.getElementById("filtroContrato").addEventListener("change", async function (e) {
             const contrato = e.target.value;
             if (!contrato) return;
-            
-            const selectFunc = document.getElementById("filtroFuncao");
-            selectFunc.innerHTML = '<option value="">Carregando funções...</option>';
-            
+
+            const container = document.getElementById("funcoesList");
+            container.innerHTML = '<div class="loading-functions"><i class="fas fa-spinner fa-spin"></i> Carregando funções...</div>';
+
             try {
                 const resp = await fetch(`/api/functions-list?contract=${encodeURIComponent(contrato)}`);
-                const funcoes = await resp.json();
-                
-                selectFunc.innerHTML = '<option value="">Todas as funções</option>';
-                funcoes.forEach(fn => {
-                    const opt = document.createElement("option");
-                    opt.value = fn;
-                    opt.textContent = fn;
-                    selectFunc.appendChild(opt);
+                funcoesDisponiveis = await resp.json();
+
+                if (funcoesDisponiveis.length === 0) {
+                    container.innerHTML = '<div class="loading-functions">Nenhuma função encontrada</div>';
+                    return;
+                }
+
+                // Renderizar lista de funções com checkboxes
+                container.innerHTML = funcoesDisponiveis.map(fn => `
+                    <div class="function-item" data-function="${fn}">
+                        <div class="function-info">
+                            <input type="checkbox" class="function-checkbox" id="func_${fn.replace(/[^a-zA-Z0-9]/g, '_')}" value="${fn}">
+                            <label class="function-name" for="func_${fn.replace(/[^a-zA-Z0-9]/g, '_')}">${fn}</label>
+                        </div>
+                        <div class="function-executions">
+                            
+                            <input type="number" class="executions-input" min="1" value="1" step="1" 
+                                    data-function="${fn}" disabled>
+                        </div>
+                    </div>
+                `).join('');
+
+                // <span class="executions-label">Execuções:</span>
+
+                // Adicionar event listeners para os checkboxes
+                document.querySelectorAll('.function-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', function () {
+                        const executionsInput = this.closest('.function-item').querySelector('.executions-input');
+                        executionsInput.disabled = !this.checked;
+                        if (!this.checked) {
+                            executionsInput.value = 1;
+                        }
+                    });
                 });
-                
+
             } catch (error) {
                 console.error('❌ Erro ao carregar funções:', error);
-                selectFunc.innerHTML = '<option value="">Erro ao carregar</option>';
+                container.innerHTML = '<div class="loading-functions">Erro ao carregar funções</div>';
             }
         });
-        
+
+        function selecionarTodasFuncoes(selecionar) {
+            const checkboxes = document.querySelectorAll('.function-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selecionar;
+                const executionsInput = checkbox.closest('.function-item').querySelector('.executions-input');
+                executionsInput.disabled = !selecionar;
+                if (!selecionar) {
+                    executionsInput.value = 1;
+                }
+            });
+        }
+    
         // Validar filtros obrigatórios
         function validarFiltros() {
             const obrigatorios = [
@@ -1029,7 +1181,7 @@
         // Carregar resultados
         async function carregarResultados() {
             if (!validarFiltros()) return;
-            
+
             document.getElementById('chartLoading').style.display = 'flex';
             document.getElementById('tabelaResultados').innerHTML = `
                 <tr>
@@ -1039,8 +1191,7 @@
                     </td>
                 </tr>
             `;
-            
-            
+
             const params = new URLSearchParams();
             params.append("regiao", document.getElementById("filtroRegiao").value);
             params.append("familiar", document.getElementById("filtroFamiliar").value);
@@ -1048,30 +1199,42 @@
             params.append("network", document.getElementById("filtroRede").value);
             params.append("tipo_calculo", document.getElementById("filtroTipoCalculo").value);
             params.append("orderBy", document.getElementById("filtroOrderBy").value);
-            
-            
+
             const classificacao = document.getElementById("filtroClassificacao").value;
             const subclassificacao = document.getElementById("filtroSubclassificacao").value;
             const obrigatorio = document.getElementById("filtroObrigatorio").value;
-            const network = document.getElementById("filtroRede").value;
-            const tipo_calculo = document.getElementById("filtroTipoCalculo").value;
-            const functionName = document.getElementById("filtroFuncao").value;
             const top = document.getElementById("filtroTop").value;
-            
+
             if (classificacao) params.append("classificacao", classificacao);
             if (subclassificacao) params.append("subclassificacao", subclassificacao);
             if (obrigatorio === "1") params.append("obrigatorio", obrigatorio);
-            // if (network) params.append("network", network);
-            if (functionName) params.append("functionName", functionName);
             if (top) params.append("top", top);
-            console.log("FILTRO CLASSIFICAÇÃO:", subclassificacao);
+
+            // 🔥 NOVO: Coletar funções selecionadas com suas execuções
+            const funcoesSelecionadas = [];
+            document.querySelectorAll('.function-checkbox:checked').forEach(checkbox => {
+                const functionName = checkbox.value;
+                const executionsInput = checkbox.closest('.function-item').querySelector('.executions-input');
+                const executions = parseInt(executionsInput.value) || 1;
+
+                funcoesSelecionadas.push({
+                    name: functionName,
+                    executions: executions
+                });
+            });
+
+            // Adicionar ao payload como JSON
+            params.append("funcoes", JSON.stringify(funcoesSelecionadas));
+
+            console.log("Funções selecionadas:", funcoesSelecionadas);
+
             try {
                 const res = await fetch(`/api/results?${params.toString()}`);
                 if (!res.ok) throw new Error(`Erro ${res.status}: ${res.statusText}`);
-                
+
                 const dados = await res.json();
                 currentData = dados;
-                
+
                 if (dados.length === 0) {
                     mostrarResultadosVazios();
                     document.getElementById('btnExportarCSV').disabled = true;
@@ -1082,10 +1245,10 @@
                     desenharGrafico(dados);
                     document.getElementById('btnExportarCSV').disabled = false;
                     document.getElementById('btnImprimir').disabled = false;
-                    
+
                     mostrarToast(`Simulação gerada com sucesso! ${dados.length} resultados encontrados.`, 'success');
                 }
-                
+
             } catch (error) {
                 console.error('❌ Erro ao carregar resultados:', error);
                 mostrarErro(error.message);

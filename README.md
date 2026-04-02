@@ -40,7 +40,6 @@ A solução é composta por:
 - Banco de dados SQLite
 - Integração com APIs externas (preço e RPC)
 
-![Arquitetura](docs/imagens/Arquitetura-1.png)
 
 <p align="center">
   <img src="docs/imagens/Arquitetura-1.png" width="700"/>
@@ -140,12 +139,166 @@ pm2 delete hardhat-node
 
 
 ## ⏱️ Execução automática (cron)
-```
+Adicionalmente, é realizada uma busca nas redes que contam no arquino networks.json a cada 15 minutos, com o objetivo de salvar um histórico com os preços das redes. O script que realiza a busca é: buscaGas/buscaGasPrices.js. E o agendamendo das execução é controlado pela ferramenta crontab.
+
+Abrir o crontab para editar:
+```bash
 crontab -e
 ```
+Adcionar no final do arquivo e salvar:
 ```bash
 */15 * * * * cd /SEU_CAMINHO/agro-smart-cost && /usr/bin/node buscaGas/buscaGasPrices.js >> buscaGas/cron.log 2>&1
 ```
+
+Para parar a execução automática:
+Remove tudo que está no crontab:
+```bash
+crontab -r
+```
+ou
+Abrir o crontab e apagar a linha correspondente:
+```bash
+crontab -e
+```
+
+### 📊 Integração com Google Sheets
+
+> ⚙️ Opcional: caso não queira salvar os dados no Google Sheets, comente a linha abaixo no código:
+>
+> ```js
+> await saveToGoogleSheets([row]);
+> ```
+
+Esta aplicação pode armazenar os dados coletados diretamente em uma planilha do Google Sheets.
+
+---
+
+#### 1. Criar uma planilha
+
+1. Acesse o Google Sheets
+2. Crie uma nova planilha
+3. Copie o ID da URL:
+
+    Exemplo:
+https://docs.google.com/spreadsheets/d/SEU_SHEET_ID/edit
+
+
+4. Guarde esse ID para usar no `.env`
+
+---
+
+#### 2. Criar credenciais (Service Account)
+
+1. Acesse o [Google Cloud Console](https://console.cloud.google.com/)
+2. Crie um novo projeto (ou selecione um existente)
+   - "Selecionar projeto" → "Novo projeto"
+
+---
+
+#### 3. Ativar a API
+
+1. Vá em:
+   - **APIs e Serviços** → **Biblioteca**
+2. Busque por:
+   - Google Sheets API
+3. Clique em **Ativar**
+
+---
+
+#### 4. Criar a conta de serviço
+
+1. Vá em:
+   - **APIs e Serviços** → **Credenciais**
+2. Clique em:
+   - **Criar credenciais** → **Conta de serviço**
+
+3. Preencha:
+   - **ID da conta de serviço**: (ex: `agro-smart-cost`)
+   - Demais campos: podem ficar em branco
+
+4. Clique em **Concluir**
+
+---
+
+#### 5. Gerar o arquivo `credentials.json`
+
+1. Após criar, clique na conta de serviço (e-mail gerado)
+2. Vá na aba **Chaves**
+3. Clique em:
+   - **Adicionar chave** → **Criar nova chave**
+   - Tipo: **JSON**
+4. Clique em **Criar**
+
+👉 O arquivo será baixado automaticamente
+
+5. Renomeie para:
+    credentials.json
+
+
+6. Coloque na raiz do projeto:
+    gas-estimator/credentials.json
+
+
+---
+
+#### 6. Compartilhar a planilha
+
+1. Copie o e-mail da conta de serviço, exemplo:
+    nome@projeto.iam.gserviceaccount.com
+
+
+2. Abra sua planilha no Google Sheets
+3. Clique em **Compartilhar**
+4. Adicione esse e-mail como:
+
+👉 **Editor**
+
+---
+
+#### 7. Configurar variáveis de ambiente
+
+No arquivo `.env`:
+
+```env
+SHEET_ID=SEU_SHEET_ID
+```
+
+Exemplo:
+SHEET_ID=1d35-kE5HOGNk-eDQqmoGXPfnlycuNofMhOON4lfs7GI
+
+
+
+## 🐘 Banco de dados (PostgreSQL - Neon)
+
+A aplicação utiliza PostgreSQL em nuvem (Neon).
+
+---
+
+### 1. Criar banco de dados
+
+1. Acesse o Neon: https://neon.tech
+2. Crie uma conta
+3. Crie um novo projeto
+
+---
+
+### 2. Obter a string de conexão
+
+Após criar o banco, copie a **connection string** fornecida pelo Neon.
+
+Exemplo:
+DATABASE_URLL=postgresql://seu_usuario:sua_senha@seu_host/neondb?sslmode=require
+
+
+---
+
+### 3. Configurar variáveis de ambiente
+
+No arquivo `.env`:
+
+```env
+DATABASE_URL=DATABASE_URL=postgresql://seu_usuario:sua_senha@seu_host/neondb?sslmode=require
+
 
 ---
 

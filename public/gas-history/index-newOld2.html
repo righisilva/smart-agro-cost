@@ -655,57 +655,6 @@
             border: 1px solid var(--border);
             margin-bottom: 5px;
         }
-        /* Estilos para redes dinâmicas */
-        .loading-filters {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-light);
-        }
-
-        .network-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background-color: var(--card-bg-light);
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: var(--transition);
-            margin-bottom: 10px;
-        }
-
-        .network-checkbox:hover {
-            background-color: rgba(33, 150, 243, 0.05);
-            border-color: var(--accent);
-        }
-
-        .network-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: var(--accent);
-        }
-
-        .network-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-            color: var(--text);
-            flex: 1;
-        }
-
-        .network-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        /* Cores dinâmicas para redes - serão aplicadas via JavaScript */
-        .network-color-dynamic {
-            transition: var(--transition);
-        }
     </style>
 </head>
 
@@ -738,16 +687,43 @@
             <!-- Left Panel - Filters -->
             <div class="filters-panel">
                 <!-- Networks Selection -->
-                <!-- Networks Selection - VERSÃO DINÂMICA -->
                 <div class="card">
                     <div class="card-title">
                         <i class="fas fa-network-wired"></i>
                         <span>Redes Blockchain</span>
                     </div>
-                    <div class="network-selection" id="networkSelectionContainer">
-                        <div class="loading-filters">
-                            <i class="fas fa-spinner fa-spin"></i> Carregando redes...
-                        </div>
+                    <div class="network-selection">
+                        <label class="network-checkbox">
+                            <input type="checkbox" id="network-ethereum" checked>
+                            <div class="network-label">
+                                <div class="network-color network-ethereum"></div>
+                                <span>Ethereum</span>
+                            </div>
+                        </label>
+
+                        <label class="network-checkbox">
+                            <input type="checkbox" id="network-bnb" checked>
+                            <div class="network-label">
+                                <div class="network-color network-bnb"></div>
+                                <span>BNB Chain</span>
+                            </div>
+                        </label>
+
+                        <label class="network-checkbox">
+                            <input type="checkbox" id="network-polygon" checked>
+                            <div class="network-label">
+                                <div class="network-color network-polygon"></div>
+                                <span>Polygon</span>
+                            </div>
+                        </label>
+
+                        <!-- <label class="network-checkbox">
+                            <input type="checkbox" id="network-hardhat">
+                            <div class="network-label">
+                                <div class="network-color network-hardhat"></div>
+                                <span>Hardhat (Local)</span>
+                            </div>
+                        </label> -->
                     </div>
                 </div>
 
@@ -777,8 +753,7 @@
                             <span>Unidades de Gas por Transação</span>
                         </label>
                         <div class="gas-units-input">
-                            <input type="number" class="filter-input" id="gasUnits" min="21000" max="10000000"
-                                value="21000">
+                            <input type="number" class="filter-input" id="gasUnits" min="21000" max="10000000" value="21000">
                             <span class="gas-unit-label">unidades</span>
                         </div>
                         <div style="margin-top: 10px; font-size: 12px; color: var(--text-light);">
@@ -996,152 +971,6 @@
 
         // Execute o teste
         testarChartJS();
-        
-        // Configuração de cores para redes conhecidas (mantém consistência visual)
-        const knownNetworkColors = {
-            'Ethereum': '#627EEA',
-            'BNB Chain': '#F0B90B',
-            'Polygon': '#00C9A7',
-            'Hardhat': '#FF6B8B',
-            'Avalanche': '#E84142',
-            'Fantom': '#1969FF',
-            'Arbitrum': '#28A0F0',
-            'Optimism': '#FF0420',
-            'Base': '#0052FF',
-            'Linea': '#121212',
-            'Scroll': '#FFE8C5'
-        };
-
-        // Função para gerar cor aleatória mas consistente para redes desconhecidas
-        function getNetworkColor(networkName) {
-            // Se já temos uma cor definida, usa ela
-            if (knownNetworkColors[networkName]) {
-                return knownNetworkColors[networkName];
-            }
-
-            // Gera uma cor baseada no nome da rede (consistente)
-            let hash = 0;
-            for (let i = 0; i < networkName.length; i++) {
-                hash = ((hash << 5) - hash) + networkName.charCodeAt(i);
-                hash |= 0;
-            }
-
-            // Converter para cor HSL (mais harmonioso)
-            const hue = Math.abs(hash % 360);
-            const saturation = 65 + (Math.abs(hash >> 8) % 25); // 65-90%
-            const lightness = 55 + (Math.abs(hash >> 16) % 15); // 55-70%
-
-            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        }
-
-        // Carregar redes disponíveis do backend
-        async function carregarRedes() {
-            const container = document.getElementById('networkSelectionContainer');
-
-            try {
-                console.log('🌐 Carregando redes disponíveis...');
-                const response = await fetch('/api/networks-list');
-
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP ${response.status}`);
-                }
-
-                const redes = await response.json();
-                console.log('✅ Redes carregadas:', redes);
-
-                if (!redes || redes.length === 0) {
-                    container.innerHTML = `
-                        <div class="loading-filters">
-                            <i class="fas fa-exclamation-triangle"></i> 
-                            Nenhuma rede encontrada
-                        </div>
-                    `;
-                    return;
-                }
-
-                // Salvar redes no escopo global
-                window.redesDisponiveis = redes;
-
-                // Renderizar checkboxes das redes
-                container.innerHTML = redes.map((rede, index) => {
-                    const networkColor = getNetworkColor(rede);
-                    // Primeiras 3 redes ficam selecionadas por padrão, as demais não
-                    // const isChecked = index < 3;
-                    const isChecked = true;
-
-                    return `
-                        <label class="network-checkbox" data-network="${rede}">
-                            <input type="checkbox" class="network-checkbox-input" 
-                                    value="${rede}" 
-                                    ${isChecked ? 'checked' : ''}>
-                            <div class="network-label">
-                                <div class="network-color" style="background-color: ${networkColor}"></div>
-                                <span>${rede}</span>
-                            </div>
-                        </label>
-                    `;
-                }).join('');
-
-
-                let autoRefreshTimeout = null;
-
-                function autoRefreshChart() {
-                    if (autoRefreshTimeout) {
-                        clearTimeout(autoRefreshTimeout);
-                    }
-                    // Espera 500ms após a última mudança para carregar
-                    autoRefreshTimeout = setTimeout(() => {
-                        carregarDados();
-                    }, 500);
-                }
-
-
-                // Adicionar event listeners para as checkboxes
-                document.querySelectorAll('.network-checkbox-input').forEach(checkbox => {
-                    checkbox.addEventListener('change', function () {
-                        console.log('🔄 Rede alterada:', this.value, this.checked);
-                        // Opcional: auto-carregar dados quando rede mudar
-                        // carregarDados();
-                        autoRefreshChart();
-                    });
-                });
-
-                // Atualizar networkColors global para uso nos gráficos
-                redes.forEach(rede => {
-                    networkColors[rede] = getNetworkColor(rede);
-                });
-
-                console.log('✅ Cores configuradas:', networkColors);
-
-            } catch (error) {
-                console.error('❌ Erro ao carregar redes:', error);
-                container.innerHTML = `
-                    <div class="loading-filters" style="color: var(--error);">
-                        <i class="fas fa-exclamation-triangle"></i> 
-                        Erro ao carregar redes. Verifique sua conexão.
-                        <button onclick="carregarRedes()" style="margin-top: 10px; padding: 5px 10px; background: var(--accent); color: white; border: none; border-radius: 4px; cursor: pointer;">
-                            <i class="fas fa-sync-alt"></i> Tentar novamente
-                        </button>
-                    </div>
-                `;
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // Configuration
         const networkColors = {
@@ -1167,12 +996,12 @@
 
         // Get selected networks
         function getSelectedNetworks() {
-            const selected = [];
-            const checkboxes = document.querySelectorAll('.network-checkbox-input:checked');
-            checkboxes.forEach(checkbox => {
-                selected.push(checkbox.value);
-            });
-            return selected;
+            const networks = [];
+            if (document.getElementById('network-ethereum').checked) networks.push('Ethereum');
+            if (document.getElementById('network-bnb').checked) networks.push('BNB Chain');
+            if (document.getElementById('network-polygon').checked) networks.push('Polygon');
+            // if (document.getElementById('network-hardhat').checked) networks.push('Hardhat');
+            return networks;
         }
 
         // Get selected period
@@ -1243,289 +1072,289 @@
 
         // Create chart - VERSÃO OTIMIZADA SEM PONTOS
         // Create chart - VERSÃO CORRIGIDA
-        function criarGrafico(data) {
-            console.log('🎨 Criando gráfico com', data.length, 'pontos de dados');
+            function criarGrafico(data) {
+                console.log('🎨 Criando gráfico com', data.length, 'pontos de dados');
 
-            const ctx = document.getElementById('mainChart').getContext('2d');
+                const ctx = document.getElementById('mainChart').getContext('2d');
 
-            // Destroy previous chart
-            if (mainChart) {
-                mainChart.destroy();
-            }
-
-            // ⚡ Se não houver dados ou dados demais, otimizar
-            if (!data || data.length === 0) {
-                mostrarGraficoVazio(ctx);
-                return;
-            }
-
-            let dadosParaGrafico = data; // Usar todos os dados
-
-            // Group data by network
-            const groupedData = {};
-            const allTimestamps = new Set(); // Usar Set para timestamps únicos
-
-            dadosParaGrafico.forEach(item => {
-                if (!groupedData[item.network]) {
-                    groupedData[item.network] = {
-                        values: new Map() // Usar Map para associar timestamp -> valor
-                    };
+                // Destroy previous chart
+                if (mainChart) {
+                    mainChart.destroy();
                 }
 
-                // Armazenar por timestamp (ISO string para consistência)
-                const timestamp = item.timestamp;
-                groupedData[item.network].values.set(timestamp, parseFloat(item.gas_cost_brl));
+                // ⚡ Se não houver dados ou dados demais, otimizar
+                if (!data || data.length === 0) {
+                    mostrarGraficoVazio(ctx);
+                    return;
+                }
 
-                // Adicionar ao conjunto de todos os timestamps
-                allTimestamps.add(timestamp);
-            });
+                let dadosParaGrafico = data; // Usar todos os dados
 
-            // Converter Set para Array e ordenar
-            const sortedTimestamps = Array.from(allTimestamps).sort();
+                // Group data by network
+                const groupedData = {};
+                const allTimestamps = new Set(); // Usar Set para timestamps únicos
 
-            // Criar labels formatados
-            const labels = sortedTimestamps.map(timestamp => {
-                const date = new Date(timestamp);
-                return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-            });
+                dadosParaGrafico.forEach(item => {
+                    if (!groupedData[item.network]) {
+                        groupedData[item.network] = {
+                            values: new Map() // Usar Map para associar timestamp -> valor
+                        };
+                    }
 
-            // Get all networks
-            const networks = Object.keys(groupedData);
+                    // Armazenar por timestamp (ISO string para consistência)
+                    const timestamp = item.timestamp;
+                    groupedData[item.network].values.set(timestamp, parseFloat(item.gas_cost_brl));
 
-            // ⚡ Create datasets SEM PONTOS (apenas linhas)
-            const datasets = networks.map(network => {
-                const color = getNetworkColor(network);
-
-                // Para cada timestamp, buscar o valor correspondente
-                const values = sortedTimestamps.map(timestamp => {
-                    return groupedData[network].values.get(timestamp) || null;
+                    // Adicionar ao conjunto de todos os timestamps
+                    allTimestamps.add(timestamp);
                 });
 
-                return {
-                    label: network,
-                    data: values,
-                    borderColor: color,
-                    backgroundColor: 'transparent',
-                    borderWidth: 1.5,
-                    fill: false,
-                    tension: 0.1,
-                    pointRadius: 0,
-                    pointHoverRadius: 0,
-                    pointBackgroundColor: 'transparent',
-                    pointBorderColor: 'transparent',
-                    showLine: true,
-                    cubicInterpolationMode: 'monotone',
-                    spanGaps: true
-                };
-            });
+                // Converter Set para Array e ordenar
+                const sortedTimestamps = Array.from(allTimestamps).sort();
 
-            console.log('🔍 DEBUG dadosParaGrafico:');
-            console.log('- Total recebido da API:', data.length);
-            console.log('- Usando no gráfico:', dadosParaGrafico.length);
-            console.log('- São iguais?', data.length === dadosParaGrafico.length);
-            console.log('- Número de timestamps únicos:', sortedTimestamps.length);
-            console.log('- Número de redes:', networks.length);
-            console.log('- Datasets criados:', datasets.length);
-            console.log('- Labels criados:', labels.length);
+                // Criar labels formatados
+                const labels = sortedTimestamps.map(timestamp => {
+                    const date = new Date(timestamp);
+                    return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                });
 
-            // Verificar primeiros e últimos registros
-            if (sortedTimestamps.length > 0) {
-                console.log('- Primeiro timestamp:', new Date(sortedTimestamps[0]).toLocaleString());
-                console.log('- Último timestamp:', new Date(sortedTimestamps[sortedTimestamps.length - 1]).toLocaleString());
-            }
+                // Get all networks
+                const networks = Object.keys(groupedData);
 
-            // CORREÇÃO: Obter cores do BODY para usar na criação do gráfico
-            const bodyStyles = getComputedStyle(document.body);
-            const textColor = bodyStyles.getPropertyValue('--text').trim();
-            const textLightColor = bodyStyles.getPropertyValue('--text-light').trim();
-            const borderColor = bodyStyles.getPropertyValue('--border').trim();
+                // ⚡ Create datasets SEM PONTOS (apenas linhas)
+                const datasets = networks.map(network => {
+                    const color = networkColors[network] || '#999999';
 
-            // ⚡ Create chart com configuração otimizada
-            mainChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    // ⚡ Desativar animações para performance
-                    animation: {
-                        duration: 0
+                    // Para cada timestamp, buscar o valor correspondente
+                    const values = sortedTimestamps.map(timestamp => {
+                        return groupedData[network].values.get(timestamp) || null;
+                    });
+
+                    return {
+                        label: network,
+                        data: values,
+                        borderColor: color,
+                        backgroundColor: 'transparent',
+                        borderWidth: 1.5,
+                        fill: false,
+                        tension: 0.1,
+                        pointRadius: 0,
+                        pointHoverRadius: 0,
+                        pointBackgroundColor: 'transparent',
+                        pointBorderColor: 'transparent',
+                        showLine: true,
+                        cubicInterpolationMode: 'monotone',
+                        spanGaps: true
+                    };
+                });
+
+                console.log('🔍 DEBUG dadosParaGrafico:');
+                console.log('- Total recebido da API:', data.length);
+                console.log('- Usando no gráfico:', dadosParaGrafico.length);
+                console.log('- São iguais?', data.length === dadosParaGrafico.length);
+                console.log('- Número de timestamps únicos:', sortedTimestamps.length);
+                console.log('- Número de redes:', networks.length);
+                console.log('- Datasets criados:', datasets.length);
+                console.log('- Labels criados:', labels.length);
+
+                // Verificar primeiros e últimos registros
+                if (sortedTimestamps.length > 0) {
+                    console.log('- Primeiro timestamp:', new Date(sortedTimestamps[0]).toLocaleString());
+                    console.log('- Último timestamp:', new Date(sortedTimestamps[sortedTimestamps.length - 1]).toLocaleString());
+                }
+
+                // CORREÇÃO: Obter cores do BODY para usar na criação do gráfico
+                const bodyStyles = getComputedStyle(document.body);
+                const textColor = bodyStyles.getPropertyValue('--text').trim();
+                const textLightColor = bodyStyles.getPropertyValue('--text-light').trim();
+                const borderColor = bodyStyles.getPropertyValue('--border').trim();
+
+                // ⚡ Create chart com configuração otimizada
+                mainChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
                     },
-                    // ⚡ Desativar elementos pesados
-                    elements: {
-                        point: {
-                            radius: 0 // Garantir que pontos estão desativados
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        // ⚡ Desativar animações para performance
+                        animation: {
+                            duration: 0
                         },
-                        line: {
-                            tension: 0.1 // Pouca curvatura para performance
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                // CORREÇÃO: Usar textColor (--text) do body
-                                color: textColor,
-                                font: {
-                                    size: 12
-                                },
-                                padding: 15,
-                                usePointStyle: false // Não mostrar pontos na legenda
+                        // ⚡ Desativar elementos pesados
+                        elements: {
+                            point: {
+                                radius: 0 // Garantir que pontos estão desativados
+                            },
+                            line: {
+                                tension: 0.1 // Pouca curvatura para performance
                             }
                         },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            callbacks: {
-                                label: function (context) {
-                                    const label = context.dataset.label || '';
-                                    const value = context.parsed.y;
-                                    if (value === null) return `${label}: Sem dados`;
-                                    return `${label}: ${formatCurrency(value)}`;
-                                },
-                                title: function (context) {
-                                    const index = context[0].dataIndex;
-                                    if (sortedTimestamps[index]) {
-                                        const date = new Date(sortedTimestamps[index]);
-                                        return date.toLocaleString('pt-BR', {
-                                            day: '2-digit',
-                                            month: '2-digit',
-                                            year: 'numeric',
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        });
-                                    }
-                                    return '';
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    // CORREÇÃO: Usar textColor (--text) do body
+                                    color: textColor,
+                                    font: {
+                                        size: 12
+                                    },
+                                    padding: 15,
+                                    usePointStyle: false // Não mostrar pontos na legenda
                                 }
                             },
-                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
-                            titleColor: '#E2E8F0',
-                            bodyColor: '#E2E8F0',
-                            borderColor: '#475569',
-                            borderWidth: 1
-                        },
-                        // ⭐⭐ ADICIONE ESTE PLUGIN DE ZOOM ⭐⭐
-                        zoom: {
-                            limits: {
-                                x: { min: 'original', max: 'original' }
-                            },
-                            zoom: {
-                                wheel: {
-                                    enabled: true,
-                                    speed: 0.05 // Mais lento para controle preciso
-                                },
-                                pinch: {
-                                    enabled: true
-                                },
-                                mode: 'x',
-                                drag: {
-                                    enabled: false // Desative o drag para zoom, use apenas pan
-                                }
-                            },
-                            pan: {
-                                enabled: true,
-                                mode: 'x',
-                                modifierKey: 'ctrl' // Ctrl + arrastar para mover
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                // CORREÇÃO: Usar textLightColor (--text-light) do body
-                                color: textLightColor,
-                                maxRotation: 45,
-                                autoSkip: true,
-                                maxTicksLimit: 15,
-                                callback: function (value, index) {
-                                    const totalLabels = this.chart.data.labels.length;
-                                    const showEvery = Math.max(1, Math.floor(totalLabels / 12));
-
-                                    if (index % showEvery === 0 || index === 0 || index === totalLabels - 1) {
-                                        // Mostrar data completa apenas para alguns pontos
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                callbacks: {
+                                    label: function (context) {
+                                        const label = context.dataset.label || '';
+                                        const value = context.parsed.y;
+                                        if (value === null) return `${label}: Sem dados`;
+                                        return `${label}: ${formatCurrency(value)}`;
+                                    },
+                                    title: function (context) {
+                                        const index = context[0].dataIndex;
                                         if (sortedTimestamps[index]) {
                                             const date = new Date(sortedTimestamps[index]);
-                                            const today = new Date();
-                                            const isSameDay = date.getDate() === today.getDate() &&
-                                                date.getMonth() === today.getMonth() &&
-                                                date.getFullYear() === today.getFullYear();
-
-                                            if (isSameDay) {
-                                                // Hoje: mostrar apenas hora
-                                                return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-                                            } else {
-                                                // Outros dias: mostrar data reduzida
-                                                return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-                                            }
+                                            return date.toLocaleString('pt-BR', {
+                                                day: '2-digit',
+                                                month: '2-digit',
+                                                year: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            });
                                         }
+                                        return '';
                                     }
-                                    return '';
-                                }
+                                },
+                                backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                                titleColor: '#E2E8F0',
+                                bodyColor: '#E2E8F0',
+                                borderColor: '#475569',
+                                borderWidth: 1
                             },
-                            grid: {
-                                // CORREÇÃO: Usar borderColor do body com transparência
-                                color: borderColor + '1A',
-                                drawBorder: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Data/Hora (UTC)',
-                                // CORREÇÃO: Usar textLightColor (--text-light) do body
-                                color: textLightColor,
-                                font: {
-                                    size: 12
+                            // ⭐⭐ ADICIONE ESTE PLUGIN DE ZOOM ⭐⭐
+                            zoom: {
+                                limits: {
+                                    x: { min: 'original', max: 'original' }
+                                },
+                                zoom: {
+                                    wheel: {
+                                        enabled: true,
+                                        speed: 0.05 // Mais lento para controle preciso
+                                    },
+                                    pinch: {
+                                        enabled: true
+                                    },
+                                    mode: 'x',
+                                    drag: {
+                                        enabled: false // Desative o drag para zoom, use apenas pan
+                                    }
+                                },
+                                pan: {
+                                    enabled: true,
+                                    mode: 'x',
+                                    modifierKey: 'ctrl' // Ctrl + arrastar para mover
                                 }
                             }
                         },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                // CORREÇÃO: Usar textLightColor (--text-light) do body
-                                color: textLightColor,
-                                callback: function (value) {
-                                    return formatCurrency(value);
+                        scales: {
+                            x: {
+                                ticks: {
+                                    // CORREÇÃO: Usar textLightColor (--text-light) do body
+                                    color: textLightColor,
+                                    maxRotation: 45,
+                                    autoSkip: true,
+                                    maxTicksLimit: 15,
+                                    callback: function (value, index) {
+                                        const totalLabels = this.chart.data.labels.length;
+                                        const showEvery = Math.max(1, Math.floor(totalLabels / 12));
+
+                                        if (index % showEvery === 0 || index === 0 || index === totalLabels - 1) {
+                                            // Mostrar data completa apenas para alguns pontos
+                                            if (sortedTimestamps[index]) {
+                                                const date = new Date(sortedTimestamps[index]);
+                                                const today = new Date();
+                                                const isSameDay = date.getDate() === today.getDate() &&
+                                                    date.getMonth() === today.getMonth() &&
+                                                    date.getFullYear() === today.getFullYear();
+
+                                                if (isSameDay) {
+                                                    // Hoje: mostrar apenas hora
+                                                    return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                                                } else {
+                                                    // Outros dias: mostrar data reduzida
+                                                    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                                                }
+                                            }
+                                        }
+                                        return '';
+                                    }
                                 },
-                                maxTicksLimit: 8 // ⚡ Limitar ticks no eixo Y
+                                grid: {
+                                    // CORREÇÃO: Usar borderColor do body com transparência
+                                    color: borderColor + '1A',
+                                    drawBorder: false
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Data/Hora (UTC)',
+                                    // CORREÇÃO: Usar textLightColor (--text-light) do body
+                                    color: textLightColor,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
                             },
-                            grid: {
-                                // CORREÇÃO: Usar borderColor do body com transparência
-                                color: borderColor + '1A',
-                                drawBorder: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Custo (BRL)',
-                                // CORREÇÃO: Usar textLightColor (--text-light) do body
-                                color: textLightColor,
-                                font: {
-                                    size: 12
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    // CORREÇÃO: Usar textLightColor (--text-light) do body
+                                    color: textLightColor,
+                                    callback: function (value) {
+                                        return formatCurrency(value);
+                                    },
+                                    maxTicksLimit: 8 // ⚡ Limitar ticks no eixo Y
+                                },
+                                grid: {
+                                    // CORREÇÃO: Usar borderColor do body com transparência
+                                    color: borderColor + '1A',
+                                    drawBorder: false
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Custo (BRL)',
+                                    // CORREÇÃO: Usar textLightColor (--text-light) do body
+                                    color: textLightColor,
+                                    font: {
+                                        size: 12
+                                    }
                                 }
                             }
+                        },
+                        // ⚡ Mais otimizações de performance
+                        hover: {
+                            mode: 'index',
+                            intersect: false,
+                            animationDuration: 0 // Sem animação no hover
+                        },
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
                         }
-                    },
-                    // ⚡ Mais otimizações de performance
-                    hover: {
-                        mode: 'index',
-                        intersect: false,
-                        animationDuration: 0 // Sem animação no hover
-                    },
-                    interaction: {
-                        mode: 'index',
-                        intersect: false
                     }
+                });
+
+                console.log('✅ Gráfico criado com sucesso! (Otimizado para ' + data.length + ' pontos)');
+
+                // ⚡ Se reduzimos muitos dados, mostrar aviso
+                if (data.length > 1000 && dadosParaGrafico.length < data.length * 0.5) {
+                    mostrarAvisoOtimizacao(data.length, dadosParaGrafico.length);
                 }
-            });
-
-            console.log('✅ Gráfico criado com sucesso! (Otimizado para ' + data.length + ' pontos)');
-
-            // ⚡ Se reduzimos muitos dados, mostrar aviso
-            if (data.length > 1000 && dadosParaGrafico.length < data.length * 0.5) {
-                mostrarAvisoOtimizacao(data.length, dadosParaGrafico.length);
             }
-        }
 
         // ⚡ Função para mostrar gráfico vazio
         function mostrarGraficoVazio(ctx) {
@@ -1628,7 +1457,7 @@
                 const min = Math.min(...stats.values);
                 const max = Math.max(...stats.values);
                 const last = stats.values[stats.values.length - 1];
-                const color = getNetworkColor(stats.network); // Usar função dinâmica
+                const color = networkColors[stats.network] || '#999';
 
                 statsHTML += `
                     <div class="stat-card">
@@ -1677,7 +1506,7 @@
                     <tr>
                         <td>
                             <div class="network-badge">
-                                <div class="badge-dot" style="background-color: ${getNetworkColor(item.network)}"></div>
+                                <div class="badge-dot" style="background-color: ${networkColors[item.network] || '#999'}"></div>
                                 ${item.network}
                             </div>
                         </td>
@@ -1838,7 +1667,6 @@
             ctx.textBaseline = 'middle';
             ctx.fillText('Clique em "Atualizar Análise" para carregar dados',
                 ctx.canvas.width / 2, ctx.canvas.height / 2);
-            carregarRedes();
         });
     </script>
 </body>

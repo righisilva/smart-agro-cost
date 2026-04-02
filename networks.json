@@ -29,9 +29,18 @@
     ],
     "token": "polygon-ecosystem-token"
   },
-  "localhost": {
-  "name": "Local Hardhat",
-  "rpc": "http://127.0.0.1:8545",
-  "token": "ETH"
+  "avalanche": {
+    "name": "Avalanche",
+    "rpcs": [
+      "https://api.avax.network/ext/bc/C/rpc",
+      "https://rpc.ankr.com/avalanche",
+      "https://avalanche-c-chain.publicnode.com",
+      "https://1rpc.io/avax/c",
+      "https://avalanche.drpc.org",
+      "https://avalanche-evm.publicnode.com",
+      "https://avalanche.rpc.thirdweb.com",
+      "https://avalanche-mainnet.gateway.tatum.io"
+    ],
+    "token": "avalanche-2"
   }
 }

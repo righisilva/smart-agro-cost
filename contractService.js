@@ -144,15 +144,28 @@ async function getHistoricalTokenPrices(tipo_calculo = "last") {
  * Busca preços dos tokens em USD e BRL via CoinGecko
  */
 async function getLiveTokenPrices() {
-    const url = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum,binancecoin,polygon-ecosystem-token&vs_currencies=usd,brl";
-    console.log("Chamando CoinGecko em:", new Date().toISOString());
-    try {
-        const res = await axios.get(url);
-        return res.data; // Ex: { ethereum: { usd: 2400, brl: 12800 }, ... }
-    } catch (err) {
-        console.error("⚠️ Erro ao buscar preços dos tokens:", err.message);
-        return {};
-    }
+  const ids = [...new Set(
+    Object.values(networks)
+      .map(net => net.token)
+      .filter(token => typeof token === "string" && token.length > 0)
+  )].join(",");
+
+  if (!ids) {
+    console.warn("⚠️ Nenhum token válido encontrado");
+    return {};
+  }
+
+  console.log("📡 Buscando preços para:", ids);
+
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd,brl`;
+
+  try {
+    const res = await axios.get(url);
+    return res.data;
+  } catch (err) {
+    console.error("❌ Erro ao buscar preços:", err.message);
+    return {};
+  }
 }
 
 async function getTokenPrices(periodo = "last") {
@@ -392,6 +405,7 @@ async function analisarContratoManual(filePath, log = console.log) {
         default: return null;
       }
     }) || [];
+    log(`📦 Parâmetros de deploy (${contractName}): ${JSON.stringify(fakeArgs, null, 2)}`);
 
     try {
       const contractInstance = await factory.deploy(...fakeArgs);

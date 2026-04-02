@@ -50,7 +50,7 @@ async function saveToGoogleSheets(data) {
 
   await sheets.spreadsheets.values.append({
     spreadsheetId: SPREADSHEET_ID,
-    range: "testes!A:F",
+    range: "Página1!A:F",
     valueInputOption: "USER_ENTERED",
     requestBody: { values },
   });
@@ -60,14 +60,32 @@ async function saveToGoogleSheets(data) {
 
 // === TOKEN PRICES ===
 async function getTokenPrices() {
-  const url =
-    "https://api.coingecko.com/api/v3/simple/price?ids=ethereum,binancecoin,polygon-ecosystem-token&vs_currencies=usd,brl";
-  const res = await axios.get(url);
-  return res.data;
+  const ids = [...new Set(
+    Object.values(networks)
+      .map(net => net.token)
+      .filter(token => typeof token === "string" && token.length > 0)
+  )].join(",");
+
+  if (!ids) {
+    console.warn("⚠️ Nenhum token válido encontrado");
+    return {};
+  }
+
+  console.log("📡 Buscando preços para:", ids);
+
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd,brl`;
+
+  try {
+    const res = await axios.get(url);
+    return res.data;
+  } catch (err) {
+    console.error("❌ Erro ao buscar preços:", err.message);
+    return {};
+  }
 }
 
 // === GAS PRICES ===
-const networks = require("../networks.json"); // JSON com RPCs e tokens
+const networks = require(path.join(process.cwd(), "networks.json")); // JSON com RPCs e tokens
 
 // === GAS PRICES ===
 async function getGasPricesFromNetworks() {
@@ -161,38 +179,53 @@ async function main() {
   const gasPricesByNetwork = await getGasPricesFromNetworks();
 
   for (const [token, data] of Object.entries(gasPricesByNetwork)) {
-    const tokenPrice = tokenPrices[token];
-    if (!tokenPrice) continue;
+    try {
+      const tokenPrice = tokenPrices[token];
+      if (!tokenPrice) continue;
 
-    const now = new Date().toISOString(); // UTC
+      const now = new Date().toISOString();
 
-    const row = {
-      timestamp: now,
-      rede: data.name,
-      token: token,
-      cotacaoUsd: tokenPrice.usd.toFixed(4).replace(".", ","),
-      cotacaoBrl: tokenPrice.brl.toFixed(4).replace(".", ","),
-      gasPrice: ethers.utils.formatUnits(data.gasPrice, "gwei").replace(".", ","),
-    };
+      const row = {
+        timestamp: now,
+        rede: data.name,
+        token: token,
+        cotacaoUsd: tokenPrice.usd.toFixed(4).replace(".", ","),
+        cotacaoBrl: tokenPrice.brl.toFixed(4).replace(".", ","),
+        gasPrice: ethers.utils.formatUnits(data.gasPrice, "gwei").replace(".", ","),
+      };
 
-    console.log(`🌍 ${data.name}`);
-    console.log(`   🪙 1 ${token} = U$ ${row.cotacaoUsd} | R$ ${row.cotacaoBrl}`);
-    console.log(`   ⛽ Gas Price: ${row.gasPrice} gwei\n`);
+      console.log(`🌍 ${data.name}`);
 
-    // salva no CSV
-    await csvWriter.writeRecords([row]);
+      // CSV
+      try {
+        await csvWriter.writeRecords([row]);
+      } catch (e) {
+        console.warn("⚠️ Erro CSV:", e.message);
+      }
 
-    // salva no Google Sheets TODO TO DO 
-    await saveToGoogleSheets([row]);
+      // Google Sheets
+      try {
+        await saveToGoogleSheets([row]);
+      } catch (e) {
+        console.warn("⚠️ Erro Sheets:", e.message);
+      }
 
-    // salva no DB
-    const networkId = await getOrCreateNetworkId(data.name, token);
-    await insertGasHistory(
-      networkId,
-      parseFloat(ethers.utils.formatUnits(data.gasPrice, "gwei")),
-      tokenPrice.usd,
-      tokenPrice.brl
-    );
+      // DB
+      try {
+        const networkId = await getOrCreateNetworkId(data.name, token);
+        await insertGasHistory(
+          networkId,
+          parseFloat(ethers.utils.formatUnits(data.gasPrice, "gwei")),
+          tokenPrice.usd,
+          tokenPrice.brl
+        );
+      } catch (e) {
+        console.warn("⚠️ Erro DB:", e.message);
+      }
+
+    } catch (err) {
+      console.error(`❌ Erro geral na rede ${data.name}:`, err.message);
+    }
   }
 
   console.log("✅ Tudo registrado com sucesso!");
