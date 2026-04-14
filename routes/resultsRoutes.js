@@ -1,5 +1,3 @@
-// routes/resultsRoutes.js
-
 const express = require("express");
 
 module.exports = (db) => {
@@ -28,10 +26,19 @@ module.exports = (db) => {
         functionName,
         tipo_calculo,
         funcoes,
+        data_inicio,  // 🔥 NOVO: timestamp da data inicial
+        data_fim,     // 🔥 NOVO: timestamp da data final
       } = req.query;
 
       console.log("🔧 Tipo de cálculo selecionado:", tipo_calculo);
       console.log("🔧 Subclassificação:", subclassificacao);
+      
+      // 🔥 Log das datas se for período personalizado
+      if (tipo_calculo === 'custom') {
+        console.log("📅 Período personalizado:");
+        console.log("   Data Início:", data_inicio, new Date(Number(data_inicio)).toLocaleString('pt-BR'));
+        console.log("   Data Fim:", data_fim, new Date(Number(data_fim)).toLocaleString('pt-BR'));
+      }
       
       // Parse das funções selecionadas
       let funcoesSelecionadas = [];
@@ -92,7 +99,6 @@ module.exports = (db) => {
       if (!dadosIBGE.length) return res.json([]);
 
       // ---------------- CONTRATOS ----------------
-      // 🔥 CORREÇÃO: Construir a query de forma dinâmica sem placeholders complexos
       let queryContratos = `
         SELECT
           c.id AS contract_id,
@@ -122,7 +128,7 @@ module.exports = (db) => {
         paramsContratos.network = network;
       }
       
-      // 🔥 CORREÇÃO: Se temos funções específicas, construir IN clause com nomes literais
+      // Se temos funções específicas, construir IN clause com nomes literais
       if (!usarTodasFuncoes && funcoesSelecionadas.length > 0) {
         const functionNames = funcoesSelecionadas.map(f => `'${f.name.replace(/'/g, "''")}'`).join(',');
         queryContratos += ` AND f.name IN (${functionNames})`;
@@ -161,15 +167,9 @@ module.exports = (db) => {
         let custoFuncaoBRL = value.cost_brl;
         const gasFuncao = value.gas_used;
         
-        // Se for média histórica, buscar do PostgreSQL
+        // 🔥 MODIFICADO: Suporte para período personalizado
         if (tipo_calculo !== 'ultima') {
-          console.log(`📊 Buscando média histórica para função ${value.function_name} na rede ${value.network}`);
-          
-          const intervals = {
-            day: "1 day",
-            week: "7 days",
-            month: "30 days"
-          };
+          console.log(`📊 Buscando dados históricos para função ${value.function_name} na rede ${value.network}`);
           
           let queryGas = `
             SELECT AVG(g.gas_gwei * 1e-9 * g.price_brl) AS avg_cost_per_gas
@@ -178,14 +178,46 @@ module.exports = (db) => {
             WHERE n.name = $1
           `;
           
-          if (intervals[tipo_calculo]) {
+          const queryParams = [value.network];
+          
+          // 🔥 NOVO: Período personalizado
+          if (tipo_calculo === 'custom') {
+            if (data_inicio && data_fim) {
+              // Converter timestamps para datas PostgreSQL
+              const dataInicioDate = new Date(Number(data_inicio));
+              const dataFimDate = new Date(Number(data_fim));
+              
+              queryGas += ` AND g.timestamp >= $2 AND g.timestamp <= $3`;
+              queryParams.push(dataInicioDate, dataFimDate);
+              console.log(`   📅 Filtro personalizado: ${dataInicioDate.toISOString()} até ${dataFimDate.toISOString()}`);
+            } else {
+              console.warn("⚠️ Período personalizado selecionado mas sem datas, usando fallback para 'all'");
+              // Fallback: usar todo período se não houver datas
+              tipo_calculo = 'all';
+            }
+          }
+          
+          // Períodos predefinidos
+          const intervals = {
+            day: "1 day",
+            week: "7 days",
+            month: "30 days"
+          };
+          
+          if (intervals[tipo_calculo] && tipo_calculo !== 'custom') {
             queryGas += ` AND g.timestamp >= NOW() - INTERVAL '${intervals[tipo_calculo]}'`;
           }
           
           try {
-            const { rows } = await pgPool.query(queryGas, [value.network]);
+            console.log("📝 Query Gas:", queryGas);
+            console.log("📝 Params:", queryParams);
+            
+            const { rows } = await pgPool.query(queryGas, queryParams);
             const custoMedioPorGas = Number(rows[0]?.avg_cost_per_gas) || 0;
             custoFuncaoBRL = gasFuncao * custoMedioPorGas;
+            
+            console.log(`   📊 Custo médio por gas: ${custoMedioPorGas.toFixed(10)}`);
+            console.log(`   💰 Custo função: ${custoFuncaoBRL.toFixed(6)}`);
           } catch (err) {
             console.error(`❌ Erro ao buscar média para ${value.function_name}:`, err);
             custoFuncaoBRL = value.cost_brl; // fallback para o valor padrão
@@ -268,7 +300,11 @@ module.exports = (db) => {
           custo_total_funcoes_brl: Number(custoTotalFuncoesBRL.toFixed(6)),
           custo_medio_contrato_brl: Number(custoTotalFuncoesBRL.toFixed(2)),
           percentual_custo: percentual,
-          gas_contrato: gasTotal
+          gas_contrato: gasTotal,
+          // 🔥 Informação do período usado (para debug)
+          periodo_usado: tipo_calculo === 'custom' ? 
+            `Personalizado: ${data_inicio ? new Date(Number(data_inicio)).toLocaleDateString('pt-BR') : '?'} até ${data_fim ? new Date(Number(data_fim)).toLocaleDateString('pt-BR') : '?'}` : 
+            tipo_calculo
         };
       });
 

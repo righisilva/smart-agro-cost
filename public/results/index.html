@@ -714,6 +714,20 @@
             color: var(--text-light);
         }
 
+        /* Estilos para campos de data */
+        .filter-input[type="date"] {
+            cursor: pointer;
+        }
+
+        .filter-input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(0.5);
+        }
+
+        .light-mode .filter-input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0);
+        }
+
 
     </style>
 </head>
@@ -823,7 +837,23 @@
                             <option value="week">Média Última Semana</option>
                             <option value="month">Média Último Mês</option>
                             <option value="all">Média Histórica</option>
+                            <option value="custom">Período Personalizado</option>
                         </select>              
+                    </div>
+
+                    <!-- Campos de data personalizada (inicialmente ocultos) -->
+                    <div class="filter-group" id="grupoDataInicio" style="display: none;">
+                        <label class="filter-label required">
+                            <i class="fas fa-calendar-alt"></i> Data Inicial
+                        </label>
+                        <input type="date" class="filter-input" id="filtroDataInicio">
+                    </div>
+                    
+                    <div class="filter-group" id="grupoDataFim" style="display: none;">
+                        <label class="filter-label required">
+                            <i class="fas fa-calendar-alt"></i> Data Final
+                        </label>
+                        <input type="date" class="filter-input" id="filtroDataFim">
                     </div>
                     
                     <div class="filter-group">
@@ -1043,7 +1073,31 @@
             }
         }
 
- 
+        // Controle de exibição dos campos de data personalizada
+        document.getElementById("filtroTipoCalculo").addEventListener("change", function () {
+            const grupoDataInicio = document.getElementById("grupoDataInicio");
+            const grupoDataFim = document.getElementById("grupoDataFim");
+
+            if (this.value === "custom") {
+                grupoDataInicio.style.display = "flex";
+                grupoDataFim.style.display = "flex";
+
+                // Definir valores padrão (últimos 30 dias)
+                const hoje = new Date();
+                const trintaDiasAtras = new Date();
+                trintaDiasAtras.setDate(hoje.getDate() - 30);
+
+                if (!document.getElementById("filtroDataInicio").value) {
+                    document.getElementById("filtroDataInicio").value = trintaDiasAtras.toISOString().split('T')[0];
+                }
+                if (!document.getElementById("filtroDataFim").value) {
+                    document.getElementById("filtroDataFim").value = hoje.toISOString().split('T')[0];
+                }
+            } else {
+                grupoDataInicio.style.display = "none";
+                grupoDataFim.style.display = "none";
+            }
+        });
 
         
         // Atualizar funções baseado no contrato selecionado
@@ -1127,6 +1181,37 @@
                     faltantes.push(filtro.nome);
                 }
             });
+
+
+
+            // Validar datas se for período personalizado
+            const tipoCalculo = document.getElementById("filtroTipoCalculo").value;
+            if (tipoCalculo === "custom") {
+                const dataInicio = document.getElementById("filtroDataInicio").value;
+                const dataFim = document.getElementById("filtroDataFim").value;
+
+                if (!dataInicio) {
+                    faltantes.push("Data Inicial");
+                }
+                if (!dataFim) {
+                    faltantes.push("Data Final");
+                }
+
+                // Validar se data inicial é anterior à data final
+                if (dataInicio && dataFim && new Date(dataInicio) > new Date(dataFim)) {
+                    mostrarToast("A data inicial deve ser anterior à data final", "warning");
+                    return false;
+                }
+
+                // Validar se as datas não são futuras
+                const hoje = new Date();
+                hoje.setHours(0, 0, 0, 0);
+
+                if (new Date(dataFim) > hoje) {
+                    mostrarToast("A data final não pode ser futura", "warning");
+                    return false;
+                }
+            }
             
             if (faltantes.length > 0) {
                 mostrarToast(`Por favor, preencha os seguintes campos:\n${faltantes.join(', ')}`, 'warning');
@@ -1197,8 +1282,10 @@
             params.append("familiar", document.getElementById("filtroFamiliar").value);
             params.append("contract", document.getElementById("filtroContrato").value);
             params.append("network", document.getElementById("filtroRede").value);
-            params.append("tipo_calculo", document.getElementById("filtroTipoCalculo").value);
+            // params.append("tipo_calculo", document.getElementById("filtroTipoCalculo").value);
             params.append("orderBy", document.getElementById("filtroOrderBy").value);
+            const tipoCalculo = document.getElementById("filtroTipoCalculo").value;
+            params.append("tipo_calculo", tipoCalculo);
 
             const classificacao = document.getElementById("filtroClassificacao").value;
             const subclassificacao = document.getElementById("filtroSubclassificacao").value;
@@ -1209,6 +1296,30 @@
             if (subclassificacao) params.append("subclassificacao", subclassificacao);
             if (obrigatorio === "1") params.append("obrigatorio", obrigatorio);
             if (top) params.append("top", top);
+
+            // 🔥 Adicionar parâmetros de data personalizada
+            if (tipoCalculo === "custom") {
+                const dataInicio = document.getElementById("filtroDataInicio").value;
+                const dataFim = document.getElementById("filtroDataFim").value;
+
+                if (dataInicio) {
+                    // Enviar como timestamp UNIX para facilitar no backend
+                    const [ano, mes, dia] = dataInicio.split('-');
+                    const dataInicioUTC = new Date(Date.UTC(parseInt(ano), parseInt(mes) - 1, parseInt(dia), 0, 0, 0, 0));
+                    params.append("data_inicio", dataInicioUTC.getTime());
+                    params.append("data_inicio_str", dataInicio); //Versão legível para debug
+                }
+
+                if (dataFim) {
+                    // Enviar como timestamp UNIX para facilitar no backend
+                    const [ano, mes, dia] = dataFim.split('-');
+                    const dataFimUTC = new Date(Date.UTC(parseInt(ano), parseInt(mes) - 1, parseInt(dia), 23, 59, 59, 999));
+                    params.append("data_fim", dataFimUTC.getTime());
+                    params.append("data_fim_str", dataFim); // Versão legível para debug
+                }
+
+                console.log(`📅 Período personalizado: ${dataInicio} até ${dataFim}`);
+            }
 
             // 🔥 NOVO: Coletar funções selecionadas com suas execuções
             const funcoesSelecionadas = [];

@@ -706,6 +706,21 @@
         .network-color-dynamic {
             transition: var(--transition);
         }
+
+        /* Estilos para campos de data */
+        .filter-input[type="date"] {
+            cursor: pointer;
+        }
+
+        .filter-input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(0.5);
+        }
+
+        .light-mode .filter-input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0);
+        }
+
     </style>
 </head>
 
@@ -762,8 +777,32 @@
                         <button class="period-btn" data-period="week">7 Dias</button>
                         <button class="period-btn" data-period="month">30 Dias</button>
                         <button class="period-btn" data-period="all">Todo Período</button>
+                        <button class="period-btn" data-period="custom">Personalizado</button>
+                    </div>
+
+                    <!-- 🔥 NOVO: Campos de data personalizada (inicialmente ocultos) -->
+                    <div id="customDateRange" style="display: none; margin-top: 20px;">
+                        <div class="filter-group" style="margin-bottom: 15px;">
+                            <label class="filter-label">
+                                <i class="fas fa-calendar-day"></i>
+                                <span>Data Inicial (UTC)</span>
+                            </label>
+                            <input type="date" class="filter-input" id="dataInicio" value="">
+                        </div>
+                        <div class="filter-group" style="margin-bottom: 15px;">
+                            <label class="filter-label">
+                                <i class="fas fa-calendar-day"></i>
+                                <span>Data Final (UTC)</span>
+                            </label>
+                            <input type="date" class="filter-input" id="dataFim" value="">
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-light); margin-top: 10px;">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Período considerado das 00:00 às 23:59:59 UTC</span>
+                        </div>          
                     </div>
                 </div>
+                
 
                 <!-- Gas Units -->
                 <div class="card">
@@ -996,6 +1035,81 @@
 
         // Execute o teste
         testarChartJS();
+
+
+        function criarDataUTC(dateString, isEndOfDay = false) {
+            if (!dateString) return null;
+            const [ano, mes, dia] = dateString.split('-');
+            if (isEndOfDay) {
+                // 23:59:59.999 UTC
+                return new Date(Date.UTC(parseInt(ano), parseInt(mes) - 1, parseInt(dia), 23, 59, 59, 999));
+            } else {
+                // 00:00:00.000 UTC
+                return new Date(Date.UTC(parseInt(ano), parseInt(mes) - 1, parseInt(dia), 0, 0, 0, 0));
+            }
+        }
+
+        // Função para formatar data para exibição
+        function formatarDataUTC(date) {
+            if (!date) return '';
+            return date.toISOString().split('T')[0];
+        }
+
+        // Controle de exibição dos campos de data personalizada
+        function toggleCustomDateFields() {
+            const customDateRange = document.getElementById('customDateRange');
+            const period = getSelectedPeriod();
+
+            if (period === 'custom') {
+                customDateRange.style.display = 'block';
+
+                // Definir valores padrão se estiverem vazios
+                const hoje = new Date();
+                const dataInicioInput = document.getElementById('dataInicio');
+                const dataFimInput = document.getElementById('dataFim');
+
+                if (!dataInicioInput.value) {
+                    // Padrão: últimos 7 dias
+                    const seteDiasAtras = new Date();
+                    seteDiasAtras.setDate(hoje.getDate() - 7);
+                    dataInicioInput.value = formatarDataUTC(seteDiasAtras);
+                }
+                if (!dataFimInput.value) {
+                    dataFimInput.value = formatarDataUTC(hoje);
+                }
+            } else {
+                customDateRange.style.display = 'none';
+            }
+        }
+
+        // Função para validar datas
+        function validarDatas() {
+            const dataInicio = document.getElementById('dataInicio').value;
+            const dataFim = document.getElementById('dataFim').value;
+
+            if (!dataInicio || !dataFim) {
+                alert('Por favor, preencha ambas as datas para o período personalizado.');
+                return false;
+            }
+
+            const inicio = new Date(dataInicio);
+            const fim = new Date(dataFim);
+
+            if (inicio > fim) {
+                alert('A data inicial deve ser anterior à data final.');
+                return false;
+            }
+
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+
+            if (fim > hoje) {
+                alert('A data final não pode ser futura.');
+                return false;
+            }
+
+            return true;
+        }
         
         // Configuração de cores para redes conhecidas (mantém consistência visual)
         const knownNetworkColors = {
@@ -1175,12 +1289,36 @@
             return selected;
         }
 
-        // Get selected period
+        // Get selected period (retorna objeto completo com período e datas)
+        function getSelectedPeriodConfig() {
+            const activeBtn = document.querySelector('.period-btn.active');
+            const period = activeBtn ? activeBtn.dataset.period : 'day';
+
+            const config = { period };
+
+            if (period === 'custom') {
+                const dataInicioStr = document.getElementById('dataInicio').value;
+                const dataFimStr = document.getElementById('dataFim').value;
+
+                if (dataInicioStr && dataFimStr) {
+                    const dataInicioUTC = criarDataUTC(dataInicioStr, false);
+                    const dataFimUTC = criarDataUTC(dataFimStr, true);
+
+                    config.dataInicio = dataInicioUTC.getTime();
+                    config.dataFim = dataFimUTC.getTime();
+                    config.dataInicioStr = dataInicioStr;
+                    config.dataFimStr = dataFimStr;
+                }
+            }
+
+            return config;
+        }
+
+        // Get selected period (apenas o período, para compatibilidade)
         function getSelectedPeriod() {
             const activeBtn = document.querySelector('.period-btn.active');
             return activeBtn ? activeBtn.dataset.period : 'day';
         }
-
         // Get gas units
         function getGasUnits() {
             const val = document.getElementById('gasUnits').value;
@@ -1188,6 +1326,7 @@
         }
 
         // Load data
+        // Load data (modificada)
         async function carregarDados() {
             console.log('🔄 Iniciando carregamento de dados...');
 
@@ -1195,7 +1334,7 @@
             loadingEl.style.display = 'flex';
 
             const networks = getSelectedNetworks();
-            const period = getSelectedPeriod();
+            const periodConfig = getSelectedPeriodConfig();
             const gasUnits = getGasUnits();
 
             if (networks.length === 0) {
@@ -1204,8 +1343,26 @@
                 return;
             }
 
+            // Validar datas se for período personalizado
+            if (periodConfig.period === 'custom') {
+                if (!validarDatas()) {
+                    loadingEl.style.display = 'none';
+                    return;
+                }
+                console.log('📅 Período personalizado UTC:', periodConfig.dataInicioStr, 'até', periodConfig.dataFimStr);
+                console.log('   Timestamp início:', periodConfig.dataInicio);
+                console.log('   Timestamp fim:', periodConfig.dataFim);
+            }
+
             // Build URL
-            let url = `/api/gas-history?period=${period}&gasUnits=${gasUnits}`;
+            let url = `/api/gas-history?period=${periodConfig.period}&gasUnits=${gasUnits}`;
+
+            // 🔥 Adicionar parâmetros de data se for período personalizado
+            if (periodConfig.period === 'custom' && periodConfig.dataInicio && periodConfig.dataFim) {
+                url += `&data_inicio=${periodConfig.dataInicio}`;
+                url += `&data_fim=${periodConfig.dataFim}`;
+            }
+
             networks.forEach(network => {
                 url += `&network=${encodeURIComponent(network)}`;
             });
@@ -1243,289 +1400,210 @@
 
         // Create chart - VERSÃO OTIMIZADA SEM PONTOS
         // Create chart - VERSÃO CORRIGIDA
-        function criarGrafico(data) {
-            console.log('🎨 Criando gráfico com', data.length, 'pontos de dados');
+    function criarGrafico(data) {
+        console.log('🎨 Criando gráfico com', data.length, 'pontos de dados');
 
-            const ctx = document.getElementById('mainChart').getContext('2d');
+        const ctx = document.getElementById('mainChart').getContext('2d');
 
-            // Destroy previous chart
-            if (mainChart) {
-                mainChart.destroy();
-            }
+        if (mainChart) {
+            mainChart.destroy();
+        }
 
-            // ⚡ Se não houver dados ou dados demais, otimizar
-            if (!data || data.length === 0) {
-                mostrarGraficoVazio(ctx);
-                return;
-            }
+        if (!data || data.length === 0) {
+            mostrarGraficoVazio(ctx);
+            return;
+        }
 
-            let dadosParaGrafico = data; // Usar todos os dados
+        // Group data by network
+        const groupedData = {};
+        const allTimestamps = new Set();
 
-            // Group data by network
-            const groupedData = {};
-            const allTimestamps = new Set(); // Usar Set para timestamps únicos
-
-            dadosParaGrafico.forEach(item => {
-                if (!groupedData[item.network]) {
-                    groupedData[item.network] = {
-                        values: new Map() // Usar Map para associar timestamp -> valor
-                    };
-                }
-
-                // Armazenar por timestamp (ISO string para consistência)
-                const timestamp = item.timestamp;
-                groupedData[item.network].values.set(timestamp, parseFloat(item.gas_cost_brl));
-
-                // Adicionar ao conjunto de todos os timestamps
-                allTimestamps.add(timestamp);
-            });
-
-            // Converter Set para Array e ordenar
-            const sortedTimestamps = Array.from(allTimestamps).sort();
-
-            // Criar labels formatados
-            const labels = sortedTimestamps.map(timestamp => {
-                const date = new Date(timestamp);
-                return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-            });
-
-            // Get all networks
-            const networks = Object.keys(groupedData);
-
-            // ⚡ Create datasets SEM PONTOS (apenas linhas)
-            const datasets = networks.map(network => {
-                const color = getNetworkColor(network);
-
-                // Para cada timestamp, buscar o valor correspondente
-                const values = sortedTimestamps.map(timestamp => {
-                    return groupedData[network].values.get(timestamp) || null;
-                });
-
-                return {
-                    label: network,
-                    data: values,
-                    borderColor: color,
-                    backgroundColor: 'transparent',
-                    borderWidth: 1.5,
-                    fill: false,
-                    tension: 0.1,
-                    pointRadius: 0,
-                    pointHoverRadius: 0,
-                    pointBackgroundColor: 'transparent',
-                    pointBorderColor: 'transparent',
-                    showLine: true,
-                    cubicInterpolationMode: 'monotone',
-                    spanGaps: true
+        data.forEach(item => {
+            if (!groupedData[item.network]) {
+                groupedData[item.network] = {
+                    values: new Map()
                 };
-            });
-
-            console.log('🔍 DEBUG dadosParaGrafico:');
-            console.log('- Total recebido da API:', data.length);
-            console.log('- Usando no gráfico:', dadosParaGrafico.length);
-            console.log('- São iguais?', data.length === dadosParaGrafico.length);
-            console.log('- Número de timestamps únicos:', sortedTimestamps.length);
-            console.log('- Número de redes:', networks.length);
-            console.log('- Datasets criados:', datasets.length);
-            console.log('- Labels criados:', labels.length);
-
-            // Verificar primeiros e últimos registros
-            if (sortedTimestamps.length > 0) {
-                console.log('- Primeiro timestamp:', new Date(sortedTimestamps[0]).toLocaleString());
-                console.log('- Último timestamp:', new Date(sortedTimestamps[sortedTimestamps.length - 1]).toLocaleString());
             }
 
-            // CORREÇÃO: Obter cores do BODY para usar na criação do gráfico
-            const bodyStyles = getComputedStyle(document.body);
-            const textColor = bodyStyles.getPropertyValue('--text').trim();
-            const textLightColor = bodyStyles.getPropertyValue('--text-light').trim();
-            const borderColor = bodyStyles.getPropertyValue('--border').trim();
+            const timestamp = item.timestamp;
+            groupedData[item.network].values.set(timestamp, parseFloat(item.gas_cost_brl));
+            allTimestamps.add(timestamp);
+        });
 
-            // ⚡ Create chart com configuração otimizada
-            mainChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: datasets
+        const sortedTimestamps = Array.from(allTimestamps).sort();
+
+        // 🔥 FORÇAR UTC nos labels
+        const labels = sortedTimestamps.map(timestamp => {
+            const date = new Date(timestamp);
+            const utcHours = date.getUTCHours().toString().padStart(2, '0');
+            const utcMinutes = date.getUTCMinutes().toString().padStart(2, '0');
+            return `${utcHours}:${utcMinutes}`;
+        });
+
+        const networks = Object.keys(groupedData);
+
+        const datasets = networks.map(network => {
+            const color = getNetworkColor(network);
+            const values = sortedTimestamps.map(timestamp => {
+                return groupedData[network].values.get(timestamp) || null;
+            });
+
+            return {
+                label: network,
+                data: values,
+                borderColor: color,
+                backgroundColor: 'transparent',
+                borderWidth: 1.5,
+                fill: false,
+                tension: 0.1,
+                pointRadius: 0,
+                pointHoverRadius: 0,
+                pointBackgroundColor: 'transparent',
+                pointBorderColor: 'transparent',
+                showLine: true,
+                cubicInterpolationMode: 'monotone',
+                spanGaps: true
+            };
+        });
+
+        const bodyStyles = getComputedStyle(document.body);
+        const textColor = bodyStyles.getPropertyValue('--text').trim();
+        const textLightColor = bodyStyles.getPropertyValue('--text-light').trim();
+        const borderColor = bodyStyles.getPropertyValue('--border').trim();
+
+        mainChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 0 },
+                elements: {
+                    point: { radius: 0 },
+                    line: { tension: 0.1 }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    // ⚡ Desativar animações para performance
-                    animation: {
-                        duration: 0
-                    },
-                    // ⚡ Desativar elementos pesados
-                    elements: {
-                        point: {
-                            radius: 0 // Garantir que pontos estão desativados
-                        },
-                        line: {
-                            tension: 0.1 // Pouca curvatura para performance
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: textColor,
+                            font: { size: 12 },
+                            padding: 15,
+                            usePointStyle: false
                         }
                     },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                // CORREÇÃO: Usar textColor (--text) do body
-                                color: textColor,
-                                font: {
-                                    size: 12
-                                },
-                                padding: 15,
-                                usePointStyle: false // Não mostrar pontos na legenda
-                            }
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            callbacks: {
-                                label: function (context) {
-                                    const label = context.dataset.label || '';
-                                    const value = context.parsed.y;
-                                    if (value === null) return `${label}: Sem dados`;
-                                    return `${label}: ${formatCurrency(value)}`;
-                                },
-                                title: function (context) {
-                                    const index = context[0].dataIndex;
-                                    if (sortedTimestamps[index]) {
-                                        const date = new Date(sortedTimestamps[index]);
-                                        return date.toLocaleString('pt-BR', {
-                                            day: '2-digit',
-                                            month: '2-digit',
-                                            year: 'numeric',
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        });
-                                    }
-                                    return '';
-                                }
-                            },
-                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
-                            titleColor: '#E2E8F0',
-                            bodyColor: '#E2E8F0',
-                            borderColor: '#475569',
-                            borderWidth: 1
-                        },
-                        // ⭐⭐ ADICIONE ESTE PLUGIN DE ZOOM ⭐⭐
-                        zoom: {
-                            limits: {
-                                x: { min: 'original', max: 'original' }
-                            },
-                            zoom: {
-                                wheel: {
-                                    enabled: true,
-                                    speed: 0.05 // Mais lento para controle preciso
-                                },
-                                pinch: {
-                                    enabled: true
-                                },
-                                mode: 'x',
-                                drag: {
-                                    enabled: false // Desative o drag para zoom, use apenas pan
-                                }
-                            },
-                            pan: {
-                                enabled: true,
-                                mode: 'x',
-                                modifierKey: 'ctrl' // Ctrl + arrastar para mover
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                // CORREÇÃO: Usar textLightColor (--text-light) do body
-                                color: textLightColor,
-                                maxRotation: 45,
-                                autoSkip: true,
-                                maxTicksLimit: 15,
-                                callback: function (value, index) {
-                                    const totalLabels = this.chart.data.labels.length;
-                                    const showEvery = Math.max(1, Math.floor(totalLabels / 12));
-
-                                    if (index % showEvery === 0 || index === 0 || index === totalLabels - 1) {
-                                        // Mostrar data completa apenas para alguns pontos
-                                        if (sortedTimestamps[index]) {
-                                            const date = new Date(sortedTimestamps[index]);
-                                            const today = new Date();
-                                            const isSameDay = date.getDate() === today.getDate() &&
-                                                date.getMonth() === today.getMonth() &&
-                                                date.getFullYear() === today.getFullYear();
-
-                                            if (isSameDay) {
-                                                // Hoje: mostrar apenas hora
-                                                return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-                                            } else {
-                                                // Outros dias: mostrar data reduzida
-                                                return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-                                            }
-                                        }
-                                    }
-                                    return '';
-                                }
-                            },
-                            grid: {
-                                // CORREÇÃO: Usar borderColor do body com transparência
-                                color: borderColor + '1A',
-                                drawBorder: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Data/Hora (UTC)',
-                                // CORREÇÃO: Usar textLightColor (--text-light) do body
-                                color: textLightColor,
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                // CORREÇÃO: Usar textLightColor (--text-light) do body
-                                color: textLightColor,
-                                callback: function (value) {
-                                    return formatCurrency(value);
-                                },
-                                maxTicksLimit: 8 // ⚡ Limitar ticks no eixo Y
-                            },
-                            grid: {
-                                // CORREÇÃO: Usar borderColor do body com transparência
-                                color: borderColor + '1A',
-                                drawBorder: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Custo (BRL)',
-                                // CORREÇÃO: Usar textLightColor (--text-light) do body
-                                color: textLightColor,
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        }
-                    },
-                    // ⚡ Mais otimizações de performance
-                    hover: {
+                    tooltip: {
                         mode: 'index',
                         intersect: false,
-                        animationDuration: 0 // Sem animação no hover
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.dataset.label || '';
+                                const value = context.parsed.y;
+                                if (value === null) return `${label}: Sem dados`;
+                                return `${label}: ${formatCurrency(value)}`;
+                            },
+                            title: function (context) {
+                                const index = context[0].dataIndex;
+                                if (sortedTimestamps[index]) {
+                                    const date = new Date(sortedTimestamps[index]);
+                                    // 🔥 FORÇAR UTC no tooltip
+                                    const utcYear = date.getUTCFullYear();
+                                    const utcMonth = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+                                    const utcDay = date.getUTCDate().toString().padStart(2, '0');
+                                    const utcHours = date.getUTCHours().toString().padStart(2, '0');
+                                    const utcMinutes = date.getUTCMinutes().toString().padStart(2, '0');
+                                    const utcSeconds = date.getUTCSeconds().toString().padStart(2, '0');
+                                    return `${utcDay}/${utcMonth}/${utcYear} ${utcHours}:${utcMinutes}:${utcSeconds} UTC`;
+                                }
+                                return '';
+                            }
+                        },
+                        backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                        titleColor: '#E2E8F0',
+                        bodyColor: '#E2E8F0',
+                        borderColor: '#475569',
+                        borderWidth: 1
                     },
-                    interaction: {
-                        mode: 'index',
-                        intersect: false
+                    zoom: {
+                        limits: { x: { min: 'original', max: 'original' } },
+                        zoom: {
+                            wheel: { enabled: true, speed: 0.05 },
+                            pinch: { enabled: true },
+                            mode: 'x',
+                            drag: { enabled: false }
+                        },
+                        pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' }
                     }
-                }
-            });
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: textLightColor,
+                            maxRotation: 45,
+                            autoSkip: true,
+                            maxTicksLimit: 15,
+                            callback: function (value, index) {
+                                const totalLabels = this.chart.data.labels.length;
+                                const showEvery = Math.max(1, Math.floor(totalLabels / 12));
 
-            console.log('✅ Gráfico criado com sucesso! (Otimizado para ' + data.length + ' pontos)');
+                                if (index % showEvery === 0 || index === 0 || index === totalLabels - 1) {
+                                    if (sortedTimestamps[index]) {
+                                        const date = new Date(sortedTimestamps[index]);
+                                        // 🔥 FORÇAR UTC nos ticks
+                                        const utcHours = date.getUTCHours().toString().padStart(2, '0');
+                                        const utcMinutes = date.getUTCMinutes().toString().padStart(2, '0');
+                                        const utcDay = date.getUTCDate().toString().padStart(2, '0');
+                                        const utcMonth = (date.getUTCMonth() + 1).toString().padStart(2, '0');
 
-            // ⚡ Se reduzimos muitos dados, mostrar aviso
-            if (data.length > 1000 && dadosParaGrafico.length < data.length * 0.5) {
-                mostrarAvisoOtimizacao(data.length, dadosParaGrafico.length);
+                                        const hojeUTC = new Date();
+                                        const isSameDay = utcDay === hojeUTC.getUTCDate().toString().padStart(2, '0') &&
+                                            utcMonth === (hojeUTC.getUTCMonth() + 1).toString().padStart(2, '0') &&
+                                            date.getUTCFullYear() === hojeUTC.getUTCFullYear();
+
+                                        if (isSameDay) {
+                                            return `${utcHours}:${utcMinutes}`;
+                                        } else {
+                                            return `${utcDay}/${utcMonth} ${utcHours}:${utcMinutes}`;
+                                        }
+                                    }
+                                }
+                                return '';
+                            }
+                        },
+                        grid: { color: borderColor + '1A', drawBorder: false },
+                        title: {
+                            display: true,
+                            text: 'Data/Hora (UTC)',
+                            color: textLightColor,
+                            font: { size: 12 }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: textLightColor,
+                            callback: function (value) { return formatCurrency(value); },
+                            maxTicksLimit: 8
+                        },
+                        grid: { color: borderColor + '1A', drawBorder: false },
+                        title: {
+                            display: true,
+                            text: 'Custo (BRL)',
+                            color: textLightColor,
+                            font: { size: 12 }
+                        }
+                    }
+                },
+                hover: { mode: 'index', intersect: false, animationDuration: 0 },
+                interaction: { mode: 'index', intersect: false }
             }
-        }
+        });
+
+        console.log('✅ Gráfico criado com sucesso!');
+    }
 
         // ⚡ Função para mostrar gráfico vazio
         function mostrarGraficoVazio(ctx) {
@@ -1648,17 +1726,18 @@
         }
 
         // Update table
+        // Update table - VERSÃO CORRIGIDA COM UTC
         function atualizarTabela(data) {
             const tableBody = document.getElementById('tableBody');
 
             if (!data || data.length === 0) {
                 tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="5" style="text-align: center; padding: 20px;">
-                            <i class="fas fa-database"></i> Nenhum dado disponível
-                        </td>
-                    </tr>
-                `;
+        <tr>
+            <td colspan="5" style="text-align: center; padding: 20px;">
+                <i class="fas fa-database"></i> Nenhum dado disponível
+            </td>
+        </tr>
+    `;
                 return;
             }
 
@@ -1668,10 +1747,15 @@
             let tableHTML = '';
             latestData.forEach(item => {
                 const date = new Date(item.timestamp);
-                const formattedDate = `${date.toLocaleDateString('pt-BR')} ${date.toLocaleTimeString('pt-BR', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                })}`;
+                // 🔥 CORRIGIDO: Usar UTC para exibição na tabela
+                const utcYear = date.getUTCFullYear();
+                const utcMonth = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+                const utcDay = date.getUTCDate().toString().padStart(2, '0');
+                const utcHours = date.getUTCHours().toString().padStart(2, '0');
+                const utcMinutes = date.getUTCMinutes().toString().padStart(2, '0');
+                const utcSeconds = date.getUTCSeconds().toString().padStart(2, '0');
+
+                const formattedDate = `${utcDay}/${utcMonth}/${utcYear} ${utcHours}:${utcMinutes}:${utcSeconds} UTC`;
 
                 tableHTML += `
                     <tr>
@@ -1680,18 +1764,17 @@
                                 <div class="badge-dot" style="background-color: ${getNetworkColor(item.network)}"></div>
                                 ${item.network}
                             </div>
-                        </td>
-                        <td>${formattedDate}</td>
-                        <td><strong>${formatCurrency(item.gas_cost_brl)}</strong></td>
-                        <td>${getGasUnits().toLocaleString('pt-BR')}</td>
-                        <td>${item.gas_gwei ? parseFloat(item.gas_gwei).toFixed(2) : '0.00'} Gwei</td>
-                    </tr>
+                            </td>
+                            <td>${formattedDate}</td>
+                            <td><strong>${formatCurrency(item.gas_cost_brl)}</strong></td>
+                            <td>${getGasUnits().toLocaleString('pt-BR')}</td>
+                            <td>${item.gas_gwei ? parseFloat(item.gas_gwei).toFixed(2) : '0.00'} Gwei</td>
+                        </tr>
                 `;
             });
 
             tableBody.innerHTML = tableHTML;
         }
-
         // Show empty state
         function mostrarDadosVazios() {
             console.log('📭 Mostrando estado vazio');
@@ -1820,12 +1903,31 @@
             // Configurar botão de tema
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
-            // Configurar controles de período
+            // Configurar controles de período (no DOMContentLoaded)
             document.querySelectorAll('.period-btn').forEach(btn => {
                 btn.addEventListener('click', function () {
                     document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
+
+                    // 🔥 Mostrar/esconder campos de data personalizada
+                    toggleCustomDateFields();
                 });
+            });
+
+            // Adicionar event listeners para as datas (auto-refresh opcional)
+            let dateChangeTimeout = null;
+            document.getElementById('dataInicio')?.addEventListener('change', () => {
+                if (getSelectedPeriodConfig().period === 'custom') {
+                    if (dateChangeTimeout) clearTimeout(dateChangeTimeout);
+                    dateChangeTimeout = setTimeout(() => carregarDados(), 500);
+                }
+            });
+
+            document.getElementById('dataFim')?.addEventListener('change', () => {
+                if (getSelectedPeriodConfig().period === 'custom') {
+                    if (dateChangeTimeout) clearTimeout(dateChangeTimeout);
+                    dateChangeTimeout = setTimeout(() => carregarDados(), 500);
+                }
             });
 
             // Mostrar estado inicial
@@ -1839,6 +1941,8 @@
             ctx.fillText('Clique em "Atualizar Análise" para carregar dados',
                 ctx.canvas.width / 2, ctx.canvas.height / 2);
             carregarRedes();
+            toggleCustomDateFields();
+
         });
     </script>
 </body>
