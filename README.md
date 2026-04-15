@@ -7,6 +7,11 @@ Ferramenta para estimar e comparar custos de execução de contratos inteligente
 
 ---
 
+> ⚠️ Este projeto possui caráter experimental e acadêmico.  
+> A ferramenta pode ser utilizada diretamente via web, enquanto a reprodução completa do experimento requer configuração adicional descrita neste documento.
+
+---
+
 
 ## 🎯 Objetivo
 
@@ -37,7 +42,7 @@ A solução é composta por:
 
 - Frontend web (HTML/CSS/JS)
 - Backend Node.js (Express)
-- Banco de dados SQLite
+- Banco de dados SQLite (local) e PostgreSQL (em nuvem)
 - Integração com APIs externas (preço e RPC)
 
 
@@ -75,7 +80,7 @@ cd agro-smart-cost/
 sudo apt install npm
 npm install --legacy-peer-deps
 ```
-Vai aparecer alguns avisos de incompatibilidade com a versão do Ethers 5.8.0. Mas isso não influencia no funcinamento da ferramenta.
+Alguns avisos de incompatibilidade com a versão do Ethers (v5.8.0) podem ser exibidos, mas não afetam o funcionamento da ferramenta.
 
 ---
 
@@ -104,9 +109,11 @@ Em um navegador, acessar http://localhost:3000/
 ---
 
 ## 🔄 Execução contínua do Hardhat (PM2)
-Para preferir deixar o Hardhat rodando continuamente, mesmo após reinicialização do sistema,  pode usar o gerenciador de processos PM2
 
-Para instalar
+> ⚙️ Opcional  
+> Se preferir deixar o Hardhat rodando continuamente, mesmo após reinicialização do sistema, pode utilizar o gerenciador de processos PM2.
+
+Para instalar:
 ```bash
 sudo npm install -g pm2
 ```
@@ -136,22 +143,33 @@ pm2 delete hardhat-node
 
 
 
+A aplicação pode ser utilizada diretamente pela interface web, sem necessidade de configuração adicional.
 
 
-## ⏱️ Execução automática (cron)
-Adicionalmente, é realizada uma busca nas redes que contam no arquino networks.json a cada 15 minutos, com o objetivo de salvar um histórico com os preços das redes. O script que realiza a busca é: buscaGas/buscaGasPrices.js. E o agendamendo das execução é controlado pela ferramenta crontab.
+---
+
+## 🔬 Reprodução do experimento (opcional)
+
+> ⚠️ Importante:  
+> As etapas a seguir destinam-se exclusivamente à reprodução do ambiente experimental utilizado neste estudo.
+
+
+## ⏱️ Execução automática (crontab)
+Um processo automático coleta periodicamente os preços de gas das redes definidas no arquivo `networks.json`, armazenando um histórico para análise.
+
+A coleta é realizada pelo script `buscaGas/buscaGasPrices.js` e pode ser agendada utilizando o `crontab`.
 
 Abrir o crontab para editar:
 ```bash
 crontab -e
 ```
-Adcionar no final do arquivo e salvar:
+Adicionar no final do arquivo e salvar:
 ```bash
 */15 * * * * cd /SEU_CAMINHO/agro-smart-cost && /usr/bin/node buscaGas/buscaGasPrices.js >> buscaGas/cron.log 2>&1
 ```
 
 Para parar a execução automática:
-Remove tudo que está no crontab:
+Remover tudo que está no crontab:
 ```bash
 crontab -r
 ```
@@ -180,7 +198,7 @@ Esta aplicação pode armazenar os dados coletados diretamente em uma planilha d
 3. Copie o ID da URL:
 
     Exemplo:
-https://docs.google.com/spreadsheets/d/SEU_SHEET_ID/edit
+`https://docs.google.com/spreadsheets/d/SEU_SHEET_ID/edit`
 
 
 4. Guarde esse ID para usar no `.env`
@@ -236,7 +254,7 @@ https://docs.google.com/spreadsheets/d/SEU_SHEET_ID/edit
 
 
 6. Coloque na raiz do projeto:
-    gas-estimator/credentials.json
+    `./credentials.json`
 
 
 ---
@@ -287,7 +305,7 @@ A aplicação utiliza PostgreSQL em nuvem (Neon).
 Após criar o banco, copie a **connection string** fornecida pelo Neon.
 
 Exemplo:
-DATABASE_URLL=postgresql://seu_usuario:sua_senha@seu_host/neondb?sslmode=require
+DATABASE_URL=postgresql://seu_usuario:sua_senha@seu_host/neondb?sslmode=require
 
 
 ---
@@ -297,21 +315,9 @@ DATABASE_URLL=postgresql://seu_usuario:sua_senha@seu_host/neondb?sslmode=require
 No arquivo `.env`:
 
 ```env
-DATABASE_URL=DATABASE_URL=postgresql://seu_usuario:sua_senha@seu_host/neondb?sslmode=require
+DATABASE_URL=postgresql://seu_usuario:sua_senha@seu_host/neondb?sslmode=require
+```
 
-
----
-
-## 🔄 Execução contínua (PM2)
-sudo npm install -g pm2
-
-    pm2 start --name hardhat-node "npx hardhat node"
-    pm2 save
-    pm2 startup
-
-    pm2 logs hardhat-node
-
-    pm2 stop hardhat-node
 
 ---
 

@@ -36,6 +36,11 @@ module.exports = (db) => {
       // 🔥 Log das datas se for período personalizado
       if (tipo_calculo === 'custom') {
         console.log("📅 Período personalizado:");
+        console.log({
+          raw: data_inicio,
+          number: Number(data_inicio),
+          iso: new Date(Number(data_inicio)).toISOString()
+        });
         console.log("   Data Início:", data_inicio, new Date(Number(data_inicio)).toLocaleString('pt-BR'));
         console.log("   Data Fim:", data_fim, new Date(Number(data_fim)).toLocaleString('pt-BR'));
       }

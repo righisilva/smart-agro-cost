@@ -83,7 +83,7 @@ router.get("/", async (req, res) => {
       
       if (intervals[period]) {
         // 🔥 Usar CURRENT_TIMESTAMP AT TIME ZONE 'UTC' para consistência
-        query += ` AND g.timestamp >= (CURRENT_TIMESTAMP AT TIME ZONE 'UTC') - INTERVAL '${intervals[period]}'`;
+        query += ` AND g.timestamp >= NOW() - INTERVAL '${intervals[period]}'`;
         console.log(`📅 Período predefinido: ${intervals[period]} atrás (UTC)`);
       }
     }

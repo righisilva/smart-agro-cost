@@ -1013,7 +1013,7 @@
                 <span>Fonte: Censo Agropecuário IBGE × Análise de Custos Blockchain SmartAgro</span>
             </div>
             <div class="copyright">
-                &copy; 2025 Smart Agro Cost - Simulação de Adoção Blockchain. Todos os direitos reservados.
+                &copy; 2026 Smart Agro Cost - Simulação de Adoção Blockchain. Todos os direitos reservados.
             </div>
         </footer>
     </div>
@@ -1084,11 +1084,11 @@
 
                 // Definir valores padrão (últimos 30 dias)
                 const hoje = new Date();
-                const trintaDiasAtras = new Date();
-                trintaDiasAtras.setDate(hoje.getDate() - 30);
+                const seteDiasAtras = new Date();
+                seteDiasAtras.setDate(hoje.getDate() - 7);
 
                 if (!document.getElementById("filtroDataInicio").value) {
-                    document.getElementById("filtroDataInicio").value = trintaDiasAtras.toISOString().split('T')[0];
+                    document.getElementById("filtroDataInicio").value = seteDiasAtras.toISOString().split('T')[0];
                 }
                 if (!document.getElementById("filtroDataFim").value) {
                     document.getElementById("filtroDataFim").value = hoje.toISOString().split('T')[0];
