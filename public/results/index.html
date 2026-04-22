@@ -792,6 +792,14 @@
                             <option value="">Todas as subclassificações</option>
                         </select>
                     </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label required"><i class="fas fa-chart-simple"></i> Base de Cálculo</label>
+                        <select class="filter-select" id="filtroBaseCalculo" required>
+                            <option value="estabelecimentos" selected>Estabelecimentos</option>
+                            <option value="producao">Produção (Quantidade)</option>
+                        </select>
+                    </div>
                     
                     
                     <div class="filter-group">
@@ -981,18 +989,20 @@
                 <div class="table-wrapper">
                     <table class="results-table">
                         <thead>
-                            <tr>
+                            <tr id="tableHeader">
                                 <th>Produto</th>
                                 <th>Região</th>
                                 <th>Classificação</th>
                                 <th>Familiar</th>
                                 <th>Obrigatório</th>
                                 <th>Custo Unitário de Rastreabilidade (BRL)</th>
-                                <th>Estabelecimentos</th>
-                                <th>Valor Vendido (BRL)</th> <!-- NOVA COLUNA -->
+                                <th id="colunaQuantidade">Estabelecimentos</th>
+                                <th id="colunaProducao" style="display: none;">Produção</th>
+                                <th id="colunaUnidade" style="display: none;">Unidade</th>
+                                <th>Valor Vendido (BRL)</th>
                                 <th>Total Estimado (BRL)</th>
-                                <th>% Custo/Valor</th> <!-- NOVA COLUNA -->
-                            </tr>
+                                <th>% Custo/Valor</th>
+                            </tr>                
                         </thead>
                         <tbody id="tabelaResultados">
                             <tr>
@@ -1074,6 +1084,7 @@
         }
 
         // Controle de exibição dos campos de data personalizada
+        // Controle de exibição dos campos de data personalizada
         document.getElementById("filtroTipoCalculo").addEventListener("change", function () {
             const grupoDataInicio = document.getElementById("grupoDataInicio");
             const grupoDataFim = document.getElementById("grupoDataFim");
@@ -1082,7 +1093,7 @@
                 grupoDataInicio.style.display = "flex";
                 grupoDataFim.style.display = "flex";
 
-                // Definir valores padrão (últimos 30 dias)
+                // Definir valores padrão (últimos 7 dias)
                 const hoje = new Date();
                 const seteDiasAtras = new Date();
                 seteDiasAtras.setDate(hoje.getDate() - 7);
@@ -1262,6 +1273,29 @@
             filtroSubclassificacao.disabled = false;
         });
 
+        // Adicione após o evento do filtroClassificacao
+        const filtroBaseCalculo = document.getElementById("filtroBaseCalculo");
+        if (filtroBaseCalculo) {
+            filtroBaseCalculo.addEventListener("change", function () {
+                const isProducao = this.value === 'producao';
+                const colunaQuantidade = document.getElementById('colunaQuantidade');
+                const colunaProducao = document.getElementById('colunaProducao');
+                const colunaUnidade = document.getElementById('colunaUnidade');
+
+                if (isProducao) {
+                    colunaQuantidade.innerHTML = '<i class="fas fa-store"></i> Estabelecimentos';
+                    colunaProducao.style.display = '';
+                    colunaUnidade.style.display = '';
+                    // Opcional: recarregar resultados automaticamente
+                    // carregarResultados();
+                } else {
+                    colunaQuantidade.innerHTML = '<i class="fas fa-store"></i> Estabelecimentos';
+                    colunaProducao.style.display = 'none';
+                    colunaUnidade.style.display = 'none';
+                }
+            });
+        }
+
         
         // Carregar resultados
         async function carregarResultados() {
@@ -1286,6 +1320,8 @@
             params.append("orderBy", document.getElementById("filtroOrderBy").value);
             const tipoCalculo = document.getElementById("filtroTipoCalculo").value;
             params.append("tipo_calculo", tipoCalculo);
+            const baseCalculo = document.getElementById("filtroBaseCalculo").value;
+            params.append("base_calculo", baseCalculo);
 
             const classificacao = document.getElementById("filtroClassificacao").value;
             const subclassificacao = document.getElementById("filtroSubclassificacao").value;
@@ -1448,19 +1484,21 @@
         function preencherTabela(dados) {
             const tbody = document.getElementById("tabelaResultados");
             tbody.innerHTML = '';
-            
+
+            const baseCalculo = document.getElementById("filtroBaseCalculo")?.value || 'estabelecimentos';
+            const isProducao = baseCalculo === 'producao';
+
             dados.forEach(d => {
                 const tr = document.createElement("tr");
-                
+
                 const custoMedio = parseFloat(d.custo_total_funcoes_brl || d.custo_medio_contrato_brl) || 0;
-                const estabelecimentos = parseInt(d.estabelecimentos) || 0;
+                const quantidade = isProducao ? (parseFloat(d.producao) || 0) : (parseInt(d.estabelecimentos) || 0);
                 const totalEstimado = parseFloat(d.total_estimado_brl) || 0;
                 const valorVendas = parseFloat(d.valor_vendas) || 0;
-                
-                // ⭐⭐ USAR percentual_custo que JÁ VEIO do backend ⭐⭐
                 const percentual = parseFloat(d.percentual_custo) || 0;
-                
-                // Determinar classe do percentual baseado no valor
+                const producao = parseFloat(d.producao) || 0;
+                const unidadeMedida = d.unidade_medida || '-';
+
                 let percentualClass = '';
                 let percentualIcon = '';
                 if (percentual > 10) {
@@ -1473,19 +1511,32 @@
                     percentualClass = 'percent-low';
                     percentualIcon = '<i class="fas fa-check-circle" style="margin-right: 5px; font-size: 12px;"></i>';
                 }
-                
-                tr.innerHTML = `
+
+                let html = `
                     <td><strong>${d.produto || 'N/A'}</strong></td>
                     <td>${d.regiao || 'N/A'}</td>
                     <td>${d.classificacao || 'N/A'}</td>
                     <td><span class="badge ${d.familiar ? 'badge-yes' : 'badge-no'}">${d.familiar ? 'Sim' : 'Não'}</span></td>
                     <td><span class="badge ${d.obrigatorio ? 'badge-yes' : 'badge-no'}">${d.obrigatorio ? 'Sim' : 'Não'}</span></td>
                     <td>${formatarMoeda(custoMedio)}</td>
-                    <td>${formatarNumero(estabelecimentos)}</td>
-                    <td>${formatarMoeda(valorVendas)}</td>
-                    <td class="total-cell">${formatarMoeda(totalEstimado)}</td>
-                    <td><span class="${percentualClass}">${percentualIcon}${percentual.toFixed(2)}%</span></td>
                 `;
+
+                // Coluna da quantidade (Estabelecimentos ou Produção)
+                if (isProducao) {
+                    html += `<td>${formatarNumero(d.estabelecimentos || 0)}</td>`;
+                    html += `<td>${formatarNumero(producao)}</td>`;
+                    html += `<td>${unidadeMedida}</td>`;
+                } else {
+                    html += `<td>${formatarNumero(quantidade)}</td>`;
+                }
+
+                html += `
+        <td>${formatarMoeda(valorVendas)}</td>
+        <td class="total-cell">${formatarMoeda(totalEstimado)}</td>
+        <td><span class="${percentualClass}">${percentualIcon}${percentual.toFixed(2)}%</span></td>
+    `;
+
+                tr.innerHTML = html;
                 tbody.appendChild(tr);
             });
         }
@@ -1689,16 +1740,44 @@
                 mostrarToast('Nenhum dado disponível para impressão', 'warning');
                 return;
             }
-            
-            // Criar uma nova janela para impressão
+
+            const baseCalculo = document.getElementById("filtroBaseCalculo")?.value || 'estabelecimentos';
+            const isProducao = baseCalculo === 'producao';
+
             const printWindow = window.open('', '_blank');
-            
-            // Calcular totais GERAIS (apenas para resumo)
+
             const totalGeral = currentData.reduce((sum, d) => sum + (parseFloat(d.total_estimado_brl) || 0), 0);
-            const totalEstabelecimentos = currentData.reduce((sum, d) => sum + (parseInt(d.estabelecimentos) || 0), 0);
+            const totalQuantidade = currentData.reduce((sum, d) => {
+                if (isProducao) {
+                    return sum + (parseFloat(d.producao) || 0);
+                } else {
+                    return sum + (parseInt(d.estabelecimentos) || 0);
+                }
+            }, 0);
             const totalValorVendas = currentData.reduce((sum, d) => sum + (parseFloat(d.valor_vendas) || 0), 0);
             const percentualMedio = totalValorVendas > 0 ? (totalGeral / totalValorVendas * 100).toFixed(2) : 0;
-            
+
+            // Cabeçalhos dinâmicos
+            let colunasCabecalho = `
+                <th>#</th>
+                <th>Produto</th>
+                <th>Classificação</th>
+            `;
+
+            if (isProducao) {
+                colunasCabecalho += `<th>Estabelecimentos</th>`;
+                colunasCabecalho += `<th>Produção</th>`;
+                colunasCabecalho += `<th>Unidade</th>`;
+            } else {
+                colunasCabecalho += `<th>Estabelecimentos</th>`;
+            }
+
+            colunasCabecalho += `
+                <th>Valor Vendido (BRL)</th>
+                <th>Custo Blockchain (BRL)</th>
+                <th>% Custo/Valor</th>
+            `;
+
             printWindow.document.write(`
                 <!DOCTYPE html>
                 <html>
@@ -1717,7 +1796,6 @@
                             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
                             gap: 10px;
                         }
-                        .print-info p { margin: 5px 0; }
                         .info-card {
                             background: white;
                             padding: 10px;
@@ -1746,72 +1824,26 @@
                             vertical-align: middle;
                         }
                         tr:nth-child(even) { background-color: #f9f9f9; }
-                        tr:hover { background-color: window.addEventListener#f5f5f5; }
                         .total-row { 
                             font-weight: bold; 
                             background-color: #E8F5E9 !important; 
                             border-top: 2px solid #4CAF50;
                         }
-                        .total-row td { padding: 12px 10px; }
                         .percent-cell { 
                             text-align: center; 
                             font-weight: 600;
                             border-radius: 4px;
                             padding: 4px 8px !important;
                         }
-                        .percent-low { 
-                            color: #10B981; 
-                            background-color: rgba(16, 185, 129, 0.1);
-                        }
-                        .percent-medium { 
-                            color: #F59E0B; 
-                            background-color: rgba(245, 158, 11, 0.1);
-                        }
-                        .percent-high { 
-                            color: #EF4444; 
-                            background-color: rgba(239, 68, 68, 0.1);
-                            font-weight: 700;
-                        }
-                        .footer { 
-                            margin-top: 30px; 
-                            text-align: center; 
-                            color: #666; 
-                            font-size: 11px;
-                            padding-top: 20px;
-                            border-top: 1px solid #E0E0E0;
-                        }
-                        @media print {
-                            .no-print { display: none; }
-                            body { margin: 10mm; }
-                            table { font-size: 10px; }
-                            .print-info { break-inside: avoid; }
-                        }
-                        .actions {
-                            text-align: center;
-                            margin-top: 30px;
-                            padding: 20px;
-                            background: #f9f9f9;
-                            border-radius: 8px;
-                        }
-                        .btn {
-                            padding: 10px 20px;
-                            border: none;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            font-weight: 600;
-                            margin: 0 10px;
-                            display: inline-flex;
-                            align-items: center;
-                            gap: 8px;
-                        }
-                        .btn-print {
-                            background: #4CAF50;
-                            color: white;
-                        }
-                        .btn-close {
-                            background: #666;
-                            color: white;
-                        }
+                        .percent-low { color: #10B981; background-color: rgba(16, 185, 129, 0.1); }
+                        .percent-medium { color: #F59E0B; background-color: rgba(245, 158, 11, 0.1); }
+                        .percent-high { color: #EF4444; background-color: rgba(239, 68, 68, 0.1); font-weight: 700; }
+                        .footer { margin-top: 30px; text-align: center; color: #666; font-size: 11px; padding-top: 20px; border-top: 1px solid #E0E0E0; }
+                        @media print { .no-print { display: none; } body { margin: 10mm; } }
+                        .actions { text-align: center; margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 8px; }
+                        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; margin: 0 10px; display: inline-flex; align-items: center; gap: 8px; }
+                        .btn-print { background: #4CAF50; color: white; }
+                        .btn-close { background: #666; color: white; }
                     </style>
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
                 </head>
@@ -1819,145 +1851,84 @@
                     <div class="print-header">
                         <h1><i class="fas fa-chart-line"></i> Smart Agro Cost - Relatório de Simulação Blockchain</h1>
                         <div class="print-info">
-                            <div class="info-card">
-                                <p><strong><i class="fas fa-calendar-alt"></i> Data do relatório:</strong><br>${new Date().toLocaleString('pt-BR')}</p>
-                            </div>
-                            <div class="info-card">
-                                <p><strong><i class="fas fa-map-marker-alt"></i> Região:</strong><br>${document.getElementById("filtroRegiao").value}</p>
-                            </div>
-                            <div class="info-card">
-                                <p><strong><i class="fas fa-file-contract"></i> Contrato:</strong><br>${document.getElementById("filtroContrato").value}</p>
-                            </div>
-                            <div class="info-card">
-                                <p><strong><i class="fas fa-box"></i> Produtos analisados:</strong><br>${currentData.length}</p>
-                            </div>
-                            <div class="info-card">
-                                <p><strong><i class="fas fa-store"></i> Estabelecimentos:</strong><br>${formatarNumero(totalEstabelecimentos)}</p>
-                            </div>
-                            <div class="info-card">
-                                <p><strong><i class="fas fa-money-bill-wave"></i> Valor total vendido:</strong><br>${formatarMoeda(totalValorVendas)}</p>
-                            </div>
-                            <div class="info-card">
-                                <p><strong><i class="fas fa-calculator"></i> Custo total blockchain:</strong><br>${formatarMoeda(totalGeral)}</p>
-                            </div>
-                            <div class="info-card">
-                                <p><strong><i class="fas fa-percentage"></i> Custo/valor médio:</strong><br>${percentualMedio}%</p>
-                            </div>
+                            <div class="info-card"><p><strong><i class="fas fa-calendar-alt"></i> Data:</strong><br>${new Date().toLocaleString('pt-BR')}</p></div>
+                            <div class="info-card"><p><strong><i class="fas fa-map-marker-alt"></i> Região:</strong><br>${document.getElementById("filtroRegiao").value}</p></div>
+                            <div class="info-card"><p><strong><i class="fas fa-file-contract"></i> Contrato:</strong><br>${document.getElementById("filtroContrato").value}</p></div>
+                            <div class="info-card"><p><strong><i class="fas fa-box"></i> Produtos:</strong><br>${currentData.length}</p></div>
+                            <div class="info-card"><p><strong><i class="fas fa-chart-simple"></i> Base Cálculo:</strong><br>${isProducao ? 'Produção' : 'Estabelecimentos'}</p></div>
+                            <div class="info-card"><p><strong><i class="fas fa-chart-line"></i> Total ${isProducao ? 'Produzido' : 'Estabelecimentos'}:</strong><br>${formatarNumero(totalQuantidade)} ${isProducao ? currentData[0]?.unidade_medida || '' : ''}</p></div>
+                            <div class="info-card"><p><strong><i class="fas fa-money-bill-wave"></i> Valor vendido:</strong><br>${formatarMoeda(totalValorVendas)}</p></div>
+                            <div class="info-card"><p><strong><i class="fas fa-calculator"></i> Custo blockchain:</strong><br>${formatarMoeda(totalGeral)}</p></div>
+                            <div class="info-card"><p><strong><i class="fas fa-percentage"></i> Custo/valor médio:</strong><br>${percentualMedio}%</p></div>
                         </div>
                     </div>
-                    
                     <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Produto</th>
-                                <th>Classificação</th>
-                                <th>Estabelecimentos</th>
-                                <th>Valor Vendido (BRL)</th>
-                                <th>Custo Blockchain (BRL)</th>
-                                <th>% Custo/Valor</th>
-                            </tr>
-                        </thead>
+                        <thead><tr>${colunasCabecalho}</tr></thead>
                         <tbody>
             `);
-            
-            // Adicionar linhas da tabela - USANDO DADOS EXISTENTES DO BACKEND
+
             currentData.forEach((item, index) => {
-                const estabelecimentos = parseInt(item.estabelecimentos) || 0;
                 const totalEstimado = parseFloat(item.total_estimado_brl) || 0;
                 const valorVendas = parseFloat(item.valor_vendas) || 0;
-                
-                // ⭐⭐ IMPORTANTE: Usar percentual_custo que JÁ VEIO do backend ⭐⭐
                 const percentual = parseFloat(item.percentual_custo) || 0;
-                
-                // Determinar classe baseada no valor JÁ CALCULADO
+                const estabelecimentos = parseInt(item.estabelecimentos) || 0;
+                const producao = parseFloat(item.producao) || 0;
+                const unidadeMedida = item.unidade_medida || '-';
+
                 let percentualClass = 'percent-low';
-                if (percentual > 10) {
-                    percentualClass = 'percent-high';
-                } else if (percentual > 5) {
-                    percentualClass = 'percent-medium';
-                }
-                
-                printWindow.document.write(`
+                if (percentual > 10) percentualClass = 'percent-high';
+                else if (percentual > 5) percentualClass = 'percent-medium';
+
+                let linha = `
                     <tr>
-                        <td style="text-align: center; font-weight: 600;">${index + 1}</td>
+                        <td style="text-align: center;">${index + 1}</td>
                         <td><strong>${item.produto || 'N/A'}</strong></td>
                         <td>${item.classificacao || 'N/A'}</td>
-                        <td style="text-align: right;">${formatarNumero(estabelecimentos)}</td>
-                        <td style="text-align: right; font-weight: 600;">${formatarMoeda(valorVendas)}</td>
+                `;
+
+                if (isProducao) {
+                    linha += `<td style="text-align: right;">${formatarNumero(estabelecimentos)}</td>`;
+                    linha += `<td style="text-align: right;">${formatarNumero(producao)}</td>`;
+                    linha += `<td>${unidadeMedida}</td>`;
+                } else {
+                    linha += `<td style="text-align: right;">${formatarNumero(estabelecimentos)}</td>`;
+                }
+
+                linha += `
+                        <td style="text-align: right;">${formatarMoeda(valorVendas)}</td>
                         <td style="text-align: right; font-weight: 700; color: #2E7D32;">${formatarMoeda(totalEstimado)}</td>
                         <td class="percent-cell ${percentualClass}">${percentual.toFixed(2)}%</td>
                     </tr>
-                `);
+                `;
+
+                printWindow.document.write(linha);
             });
-            
+
             printWindow.document.write(`
-                        </tbody>
-                        <tfoot>
-                            <tr class="total-row">
-                                <td colspan="3" style="text-align: right;"><strong>TOTAIS:</strong></td>
-                                <td style="text-align: right;"><strong>${formatarNumero(totalEstabelecimentos)}</strong></td>
-                                <td style="text-align: right;"><strong>${formatarMoeda(totalValorVendas)}</strong></td>
-                                <td style="text-align: right;"><strong>${formatarMoeda(totalGeral)}</strong></td>
-                                <td class="percent-cell ${percentualMedio > 10 ? 'percent-high' : percentualMedio > 5 ? 'percent-medium' : 'percent-low'}">
-                                    <strong>${percentualMedio}%</strong>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                    
-                    <div class="footer">
-                        <p><i class="fas fa-database"></i> <strong>Fonte dos dados:</strong> Censo Agropecuário IBGE × Análise de Custos Blockchain Smart Agro Cost</p>
-                        <p><i class="fas fa-info-circle"></i> <strong>Nota metodológica:</strong> O "Custo Blockchain" representa o custo hipotético de implementar 
-                        rastreabilidade via smart contracts para todos os estabelecimentos do produto.</p>
-                        <p><i class="fas fa-chart-pie"></i> <strong>Interpretação do % Custo/Valor:</strong> 
-                        <span style="color: #10B981;">●</span> Baixo (&lt;5%) | 
-                        <span style="color: #F59E0B;">●</span> Médio (5-10%) | 
-                        <span style="color: #EF4444;">●</span> Alto (&gt;10%)</p>
-                        <p>&copy; ${new Date().getFullYear()} Smart Agro Cost - Simulação de Adoção Blockchain</p>
-                    </div>
-                    
-                    <div class="actions no-print">
-                        <button class="btn btn-print" onclick="window.print()">
-                            <i class="fas fa-print"></i> Imprimir Relatório
-                        </button>
-                        <button class="btn btn-close" onclick="window.close()">
-                            <i class="fas fa-times"></i> Fechar Janela
-                        </button>
-                    </div>
-                    
-                    <script>
-                        // Adicionar interatividade básica
-                        document.addEventListener('DOMContentLoaded', function() {
-                            // Destacar linhas com percentual muito alto (>15%)
-                            const rows = document.querySelectorAll('tbody tr');
-                            rows.forEach(row => {
-                                const percentCell = row.querySelector('.percent-high');
-                                if (percentCell) {
-                                    const percentValue = parseFloat(percentCell.textContent);
-                                    if (percentValue > 15) {
-                                        row.style.backgroundColor = '#FFEBEE';
-                                        row.style.borderLeft = '3px solid #EF4444';
-                                    }
-                                }
-                            });
-                            
-                            // Adicionar tooltip para percentuais altos
-                            const highPercentCells = document.querySelectorAll('.percent-high');
-                            highPercentCells.forEach(cell => {
-                                const percentValue = parseFloat(cell.textContent);
-                                if (percentValue > 20) {
-                                    cell.title = 'Custo muito elevado em relação ao valor vendido';
-                                } else if (percentValue > 10) {
-                                    cell.title = 'Custo elevado em relação ao valor vendido';
-                                }
-                            });
-                        });
-                    <\/script>
-                </body>
-                </html>
-            `);
-            
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="${isProducao ? 5 : 3}" style="text-align: right;"><strong>TOTAIS:</strong></td>
+                            <td style="text-align: right;"><strong>${formatarMoeda(totalValorVendas)}</strong></td>
+                            <td style="text-align: right;"><strong>${formatarMoeda(totalGeral)}</strong></td>
+                            <td class="percent-cell ${percentualMedio > 10 ? 'percent-high' : percentualMedio > 5 ? 'percent-medium' : 'percent-low'}">
+                                <strong>${percentualMedio}%</strong>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="footer">
+                    <p><i class="fas fa-database"></i> <strong>Fonte:</strong> Censo Agropecuário IBGE × Análise de Custos Blockchain Smart Agro Cost</p>
+                    <p>&copy; ${new Date().getFullYear()} Smart Agro Cost - Simulação de Adoção Blockchain</p>
+                </div>
+                <div class="actions no-print">
+                    <button class="btn btn-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
+                    <button class="btn btn-close" onclick="window.close()"><i class="fas fa-times"></i> Fechar</button>
+                </div>
+            </body>
+            </html>
+        `);
+
             printWindow.document.close();
             mostrarToast('Relatório gerado para impressão', 'success');
         }

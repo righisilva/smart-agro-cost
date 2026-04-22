@@ -26,12 +26,14 @@ module.exports = (db) => {
         functionName,
         tipo_calculo,
         funcoes,
-        data_inicio,  // 🔥 NOVO: timestamp da data inicial
-        data_fim,     // 🔥 NOVO: timestamp da data final
+        data_inicio,
+        data_fim,
+        base_calculo,  // 🔥 NOVO: 'estabelecimentos' ou 'producao'
       } = req.query;
 
       console.log("🔧 Tipo de cálculo selecionado:", tipo_calculo);
       console.log("🔧 Subclassificação:", subclassificacao);
+      console.log("🔧 Base de cálculo:", base_calculo || 'estabelecimentos (padrão)');
       
       // 🔥 Log das datas se for período personalizado
       if (tipo_calculo === 'custom') {
@@ -68,8 +70,8 @@ module.exports = (db) => {
         usarTodasFuncoes = true;
       }
 
-      // ---------------- IBGE ----------------
-      let queryIBGE = `
+      // ---------------- IBGE (Estabelecimentos) ----------------
+      let queryEstabelecimentos = `
         SELECT
           i.id,
           r.nome AS regiao,
@@ -91,17 +93,59 @@ module.exports = (db) => {
       `;
       const paramsIBGE = {};
 
-      if (regiao) { queryIBGE += " AND r.nome = @regiao"; paramsIBGE.regiao = regiao; }
-      if (classificacao) { queryIBGE += " AND c.nome = @classificacao"; paramsIBGE.classificacao = classificacao; }
+      if (regiao) { queryEstabelecimentos += " AND r.nome = @regiao"; paramsIBGE.regiao = regiao; }
+      if (classificacao) { queryEstabelecimentos += " AND c.nome = @classificacao"; paramsIBGE.classificacao = classificacao; }
       if (subclassificacao && subclassificacao !== "undefined") {
-        queryIBGE += " AND s.nome = @subclassificacao";
+        queryEstabelecimentos += " AND s.nome = @subclassificacao";
         paramsIBGE.subclassificacao = subclassificacao;
       }      
-      if (familiar !== undefined) { queryIBGE += " AND i.familiar = @familiar"; paramsIBGE.familiar = Number(familiar); }
-      if (obrigatorio !== undefined) { queryIBGE += " AND p.rastreabilidade_obrigatoria = @obrigatorio"; paramsIBGE.obrigatorio = Number(obrigatorio); }
+      if (familiar !== undefined) { queryEstabelecimentos += " AND i.familiar = @familiar"; paramsIBGE.familiar = Number(familiar); }
+      if (obrigatorio !== undefined) { queryEstabelecimentos += " AND p.rastreabilidade_obrigatoria = @obrigatorio"; paramsIBGE.obrigatorio = Number(obrigatorio); }
 
-      const dadosIBGE = db.prepare(queryIBGE).all(paramsIBGE);
-      if (!dadosIBGE.length) return res.json([]);
+      const dadosEstabelecimentos = db.prepare(queryEstabelecimentos).all(paramsIBGE);
+      
+      // ---------------- PRODUÇÃO IBGE ----------------
+      let queryProducao = `
+        SELECT
+          p.nome AS produto,
+          c.nome AS classificacao,
+          s.nome AS subclassificacao,
+          r.nome AS regiao,
+          p.rastreabilidade_obrigatoria AS obrigatorio,
+          pr.familiar,
+          pr.quantidade,
+          um.nome AS unidade_medida,
+          i.valor_vendas
+        FROM producao_ibge pr
+        JOIN produtos p ON pr.produto_id = p.id
+        LEFT JOIN subclassificacoes_ibge s ON p.subclassificacao_id = s.id
+        LEFT JOIN classificacoes_ibge c ON s.classificacao_id = c.id
+        JOIN regioes r ON pr.regiao_id = r.id
+        JOIN unidades_medida um ON pr.unidade_id = um.id
+        LEFT JOIN ibge_dados i ON i.produto_id = p.id AND i.regiao_id = r.id AND i.familiar = pr.familiar
+        WHERE 1=1
+      `;
+      
+      const paramsProducao = {};
+
+      if (regiao) { queryProducao += " AND r.nome = @regiao"; paramsProducao.regiao = regiao; }
+      if (classificacao) { queryProducao += " AND c.nome = @classificacao"; paramsProducao.classificacao = classificacao; }
+      if (subclassificacao && subclassificacao !== "undefined") {
+        queryProducao += " AND s.nome = @subclassificacao";
+        paramsProducao.subclassificacao = subclassificacao;
+      }      
+      if (familiar !== undefined) { queryProducao += " AND pr.familiar = @familiar"; paramsProducao.familiar = Number(familiar); }
+      if (obrigatorio !== undefined) { queryProducao += " AND p.rastreabilidade_obrigatoria = @obrigatorio"; paramsProducao.obrigatorio = Number(obrigatorio); }
+
+      const dadosProducao = db.prepare(queryProducao).all(paramsProducao);
+      
+      console.log(`📊 Estabelecimentos: ${dadosEstabelecimentos.length} registros`);
+      console.log(`📊 Produção: ${dadosProducao.length} registros`);
+
+      // Verificar se pelo menos uma fonte tem dados
+      if (dadosEstabelecimentos.length === 0 && dadosProducao.length === 0) {
+        return res.json([]);
+      }
 
       // ---------------- CONTRATOS ----------------
       let queryContratos = `
@@ -172,7 +216,6 @@ module.exports = (db) => {
         let custoFuncaoBRL = value.cost_brl;
         const gasFuncao = value.gas_used;
         
-        // 🔥 MODIFICADO: Suporte para período personalizado
         if (tipo_calculo !== 'ultima') {
           console.log(`📊 Buscando dados históricos para função ${value.function_name} na rede ${value.network}`);
           
@@ -185,10 +228,8 @@ module.exports = (db) => {
           
           const queryParams = [value.network];
           
-          // 🔥 NOVO: Período personalizado
           if (tipo_calculo === 'custom') {
             if (data_inicio && data_fim) {
-              // Converter timestamps para datas PostgreSQL
               const dataInicioDate = new Date(Number(data_inicio));
               const dataFimDate = new Date(Number(data_fim));
               
@@ -197,12 +238,10 @@ module.exports = (db) => {
               console.log(`   📅 Filtro personalizado: ${dataInicioDate.toISOString()} até ${dataFimDate.toISOString()}`);
             } else {
               console.warn("⚠️ Período personalizado selecionado mas sem datas, usando fallback para 'all'");
-              // Fallback: usar todo período se não houver datas
               tipo_calculo = 'all';
             }
           }
           
-          // Períodos predefinidos
           const intervals = {
             day: "1 day",
             week: "7 days",
@@ -225,7 +264,7 @@ module.exports = (db) => {
             console.log(`   💰 Custo função: ${custoFuncaoBRL.toFixed(6)}`);
           } catch (err) {
             console.error(`❌ Erro ao buscar média para ${value.function_name}:`, err);
-            custoFuncaoBRL = value.cost_brl; // fallback para o valor padrão
+            custoFuncaoBRL = value.cost_brl;
           }
         }
         
@@ -240,14 +279,12 @@ module.exports = (db) => {
       let gasTotal = 0;
       
       if (usarTodasFuncoes) {
-        // Usar todas as funções com 1 execução cada
         for (const [funcName, custoData] of Object.entries(custoBasePorFuncao)) {
           custoTotalFuncoesBRL += custoData.custo_brl;
           gasTotal += custoData.gas_used;
         }
         console.log(`📊 Usando TODAS as funções (${Object.keys(custoBasePorFuncao).length} funções)`);
       } else {
-        // Usar apenas as funções selecionadas com seus multiplicadores
         for (const funcSelecionada of funcoesSelecionadas) {
           const custoData = custoBasePorFuncao[funcSelecionada.name];
           if (custoData) {
@@ -264,11 +301,26 @@ module.exports = (db) => {
       console.log(`💰 Custo Total Funções: R$ ${custoTotalFuncoesBRL.toFixed(6)}`);
       console.log(`⛽ Gas Total: ${gasTotal}`);
 
-      // ---------------- AGREGAÇÃO ----------------
+      // ---------------- AGREGAÇÃO (usando a base de cálculo selecionada) ----------------
       const agregados = {};
-
-      dadosIBGE.forEach(d => {
-        const estabelecimentos = Number(d.estabelecimentos) || 0;
+      
+      // Determinar qual fonte de dados usar para a quantidade
+      const usarProducao = base_calculo === 'producao';
+      const dadosFonte = usarProducao ? dadosProducao : dadosEstabelecimentos;
+      
+      console.log(`📊 Usando fonte: ${usarProducao ? 'Produção' : 'Estabelecimentos'}`);
+      
+      dadosFonte.forEach(d => {
+        let quantidade = 0;
+        let unidadeMedida = null;
+        
+        if (usarProducao) {
+          quantidade = Number(d.quantidade) || 0;
+          unidadeMedida = d.unidade_medida;
+        } else {
+          quantidade = Number(d.estabelecimentos) || 0;
+        }
+        
         const chave = `${d.produto} | ${d.classificacao}`;
 
         if (!agregados[chave]) {
@@ -279,14 +331,62 @@ module.exports = (db) => {
             familiar: d.familiar,
             obrigatorio: d.obrigatorio,
             estabelecimentos: 0,
+            producao: 0,
+            unidade_medida: unidadeMedida,
+            quantidade: 0,
             total_estimado_brl: 0,
-            valor_vendas: d.valor_vendas
+            valor_vendas: Number(d.valor_vendas) || 0
           };
         }
 
-        agregados[chave].estabelecimentos += estabelecimentos;
-        agregados[chave].total_estimado_brl += estabelecimentos * custoTotalFuncoesBRL;
+        agregados[chave].quantidade += quantidade;
+        agregados[chave].total_estimado_brl += quantidade * custoTotalFuncoesBRL;
+        
+        // Manter os valores separados para referência
+        if (usarProducao) {
+          agregados[chave].producao += quantidade;
+          agregados[chave].unidade_medida = unidadeMedida;
+        } else {
+          agregados[chave].estabelecimentos += quantidade;
+        }
       });
+
+      // 🔥 Se usou produção, ainda buscar estabelecimentos para referência
+      if (usarProducao && dadosEstabelecimentos.length > 0) {
+        const estabelecimentosMap = {};
+        dadosEstabelecimentos.forEach(d => {
+          const chave = `${d.produto} | ${d.classificacao}`;
+          if (!estabelecimentosMap[chave]) {
+            estabelecimentosMap[chave] = 0;
+          }
+          estabelecimentosMap[chave] += Number(d.estabelecimentos) || 0;
+        });
+        
+        Object.keys(agregados).forEach(chave => {
+          if (estabelecimentosMap[chave] !== undefined) {
+            agregados[chave].estabelecimentos = estabelecimentosMap[chave];
+          }
+        });
+      }
+      
+      // 🔥 Se usou estabelecimentos, ainda buscar produção para referência
+      if (!usarProducao && dadosProducao.length > 0) {
+        const producaoMap = {};
+        dadosProducao.forEach(d => {
+          const chave = `${d.produto} | ${d.classificacao}`;
+          if (!producaoMap[chave]) {
+            producaoMap[chave] = { quantidade: 0, unidade: d.unidade_medida };
+          }
+          producaoMap[chave].quantidade += Number(d.quantidade) || 0;
+        });
+        
+        Object.keys(agregados).forEach(chave => {
+          if (producaoMap[chave] !== undefined) {
+            agregados[chave].producao = producaoMap[chave].quantidade;
+            agregados[chave].unidade_medida = producaoMap[chave].unidade;
+          }
+        });
+      }
 
       const resultado = Object.values(agregados).map(d => {
         const totalEstimado = d.total_estimado_brl;
@@ -300,13 +400,16 @@ module.exports = (db) => {
           familiar: d.familiar,
           obrigatorio: d.obrigatorio,
           estabelecimentos: d.estabelecimentos,
+          producao: d.producao,
+          unidade_medida: d.unidade_medida,
+          quantidade_utilizada: d.quantidade,  // Quantidade usada no cálculo
+          base_calculo_utilizada: base_calculo || 'estabelecimentos',
           valor_vendas: valorVendas,
           total_estimado_brl: Number(totalEstimado.toFixed(2)),
           custo_total_funcoes_brl: Number(custoTotalFuncoesBRL.toFixed(6)),
           custo_medio_contrato_brl: Number(custoTotalFuncoesBRL.toFixed(2)),
           percentual_custo: percentual,
           gas_contrato: gasTotal,
-          // 🔥 Informação do período usado (para debug)
           periodo_usado: tipo_calculo === 'custom' ? 
             `Personalizado: ${data_inicio ? new Date(Number(data_inicio)).toLocaleDateString('pt-BR') : '?'} até ${data_fim ? new Date(Number(data_fim)).toLocaleDateString('pt-BR') : '?'}` : 
             tipo_calculo
@@ -317,6 +420,12 @@ module.exports = (db) => {
       switch (orderBy) {
         case "estabelecimentos":
           resultado.sort((a, b) => b.estabelecimentos - a.estabelecimentos);
+          break;
+        case "producao":
+          resultado.sort((a, b) => b.producao - a.producao);
+          break;
+        case "quantidade":
+          resultado.sort((a, b) => b.quantidade_utilizada - a.quantidade_utilizada);
           break;
         case "valor_vendas":
           resultado.sort((a, b) => b.valor_vendas - a.valor_vendas);
