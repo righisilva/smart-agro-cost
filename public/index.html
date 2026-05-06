@@ -363,6 +363,28 @@
               text-align: center;
           }
       }
+
+      .btn-help {
+        background: transparent;
+        border: none;
+        color: var(--primary);
+        cursor: pointer;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-help:hover {
+        background: rgba(46, 125, 50, 0.1);
+    }
+
+    .btn-help i {
+        font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -376,9 +398,14 @@
                       <div class="logo-subtitle">Blockchain Intelligence para o Agronegócio</div>
                   </div>
               </div>
+              
               <div class="user-info">
-                  <div class="user-avatar">FS</div>
-                  <div>Fábio Silva</div>
+                <a href="/manual" class="btn-help" target="_blank">
+                    <i class="fas fa-book-open"></i> 
+                    <span>Manual</span>
+                </a>
+                <div class="user-avatar">FS</div>
+                <div>Fábio Silva</div>
               </div>
           </div>
       </div>

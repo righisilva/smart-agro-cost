@@ -1904,15 +1904,37 @@
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
             // Configurar controles de período (no DOMContentLoaded)
+            // Configurar controles de período (no DOMContentLoaded)
             document.querySelectorAll('.period-btn').forEach(btn => {
                 btn.addEventListener('click', function () {
                     document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-
-                    // 🔥 Mostrar/esconder campos de data personalizada
                     toggleCustomDateFields();
+
+                    // 🔥 SÓ CARREGA DADOS se NÃO for o botão "Personalizado"
+                    const isCustomPeriod = this.dataset.period === 'custom';
+
+                    if (!isCustomPeriod) {
+                        console.log('📅 Período alterado para:', this.dataset.period, '- Carregando dados...');
+                        carregarDados();
+                    } else {
+                        console.log('📅 Modo personalizado selecionado - Aguardando definição das datas');
+                    }
                 });
             });
+
+            
+            const gasUnitsInput = document.getElementById('gasUnits');
+            if (gasUnitsInput) {
+                let gasTimeout = null;
+                gasUnitsInput.addEventListener('input', function () {
+                    if (gasTimeout) clearTimeout(gasTimeout);
+                    gasTimeout = setTimeout(() => {
+                        console.log('⛽ Unidades de gas alteradas para:', this.value);
+                        carregarDados();
+                    }, 800);
+                });
+            }
 
             // Adicionar event listeners para as datas (auto-refresh opcional)
             let dateChangeTimeout = null;
@@ -1931,18 +1953,15 @@
             });
 
             // Mostrar estado inicial
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card-bg');
-            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-light');
-            ctx.font = '16px "Segoe UI"';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('Clique em "Atualizar Análise" para carregar dados',
-                ctx.canvas.width / 2, ctx.canvas.height / 2);
+            // Carregar redes e depois carregar dados automaticamente
             carregarRedes();
             toggleCustomDateFields();
 
+            // Aguardar um pouco para as redes carregarem e depois carregar dados
+            setTimeout(() => {
+                console.log('🚀 Carregando dados iniciais automaticamente...');
+                carregarDados();
+            }, 500);
         });
     </script>
 </body>

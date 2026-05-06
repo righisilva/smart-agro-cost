@@ -751,140 +751,6 @@
         .light-mode .filter-input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(0);
         }
-
-        /* Estilos para a nova organização de filtros */
-        .filter-block {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .filter-block:last-of-type {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .block-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--primary-light);
-        }
-
-        .block-title i {
-            font-size: 18px;
-            color: var(--primary);
-        }
-
-        .filters-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            align-items: end;
-        }
-
-        /* Estilos para checkboxes */
-        .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .checkbox-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-        }
-
-        .checkbox-option input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: var(--accent);
-            margin: 0;
-        }
-
-        .checkbox-option label {
-            font-size: 14px;
-            font-weight: normal;
-            color: var(--text);
-            cursor: pointer;
-            margin: 0;
-        }
-
-        /* Ajuste para os grupos de data */
-        .date-range {
-            min-width: 160px;
-        }
-
-        /* Botão principal destacado */
-        .btn-large {
-            padding: 14px 32px;
-            font-size: 16px;
-            background-color: var(--primary);
-        }
-
-        .btn-large:hover {
-            background-color: var(--primary-dark);
-        }
-
-        /* Indicador de campo obrigatório */
-        .required-star {
-            color: var(--error);
-            font-weight: bold;
-        }
-
-        /* Ajuste no cabeçalho das funções */
-        .functions-header {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .functions-hint {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-left: auto;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .filters-row {
-                grid-template-columns: 1fr;
-            }
-
-            .functions-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .functions-hint {
-                margin-left: 0;
-            }
-
-            .btn-large {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        /* Garantir que checkboxes fiquem alinhados corretamente */
-.checkbox-group {
-    justify-content: flex-end;
-}
-
-.checkbox-option {
-    min-height: 48px; /* Mesma altura dos selects */
-    align-items: center;
-}
     </style>
 </head>
 
@@ -910,167 +776,159 @@
             <!-- Filters Section -->
             <section class="filters-section">
                 <div class="filters-title">
-                    <i class="fas fa-sliders-h"></i>
+                    <i class="fas fa-filter"></i>
                     <span>Filtros de Simulação</span>
                 </div>
 
-
-                <!-- BLOCO 1: Dados de Origem -->
-                <div class="filter-block">
-                    <h3 class="block-title"><i class="fas fa-database"></i> Dados de Origem (Censo Agropecuário)</h3>
-                    <div class="filters-row">
-                        <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-map-marker-alt"></i> Região</label>
-                            <select class="filter-select" id="filtroRegiao" required>
-                                <option value="" disabled selected>Selecione uma região</option>
-                                <option value="Brasil" selected>Brasil (Total)</option>
-                                <option value="Sul">Região Sul</option>
-                                <option value="RS">Rio Grande do Sul</option>
-                                <option value="Alegrete">Alegrete (Município)</option>
-                            </select>
-                        </div>
-
-                        <div class="filter-group">
-                            <label class="filter-label"><i class="fas fa-tags"></i> Classificação</label>
-                            <select class="filter-select" id="filtroClassificacao">
-                                <option value="">Todas</option>
-                                <option value="Agricultura" selected>Agricultura</option>
-                                <option value="Pecuária">Pecuária</option>
-                                <option value="Silvicultura">Silvicultura</option>
-                                <option value="Extração Vegetal">Extração Vegetal</option>
-                                <option value="Aquicultura">Aquicultura</option>
-                                <option value="Agroindústria">Agroindústria</option>
-                            </select>
-                        </div>
-
-                        <div class="filter-group">
-                            <label class="filter-label"><i class="fas fa-layer-group"></i> Subclassificação</label>
-                            <select class="filter-select" id="filtroSubclassificacao" disabled>
-                                <option value="">Todas</option>
-                            </select>
-                        </div>
-
-                        <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-chart-simple"></i> Base de
-                                Cálculo</label>
-                            <select class="filter-select" id="filtroBaseCalculo" required>
-                                <option value="estabelecimentos" selected>📊 Por Nº de Estabelecimentos</option>
-                                <option value="producao">📦 Por Produção (Quantidade)</option>
-                            </select>
-                        </div>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label class="filter-label required"><i class="fas fa-map-marker-alt"></i> Região</label>
+                        <select class="filter-select" id="filtroRegiao" required>
+                            <option value="" disabled selected>Selecione uma região</option>
+                            <option value="Brasil">Brasil</option>
+                            <option value="Sul">Sul</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="Alegrete" selected>Alegrete</option>
+                        </select>
                     </div>
-                </div>
 
-                <!-- BLOCO 2: Configuração do Contrato -->
-                <div class="filter-block">
-                    <h3 class="block-title"><i class="fas fa-link"></i> Configuração do Contrato</h3>
-                    <div class="filters-row">
-                        <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-file-contract"></i> Contrato</label>
-                            <select class="filter-select" id="filtroContrato" required>
-                                <option value="" disabled selected>Carregando contratos...</option>
-                            </select>
-                        </div>
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-tags"></i> Classificação
+                        </label>
+                        <select class="filter-select" id="filtroClassificacao">
+                            <option value="">Todas as classificações</option>
+                            <option value="Agricultura" selected>Agricultura</option>
+                            <option value="Pecuária">Pecuária</option>
+                            <option value="Silvicultura">Silvicultura</option>
+                            <option value="Extração Vegetal">Extração Vegetal</option>
+                            <option value="Aquicultura">Aquicultura</option>
+                            <option value="Agroindústria">Agroindústria</option>
+                        </select>
+                    </div>
 
-                        <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-network-wired"></i> Rede
-                                Blockchain</label>
-                            <select class="filter-select" id="filtroRede" required>
-                                <option value="" disabled selected>Selecione uma rede</option>
-                            </select>
-                        </div>
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-layer-group"></i> Subclassificação
+                        </label>
+                        <select class="filter-select" id="filtroSubclassificacao" disabled>
+                            <option value="">Todas as subclassificações</option>
+                        </select>
+                    </div>
 
-                        <!-- CHECKBOXES no lugar dos selects "Sim/Não" -->
-                        <div class="filter-group checkbox-group">
-                            <label class="filter-label"><i class="fas fa-home"></i> Tipo de Produtor</label>
-                            <div class="checkbox-option">
-                                <input type="checkbox" id="filtroFamiliar" value="1">
-                                <label for="filtroFamiliar">👨‍🌾 Somente Agricultura Familiar</label>
+                    <div class="filter-group">
+                        <label class="filter-label required"><i class="fas fa-chart-simple"></i> Base de Cálculo</label>
+                        <select class="filter-select" id="filtroBaseCalculo" required>
+                            <option value="estabelecimentos" selected>Estabelecimentos</option>
+                            <option value="producao">Produção (Quantidade)</option>
+                        </select>
+                    </div>
+
+
+                    <div class="filter-group">
+                        <label class="filter-label required"><i class="fas fa-home"></i> Somente Familiar</label>
+                        <select class="filter-select" id="filtroFamiliar" required>
+                            <!-- <option value="" disabled selected>Selecione uma opção</option> -->
+                            <option value="1">Sim</option>
+                            <option value="0" selected>Não</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label"><i class="fas fa-file-signature"></i> Somente Obrigatório INC
+                            02/2018</label>
+                        <select class="filter-select" id="filtroObrigatorio">
+                            <!-- <option value="">Todos</option> -->
+                            <option value="1">Sim</option>
+                            <option value="0" selected>Não</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label required"><i class="fas fa-file-contract"></i> Contrato</label>
+                        <select class="filter-select" id="filtroContrato" required>
+                            <option value="" disabled selected>Carregando contratos...</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label required"><i class="fas fa-network-wired"></i> Rede
+                            Blockchain</label>
+                        <select class="filter-select" id="filtroRede" required>
+                            <option value="" disabled selected>Selecione uma rede</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label required">
+                            <i class="fas fa-chart-bar"></i> Tipo de Cálculo
+                        </label>
+                        <select class="filter-select" id="filtroTipoCalculo" required>
+                            <option value="" disabled selected>Selecione o tipo</option>
+                            <option value="ultima" selected>Última Execução</option>
+                            <option value="day">Média Últimas 24h</option>
+                            <option value="week">Média Última Semana</option>
+                            <option value="month">Média Último Mês</option>
+                            <option value="all">Média Histórica</option>
+                            <option value="custom">Período Personalizado</option>
+                        </select>
+                    </div>
+
+                    <!-- Campos de data personalizada (inicialmente ocultos) -->
+                    <div class="filter-group" id="grupoDataInicio" style="display: none;">
+                        <label class="filter-label required">
+                            <i class="fas fa-calendar-alt"></i> Data Inicial
+                        </label>
+                        <input type="date" class="filter-input" id="filtroDataInicio">
+                    </div>
+
+                    <div class="filter-group" id="grupoDataFim" style="display: none;">
+                        <label class="filter-label required">
+                            <i class="fas fa-calendar-alt"></i> Data Final
+                        </label>
+                        <input type="date" class="filter-input" id="filtroDataFim">
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label"><i class="fas fa-cogs"></i> Funções</label>
+                        <div class="functions-container" id="funcoesContainer">
+                            <div class="functions-header">
+                                <button type="button" class="btn-functions-select-all"
+                                    onclick="selecionarTodasFuncoes(true)">Selecionar
+                                    todas</button>
+                                <button type="button" class="btn-functions-select-all"
+                                    onclick="selecionarTodasFuncoes(false)">Desmarcar
+                                    todas</button>
+                            </div>
+                            <div id="funcoesList" class="functions-list">
+                                <div class="loading-functions">Carregando funções...</div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="filter-group checkbox-group">
-                            <label class="filter-label"><i class="fas fa-file-signature"></i> Regulamentação</label>
-                            <div class="checkbox-option">
-                                <input type="checkbox" id="filtroObrigatorio" value="1">
-                                <label for="filtroObrigatorio">📜 Somente Obrigatório INC 02/2018</label>
-                            </div>
-                        </div>
+                    <div class="filter-group">
+                        <label class="filter-label"><i class="fas fa-sort-amount-down"></i> Top N Produtos</label>
+                        <input type="number" class="filter-input" id="filtroTop" min="1" max="50"
+                            placeholder="Ex: 10 (opcional)">
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label required"><i class="fas fa-sort"></i> Ordenar por</label>
+                        <select class="filter-select" id="filtroOrderBy" required>
+                            <option value="" disabled selected>Selecione uma opção</option>
+                            <option value="valor_vendas">Valor Vendido</option>
+                            <option value="estabelecimentos">Estabelecimentos</option>
+                            <option value="total_estimado_brl">Total Estimado (BRL)</option>
+                        </select>
                     </div>
                 </div>
 
-                <!-- BLOCO 3: Parâmetros da Simulação -->
-                <div class="filter-block">
-                    <h3 class="block-title"><i class="fas fa-cogs"></i> Parâmetros da Simulação</h3>
-                    <div class="filters-row">
-                        <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-chart-line"></i> Período de
-                                Custo</label>
-                            <select class="filter-select" id="filtroTipoCalculo" required>
-                                <option value="ultima" selected>⚡ Última Execução</option>
-                                <option value="day">📅 Média das últimas 24h</option>
-                                <option value="week">📆 Média da última semana</option>
-                                <option value="month">📆 Média do último mês</option>
-                                <option value="all">🕰️ Média histórica (all-time)</option>
-                                <option value="custom">🎯 Período personalizado</option>
-                            </select>
-                        </div>
-
-                        <!-- Campos de data personalizada (inicialmente ocultos) -->
-                        <div class="filter-group date-range" id="grupoDataInicio" style="display: none;">
-                            <label class="filter-label required"><i class="fas fa-calendar-alt"></i> Data
-                                Inicial</label>
-                            <input type="date" class="filter-input" id="filtroDataInicio">
-                        </div>
-
-                        <div class="filter-group date-range" id="grupoDataFim" style="display: none;">
-                            <label class="filter-label required"><i class="fas fa-calendar-alt"></i> Data Final</label>
-                            <input type="date" class="filter-input" id="filtroDataFim">
-                        </div>
-
-                        <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-sort-amount-down"></i> Ordenar
-                                por</label>
-                            <select class="filter-select" id="filtroOrderBy" required>
-                                <option value="total_estimado_brl" selected>💰 Total Estimado (BRL)</option>
-                                <option value="valor_vendas">💵 Valor Vendido (BRL)</option>
-                                <option value="estabelecimentos">🏠 Nº de Estabelecimentos</option>
-                            </select>
-                        </div>
-
-                        <div class="filter-group">
-                            <label class="filter-label"><i class="fas fa-crown"></i> Top N Produtos</label>
-                            <input type="number" class="filter-input" id="filtroTop" min="1" max="50"
-                                placeholder="Ex: 10 (todos se vazio)">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- BLOCO 4: Funções do Contrato (mantido similar, mas com melhor visual) -->
-                <div class="filter-block">
-                    <h3 class="block-title"><i class="fas fa-code-branch"></i> Funções do Contrato para Simular</h3>
-                    <div class="functions-container" id="funcoesContainer">
-                        <div class="functions-header">
-                            <button type="button" class="btn-functions-select-all"
-                                onclick="selecionarTodasFuncoes(true)">✅ Selecionar todas</button>
-                            <button type="button" class="btn-functions-select-all"
-                                onclick="selecionarTodasFuncoes(false)">❌ Desmarcar todas</button>
-                            <span class="functions-hint"><i class="fas fa-info-circle"></i> Defina quantas execuções por
-                                função</span>
-                        </div>
-                        <div id="funcoesList" class="functions-list">
-                            <div class="loading-functions">Carregando funções...</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Botão de Ação Principal - Mais destacado -->
                 <div class="filter-actions">
                     <div class="filter-info">
                         <i class="fas fa-info-circle"></i>
-                        <span>Campos com <span class="required-star">*</span> são obrigatórios</span>
+                        <span>Campos com * são obrigatórios</span>
                     </div>
-                    <button class="btn btn-primary btn-large" onclick="carregarResultados()">
+                    <button class="btn btn-primary" onclick="carregarResultados()">
                         <i class="fas fa-chart-bar"></i> Gerar Simulação
                     </button>
                 </div>
@@ -1351,6 +1209,7 @@
         function validarFiltros() {
             const obrigatorios = [
                 { id: 'filtroRegiao', nome: 'Região' },
+                { id: 'filtroFamiliar', nome: 'Familiar' },
                 { id: 'filtroContrato', nome: 'Contrato' },
                 { id: 'filtroRede', nome: 'Rede Blockchain' },
                 { id: 'filtroTipoCalculo', nome: 'Tipo de Cálculo' },
@@ -1485,7 +1344,7 @@
 
             const params = new URLSearchParams();
             params.append("regiao", document.getElementById("filtroRegiao").value);
-            // params.append("familiar", document.getElementById("filtroFamiliar").value);
+            params.append("familiar", document.getElementById("filtroFamiliar").value);
             params.append("contract", document.getElementById("filtroContrato").value);
             params.append("network", document.getElementById("filtroRede").value);
             // params.append("tipo_calculo", document.getElementById("filtroTipoCalculo").value);
@@ -1495,16 +1354,10 @@
             const baseCalculo = document.getElementById("filtroBaseCalculo").value;
             params.append("base_calculo", baseCalculo);
 
-            const familiarCheckbox = document.getElementById("filtroFamiliar");
-            params.append("familiar", familiarCheckbox.checked ? "1" : "0");
-
             const classificacao = document.getElementById("filtroClassificacao").value;
             const subclassificacao = document.getElementById("filtroSubclassificacao").value;
-            // const obrigatorio = document.getElementById("filtroObrigatorio").value;
+            const obrigatorio = document.getElementById("filtroObrigatorio").value;
             const top = document.getElementById("filtroTop").value;
-
-            const obrigatorioCheckbox = document.getElementById("filtroObrigatorio");
-            const obrigatorio = obrigatorioCheckbox.checked ? "1" : "0";
 
             if (classificacao) params.append("classificacao", classificacao);
             if (subclassificacao) params.append("subclassificacao", subclassificacao);

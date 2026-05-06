@@ -509,6 +509,10 @@ app.get("/status", (req, res) => {
 });
 
 
+app.get('/manual', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'manual', 'index.html'));
+});
+
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
@@ -532,6 +536,7 @@ app.listen(PORT, () => {
 - Interface Contratos: ${BASE_URL}/interface
 - Resultados:          ${BASE_URL}/results
 - Histórico:           ${BASE_URL}/gas-history
+- Manual:              ${BASE_URL}/manual
 `);
 });
 
