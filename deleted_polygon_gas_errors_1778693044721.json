@@ -1,0 +1,26 @@
+[
+  {
+    "id": 63083,
+    "network_id": 3,
+    "timestamp": "2026-04-17T13:00:44.332Z",
+    "gas_gwei": "0.0000000000",
+    "price_usd": "0.0903",
+    "price_brl": "0.4512"
+  },
+  {
+    "id": 63308,
+    "network_id": 3,
+    "timestamp": "2026-04-17T21:00:34.089Z",
+    "gas_gwei": "0.0000000000",
+    "price_usd": "0.0904",
+    "price_brl": "0.4511"
+  },
+  {
+    "id": 63616,
+    "network_id": 3,
+    "timestamp": "2026-04-18T08:00:32.314Z",
+    "gas_gwei": "0.0000000000",
+    "price_usd": "0.0902",
+    "price_brl": "0.4492"
+  }
+]
