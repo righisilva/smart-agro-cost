@@ -463,13 +463,10 @@ module.exports = (db) => {
       const custoDeployTotalBRL = custoDeployBRL * numeroDeploys;
       const gasDeployTotal = gasDeploy * numeroDeploys;
       console.log(`⛽ Gas Total: ${custoDeployTotalBRL}`);
-       
+      
 
       const itensAgregados = Object.values(agregados);
-      custoMedioDeployBRL = custoDeployTotalBRL / itensAgregados.length;
-      custoMedioDeployBRLunitario = custoDeployTotalBRL / quantidadeTotal;
-      console.log(`Custo Médio por Deploy (BRL): ${custoMedioDeployBRL}`);
-      console.log(`Custo Médio por Deploy (BRL) Unitário: ${custoMedioDeployBRLunitario}`);
+
       console.log(`Quantidade de itens: ${itensAgregados.length}`);
 
       const resultado = itensAgregados.map(d => {
@@ -489,11 +486,11 @@ module.exports = (db) => {
           quantidade_utilizada: d.quantidade,  // Quantidade usada no cálculo
           base_calculo_utilizada: base_calculo || 'estabelecimentos',
           valor_vendas: valorVendas,
-          total_estimado_brl: Number((totalEstimado + custoMedioDeployBRL).toFixed(2)),
-          custo_total_funcoes_brl: Number((custoTotalFuncoesBRL + custoMedioDeployBRLunitario).toFixed(6)),
-          custo_medio_contrato_brl: Number((custoTotalFuncoesBRL + custoMedioDeployBRLunitario).toFixed(2)),
+          total_estimado_brl: Number(totalEstimado.toFixed(2)),
+          custo_total_funcoes_brl: Number(custoTotalFuncoesBRL.toFixed(6)),
+          custo_medio_contrato_brl: Number(custoTotalFuncoesBRL.toFixed(2)),
           percentual_custo: percentual,
-          gas_contrato: gasTotal + gasDeploy,
+          gas_contrato: gasTotal,
           periodo_usado: tipo_calculo === 'custom' ? 
             `Personalizado: ${data_inicio ? new Date(Number(data_inicio)).toLocaleDateString('pt-BR') : '?'} até ${data_fim ? new Date(Number(data_fim)).toLocaleDateString('pt-BR') : '?'}` : 
             tipo_calculo
