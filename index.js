@@ -414,7 +414,7 @@ async function analisarContrato(filePath, log = console.log) {
         log(`🌍 ${data.name}`);
         log(`   🪙 Cotação de 1 ${token}: U$${tokenPrice.usd.toFixed(2)} / R$${tokenPrice.brl.toFixed(2)}`);
         log(`   ⛽ gasPrice: ${ethers.utils.formatUnits(data.gasPrice,"gwei")} gwei`);
-        log(`   💰 Custo estimado de deploy: ${costInToken} ${token} ≈ $${costUSD.toFixed(8)} / R$${costBRL.toFixed(8)}\n`);
+        log(`   💰 Custo estimado de deploy: ${costInToken} ${token} ≈ $${costUSD.toFixed(4)} / R$${costBRL.toFixed(4)}\n`);
     }
 
     // ------------------------------
@@ -454,7 +454,7 @@ async function analisarContrato(filePath, log = console.log) {
                 const costInToken = ethers.utils.formatEther(receipt.gasUsed.mul(data.gasPrice));
                 const costUSD = parseFloat(costInToken) * tokenPrice.usd;
                 const costBRL = parseFloat(costInToken) * tokenPrice.brl;
-                log(`   💰 ${token.toUpperCase()}: ${costInToken} ${token} ≈ $${costUSD.toFixed(8)} / R$${costBRL.toFixed(8)}`);
+                log(`   💰 ${token.toUpperCase()}: ${costInToken} ${token} ≈ $${costUSD.toFixed(4)} / R$${costBRL.toFixed(4)}`);
             }
             log("-------------------------------------------------------\n");
         } catch (err) {

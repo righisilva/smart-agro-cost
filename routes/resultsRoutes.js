@@ -28,15 +28,12 @@ module.exports = (db) => {
         funcoes,
         data_inicio,
         data_fim,
-        base_calculo, 
-        escopo_deploy,
+        base_calculo,  // 🔥 NOVO: 'estabelecimentos' ou 'producao'
       } = req.query;
 
       console.log("🔧 Tipo de cálculo selecionado:", tipo_calculo);
       console.log("🔧 Subclassificação:", subclassificacao);
       console.log("🔧 Base de cálculo:", base_calculo || 'estabelecimentos (padrão)');
-      console.log("🔧 Escopo de deploy:", escopo_deploy || '1_por_estabelecimento (padrão)');
-
       
       // 🔥 Log das datas se for período personalizado
       if (tipo_calculo === 'custom') {
@@ -186,8 +183,8 @@ module.exports = (db) => {
         queryContratos += ` AND f.name IN (${functionNames})`;
       }
 
-      // console.log("📝 Query Contratos:", queryContratos);
-      // console.log("📝 Params:", paramsContratos);
+      console.log("📝 Query Contratos:", queryContratos);
+      console.log("📝 Params:", paramsContratos);
 
       const dadosContratos = db.prepare(queryContratos).all(paramsContratos);
       
@@ -280,20 +277,11 @@ module.exports = (db) => {
       // Calcular custo TOTAL considerando múltiplas execuções
       let custoTotalFuncoesBRL = 0;
       let gasTotal = 0;
-
-      let custoDeployBRL = 0;
-      let gasDeploy = 0;
       
       if (usarTodasFuncoes) {
         for (const [funcName, custoData] of Object.entries(custoBasePorFuncao)) {
-          const ehDeploy = funcName.toLowerCase().includes('deploy') || funcName.toLowerCase().includes('constructor');
-          if (ehDeploy) {
-            custoDeployBRL += custoData.custo_brl;
-            gasDeploy += custoData.gas_used
-          } else {
-            custoTotalFuncoesBRL += custoData.custo_brl;
-            gasTotal += custoData.gas_used;
-          }
+          custoTotalFuncoesBRL += custoData.custo_brl;
+          gasTotal += custoData.gas_used;
         }
         console.log(`📊 Usando TODAS as funções (${Object.keys(custoBasePorFuncao).length} funções)`);
       } else {
@@ -301,17 +289,9 @@ module.exports = (db) => {
           const custoData = custoBasePorFuncao[funcSelecionada.name];
           if (custoData) {
             const multiplicador = Number(funcSelecionada.executions) || 1;
-            
-            const ehDeploy = funcSelecionada.name.toLowerCase().includes('deploy') || funcSelecionada.name.toLowerCase().includes('constructor');
-            if (ehDeploy) {
-              custoDeployBRL += custoData.custo_brl;
-              gasDeploy += custoData.gas_used
-              console.log(`  🔹 ${funcSelecionada.name}: ${multiplicador}x = R$ ${(custoData.custo_brl * multiplicador).toFixed(6)}`);
-            } else {
-              custoTotalFuncoesBRL += custoData.custo_brl * multiplicador;
-              gasTotal += custoData.gas_used * multiplicador;
-              console.log(`  🔹 ${funcSelecionada.name}: ${multiplicador}x = R$ ${(custoData.custo_brl * multiplicador).toFixed(6)}`);
-            }
+            custoTotalFuncoesBRL += custoData.custo_brl * multiplicador;
+            gasTotal += custoData.gas_used * multiplicador;
+            console.log(`  🔹 ${funcSelecionada.name}: ${multiplicador}x = R$ ${(custoData.custo_brl * multiplicador).toFixed(6)}`);
           } else {
             console.warn(`⚠️ Função "${funcSelecionada.name}" não encontrada no contrato`);
           }
@@ -319,9 +299,7 @@ module.exports = (db) => {
       }
 
       console.log(`💰 Custo Total Funções: R$ ${custoTotalFuncoesBRL.toFixed(6)}`);
-      console.log(`💰 Custo Total Deploy: R$ ${custoDeployBRL.toFixed(6)}`);
       console.log(`⛽ Gas Total: ${gasTotal}`);
-      console.log(`⛽ Gas Deploy: ${gasDeploy}`);
 
       // ---------------- AGREGAÇÃO (usando a base de cálculo selecionada) ----------------
       const agregados = {};
@@ -331,8 +309,7 @@ module.exports = (db) => {
       const dadosFonte = usarProducao ? dadosProducao : dadosEstabelecimentos;
       
       console.log(`📊 Usando fonte: ${usarProducao ? 'Produção' : 'Estabelecimentos'}`);
-      let contador = 0;
-      let quantidadeT = 0;
+      
       dadosFonte.forEach(d => {
         let quantidade = 0;
         let unidadeMedida = null;
@@ -361,12 +338,9 @@ module.exports = (db) => {
             valor_vendas: Number(d.valor_vendas) || 0
           };
         }
-        contador++;
-        quantidadeT += quantidade;
-        console.log(`Processando item ${contador}: QuantidadeTotal: ${quantidadeT} `);
+
         agregados[chave].quantidade += quantidade;
         agregados[chave].total_estimado_brl += quantidade * custoTotalFuncoesBRL;
-        console.log("Quantidade:", quantidade, " X ", custoTotalFuncoesBRL);
         
         // Manter os valores separados para referência
         if (usarProducao) {
@@ -414,65 +388,7 @@ module.exports = (db) => {
         });
       }
 
-      function resolverNumeroDeploys(escopoDeploy, regiao, quantidadeExecucoes) {
-
-        // padrão
-        if (!escopoDeploy || escopoDeploy === '1_por_estabelecimento') {
-          return quantidadeExecucoes;
-        }
-      
-        // global
-        if (escopoDeploy === 'global') {
-          return 1;
-        }
-      
-        // por cidade/região
-        if (escopoDeploy === '1_por_cidade') {
-      
-          const mapaRegioes = {
-            "Brasil": 5570,
-            "Sul": 1191,
-            "RS": 497,
-            "Alegrete": 1
-          };
-      
-          return mapaRegioes[regiao] || 1;
-        }
-      
-        // número fixo vindo do frontend
-        const numero = Number(escopoDeploy);
-      
-        if (!isNaN(numero) && numero > 0) {
-          return numero;
-        }
-      
-        // fallback
-        return quantidadeExecucoes;
-      }
-
-      const quantidadeTotal = Object.values(agregados)
-        .reduce((soma, item) => soma + item.quantidade, 0);
-
-      const numeroDeploys = resolverNumeroDeploys(
-        escopo_deploy,
-        regiao,
-        quantidadeTotal
-      );
-      console.log(`🔍 Escopo Deploy: ${escopo_deploy || '1_por_estabelecimento'}, Quantidade Total: ${quantidadeTotal}, Número de Deploys: ${numeroDeploys}`);
-
-      const custoDeployTotalBRL = custoDeployBRL * numeroDeploys;
-      const gasDeployTotal = gasDeploy * numeroDeploys;
-      console.log(`⛽ Gas Total: ${custoDeployTotalBRL}`);
-       
-
-      const itensAgregados = Object.values(agregados);
-      custoMedioDeployBRL = custoDeployTotalBRL / itensAgregados.length;
-      custoMedioDeployBRLunitario = custoDeployTotalBRL / quantidadeTotal;
-      console.log(`Custo Médio por Deploy (BRL): ${custoMedioDeployBRL}`);
-      console.log(`Custo Médio por Deploy (BRL) Unitário: ${custoMedioDeployBRLunitario}`);
-      console.log(`Quantidade de itens: ${itensAgregados.length}`);
-
-      const resultado = itensAgregados.map(d => {
+      const resultado = Object.values(agregados).map(d => {
         const totalEstimado = d.total_estimado_brl;
         const valorVendas = (Number(d.valor_vendas) || 0) * 1000;
         const percentual = valorVendas > 0 ? Number(((totalEstimado / valorVendas) * 100).toFixed(2)) : 0;
@@ -489,11 +405,11 @@ module.exports = (db) => {
           quantidade_utilizada: d.quantidade,  // Quantidade usada no cálculo
           base_calculo_utilizada: base_calculo || 'estabelecimentos',
           valor_vendas: valorVendas,
-          total_estimado_brl: Number((totalEstimado + custoMedioDeployBRL).toFixed(2)),
-          custo_total_funcoes_brl: Number((custoTotalFuncoesBRL + custoMedioDeployBRLunitario).toFixed(6)),
-          custo_medio_contrato_brl: Number((custoTotalFuncoesBRL + custoMedioDeployBRLunitario).toFixed(2)),
+          total_estimado_brl: Number(totalEstimado.toFixed(2)),
+          custo_total_funcoes_brl: Number(custoTotalFuncoesBRL.toFixed(6)),
+          custo_medio_contrato_brl: Number(custoTotalFuncoesBRL.toFixed(2)),
           percentual_custo: percentual,
-          gas_contrato: gasTotal + gasDeploy,
+          gas_contrato: gasTotal,
           periodo_usado: tipo_calculo === 'custom' ? 
             `Personalizado: ${data_inicio ? new Date(Number(data_inicio)).toLocaleDateString('pt-BR') : '?'} até ${data_fim ? new Date(Number(data_fim)).toLocaleDateString('pt-BR') : '?'}` : 
             tipo_calculo

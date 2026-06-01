@@ -877,193 +877,14 @@
         }
 
         /* Garantir que checkboxes fiquem alinhados corretamente */
-    .checkbox-group {
-        justify-content: flex-end;
-    }
-
-    .checkbox-option {
-        min-height: 48px; /* Mesma altura dos selects */
-        align-items: center;
-    }
-
-    /* Estilos para o novo grupo de radio buttons */
-.radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #F8FAFC;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
+.checkbox-group {
+    justify-content: flex-end;
 }
 
-.radio-option {
-    display: flex;
+.checkbox-option {
+    min-height: 48px; /* Mesma altura dos selects */
     align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
 }
-
-.radio-option input[type="radio"] {
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    cursor: pointer;
-    accent-color: var(--accent);
-}
-
-.radio-option label {
-    font-size: 14px;
-    font-weight: normal;
-    color: var(--text);
-    cursor: pointer;
-    margin: 0;
-    flex-shrink: 0;
-}
-
-.personalizado-input {
-    width: 120px !important;
-    margin-left: 5px;
-    height: 36px;
-    padding: 6px 10px;
-    font-size: 13px;
-}
-
-/* Ajuste para responsividade */
-@media (max-width: 768px) {
-    .radio-option {
-        flex-wrap: wrap;
-    }
-    .personalizado-input {
-        width: 100% !important;
-        margin-left: 24px; /* Alinha com o label */
-        margin-top: 5px;
-    }
-}
-
-
-/* Layout de duas colunas para Deploy e Funções */
-.deploy-functions-layout {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 20px;
-    align-items: start;
-}
-
-.deploy-config {
-    background-color: #F8FAFC;
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid var(--border);
-}
-
-.deploy-config-header {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--primary-light);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.deploy-config-header i {
-    font-size: 16px;
-    color: var(--primary);
-}
-
-.functions-config {
-    background-color: white;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-}
-
-.functions-config-header {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--primary);
-    padding: 12px 16px;
-    background-color: #F8FAFC;
-    border-bottom: 2px solid var(--primary-light);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.functions-config-header i {
-    font-size: 16px;
-    color: var(--primary);
-}
-
-/* Ajuste para o container de funções dentro da nova estrutura */
-.functions-config .functions-container {
-    border: none;
-    border-radius: 0;
-    max-height: 350px;
-}
-
-.functions-config .functions-header {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-}
-
-/* Responsividade para telas menores */
-@media (max-width: 900px) {
-    .deploy-functions-layout {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-    
-    .deploy-config {
-        order: 1;
-    }
-    
-    .functions-config {
-        order: 2;
-    }
-}
-
-/* Ajustes para o radio-group dentro do deploy-config */
-.deploy-config .radio-group {
-    background-color: transparent;
-    padding: 0;
-    border: none;
-    gap: 12px;
-}
-
-.deploy-config .radio-option {
-    padding: 8px 12px;
-    background-color: white;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    transition: var(--transition);
-}
-
-.deploy-config .radio-option:hover {
-    background-color: #F0FDF4;
-    border-color: var(--primary-light);
-}
-
-.deploy-config .radio-option label {
-    flex: 1;
-}
-
-.deploy-config .personalizado-input {
-    width: 130px !important;
-    margin-left: auto;
-}
-
-/* Ajuste para o título do bloco */
-.filter-block:has(.deploy-functions-layout) {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-
     </style>
 </head>
 
@@ -1177,15 +998,14 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- BLOCO 3: Parâmetros da Simulação -->
                 <div class="filter-block">
                     <h3 class="block-title"><i class="fas fa-cogs"></i> Parâmetros da Simulação</h3>
-                
-                    <!-- Primeira linha: Período e Ordenação -->
                     <div class="filters-row">
                         <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-chart-line"></i> Período de Custo</label>
+                            <label class="filter-label required"><i class="fas fa-chart-line"></i> Período de
+                                Custo</label>
                             <select class="filter-select" id="filtroTipoCalculo" required>
                                 <option value="ultima" selected>⚡ Última Execução</option>
                                 <option value="day">📅 Média das últimas 24h</option>
@@ -1195,94 +1015,54 @@
                                 <option value="custom">🎯 Período personalizado</option>
                             </select>
                         </div>
-                
+
+                        <!-- Campos de data personalizada (inicialmente ocultos) -->
                         <div class="filter-group date-range" id="grupoDataInicio" style="display: none;">
-                            <label class="filter-label required"><i class="fas fa-calendar-alt"></i> Data Inicial</label>
+                            <label class="filter-label required"><i class="fas fa-calendar-alt"></i> Data
+                                Inicial</label>
                             <input type="date" class="filter-input" id="filtroDataInicio">
                         </div>
-                
+
                         <div class="filter-group date-range" id="grupoDataFim" style="display: none;">
                             <label class="filter-label required"><i class="fas fa-calendar-alt"></i> Data Final</label>
                             <input type="date" class="filter-input" id="filtroDataFim">
                         </div>
-                
+
                         <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-sort-amount-down"></i> Ordenar por</label>
+                            <label class="filter-label required"><i class="fas fa-sort-amount-down"></i> Ordenar
+                                por</label>
                             <select class="filter-select" id="filtroOrderBy" required>
                                 <option value="total_estimado_brl" selected>💰 Total Estimado (BRL)</option>
                                 <option value="valor_vendas">💵 Valor Vendido (BRL)</option>
                                 <option value="estabelecimentos">🏠 Nº de Estabelecimentos</option>
                             </select>
                         </div>
-                
+
                         <div class="filter-group">
                             <label class="filter-label"><i class="fas fa-crown"></i> Top N Produtos</label>
                             <input type="number" class="filter-input" id="filtroTop" min="1" max="50"
                                 placeholder="Ex: 10 (todos se vazio)">
                         </div>
                     </div>
-                
                 </div>
-                
 
-
-                <!-- BLOCO 4: Funções do Contrato e Quantidade de Contratos (lado a lado) -->
+                <!-- BLOCO 4: Funções do Contrato (mantido similar, mas com melhor visual) -->
                 <div class="filter-block">
-                    <h3 class="block-title"><i class="fas fa-code-branch"></i> Configuração de Deploy e Funções</h3>
-                
-                    <div class="deploy-functions-layout">
-                        <!-- Coluna da Esquerda: Quantidade de Contratos -->
-                        <div class="deploy-config">
-                            <div class="deploy-config-header">
-                                <i class="fas fa-layer-group"></i>
-                                <span>Quantidade de Contratos</span>
-                            </div>
-                            <div class="radio-group" id="grupoEscopoDeploy">
-                                <div class="radio-option">
-                                    <input type="radio" id="escopo1porEstabelecimento" name="escopoDeploy" value="1_por_estabelecimento"
-                                        checked>
-                                    <label for="escopo1porEstabelecimento">🏠 1 por Estabelecimento</label>
-                                </div>
-                                <div class="radio-option">
-                                    <input type="radio" id="escopo1porCidade" name="escopoDeploy" value="1_por_cidade">
-                                    <label for="escopo1porCidade">🏙️ 1 por Cidade</label>
-                                </div>
-                                <div class="radio-option">
-                                    <input type="radio" id="escopoGlobal" name="escopoDeploy" value="global">
-                                    <label for="escopoGlobal">🌍 1 Global</label>
-                                </div>
-                                <div class="radio-option" id="opcaoPersonalizada">
-                                    <input type="radio" id="escopoPersonalizado" name="escopoDeploy" value="personalizado">
-                                    <label for="escopoPersonalizado">✏️ Personalizado (digitar)</label>
-                                    <input type="number" id="quantidadePersonalizada" class="filter-input personalizado-input"
-                                        placeholder="Ex: 1000" min="1" step="1" disabled>
-                                </div>
-                            </div>
+                    <h3 class="block-title"><i class="fas fa-code-branch"></i> Funções do Contrato para Simular</h3>
+                    <div class="functions-container" id="funcoesContainer">
+                        <div class="functions-header">
+                            <button type="button" class="btn-functions-select-all"
+                                onclick="selecionarTodasFuncoes(true)">✅ Selecionar todas</button>
+                            <button type="button" class="btn-functions-select-all"
+                                onclick="selecionarTodasFuncoes(false)">❌ Desmarcar todas</button>
+                            <span class="functions-hint"><i class="fas fa-info-circle"></i> Defina quantas execuções por
+                                função</span>
                         </div>
-                
-                        <!-- Coluna da Direita: Funções do Contrato -->
-                        <div class="functions-config">
-                            <div class="functions-config-header">
-                                <i class="fas fa-code-branch"></i>
-                                <span>Funções do Contrato para Simular</span>
-                            </div>
-                            <div class="functions-container" id="funcoesContainer">
-                                <div class="functions-header">
-                                    <button type="button" class="btn-functions-select-all" onclick="selecionarTodasFuncoes(true)">✅
-                                        Selecionar todas</button>
-                                    <button type="button" class="btn-functions-select-all" onclick="selecionarTodasFuncoes(false)">❌
-                                        Desmarcar todas</button>
-                                    <span class="functions-hint"><i class="fas fa-info-circle"></i> Defina quantas execuções por
-                                        função</span>
-                                </div>
-                                <div id="funcoesList" class="functions-list">
-                                    <div class="loading-functions">Carregando funções...</div>
-                                </div>
-                            </div>
+                        <div id="funcoesList" class="functions-list">
+                            <div class="loading-functions">Carregando funções...</div>
                         </div>
                     </div>
                 </div>
-
 
                 <!-- Botão de Ação Principal - Mais destacado -->
                 <div class="filter-actions">
@@ -1294,7 +1074,6 @@
                         <i class="fas fa-chart-bar"></i> Gerar Simulação
                     </button>
                 </div>
-
             </section>
 
             <!-- Stats Section -->
@@ -1476,41 +1255,6 @@
                 mostrarToast('Erro ao carregar os filtros. Verifique sua conexão.', 'error');
             }
         }
-
-        // Configurar o comportamento do campo personalizado no escopo de deploy
-            function setupEscopoDeploy() {
-                const radioPersonalizado = document.getElementById('escopoPersonalizado');
-                const inputPersonalizado = document.getElementById('quantidadePersonalizada');
-                const radios = document.querySelectorAll('input[name="escopoDeploy"]');
-
-                if (!radioPersonalizado || !inputPersonalizado) return;
-
-                // Função para ativar/desativar o input personalizado
-                function togglePersonalizadoInput() {
-                    const isPersonalizado = radioPersonalizado.checked;
-                    inputPersonalizado.disabled = !isPersonalizado;
-
-                    if (isPersonalizado) {
-                        inputPersonalizado.required = true;
-                        inputPersonalizado.focus();
-                    } else {
-                        inputPersonalizado.required = false;
-                        // Não limpar o valor para não perder o que o usuário digitou
-                    }
-                }
-
-                // Adicionar evento para TODOS os radios do grupo
-                radios.forEach(radio => {
-                    radio.addEventListener('change', togglePersonalizadoInput);
-                });
-
-                // Executar uma vez para definir o estado inicial
-                togglePersonalizadoInput();
-            }
-
-
-
-
 
         // Controle de exibição dos campos de data personalizada
         // Controle de exibição dos campos de data personalizada
@@ -1808,32 +1552,6 @@
             params.append("funcoes", JSON.stringify(funcoesSelecionadas));
 
             console.log("Funções selecionadas:", funcoesSelecionadas);
-
-
-
-            // ⭐ NOVO PARÂMETRO: Escopo de Deploy
-            const escopoSelecionado = document.querySelector('input[name="escopoDeploy"]:checked');
-            if (escopoSelecionado) {
-                let valorEscopo = escopoSelecionado.value;
-
-                // Se for a opção personalizada, envia o valor digitado
-                if (valorEscopo === 'personalizado') {
-                    const qtdPersonalizada = document.getElementById('quantidadePersonalizada').value;
-                    if (qtdPersonalizada && parseInt(qtdPersonalizada) > 0) {
-                        valorEscopo = qtdPersonalizada; // Envia o número, ex: "1000"
-                    } else {
-                        mostrarToast('Por favor, digite uma quantidade válida para o deploy personalizado.', 'warning');
-                        document.getElementById('chartLoading').style.display = 'none';
-                        return; // Interrompe a simulação se o campo personalizado estiver inválido
-                    }
-                }
-                params.append("escopo_deploy", valorEscopo);
-            } else {
-                // Fallback (nunca deve acontecer, pois um radio sempre está marcado)
-                params.append("escopo_deploy", "1_por_estabelecimento");
-            }
-
-            console.log("Escopo de deploy enviado:", params.get("escopo_deploy"));
 
             try {
                 const res = await fetch(`/api/results?${params.toString()}`);
@@ -2475,13 +2193,9 @@
             }
         }
 
-
-
-
         // Inicialização
         window.addEventListener('DOMContentLoaded', function () {
             carregarFiltros();
-            setupEscopoDeploy();
 
             document.getElementById('filtroOrderBy').value = 'total_estimado_brl';
 

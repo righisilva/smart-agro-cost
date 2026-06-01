@@ -285,8 +285,8 @@ app.post("/api/load-abi", upload.array("contratos", 20), async (req, res) => {
                         token,
                         gasPrice: ethers.utils.formatUnits(data.gasPrice, "gwei") + " Gwei",
                         custoTotalToken: costInToken,
-                        custoUSD: `$${costUSD.toFixed(8)}`,
-                        custoBRL: `R$${costBRL.toFixed(8)}`,
+                        custoUSD: `$${costUSD.toFixed(4)}`,
+                        custoBRL: `R$${costBRL.toFixed(4)}`,
                         cotacao: tokenPrice
                     };
                 }
@@ -365,8 +365,8 @@ app.post("/api/execute-function", async (req, res) => {
                     token: token,
                     gasPrice: ethers.utils.formatUnits(data.gasPrice, "gwei") + " Gwei",
                     custoTotalToken: costInToken,
-                    custoUSD: costUSD ? `$${costUSD.toFixed(8)}` : "N/A",
-                    custoBRL: costBRL ? `R$${costBRL.toFixed(8)}` : "N/A",
+                    custoUSD: costUSD ? `$${costUSD.toFixed(4)}` : "N/A",
+                    custoBRL: costBRL ? `R$${costBRL.toFixed(4)}` : "N/A",
                     cotacao: tokenPrice
                         ? { usd: tokenPrice.usd, brl: tokenPrice.brl }
                         : { usd: null, brl: null }
