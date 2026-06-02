@@ -479,6 +479,11 @@ app.get("/api/functions-list", (req, res) => {
     }
 });
 
+
+
+
+
+
 app.get("/api/contract-abi", (req, res) => {
  const { contract } = req.query;
  const contrato = getDeployedContract(contract);

@@ -1065,6 +1065,20 @@
             border-bottom: none;
             margin-bottom: 0;
         }
+
+        /* Estilo para o filtro de produto quando desabilitado */
+        #filtroProduto:disabled {
+            background-color: #F3F4F6;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Ajuste para responsividade do grid */
+        @media (max-width: 1200px) {
+            .filters-row {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
     </style>
 </head>
 
@@ -1130,33 +1144,11 @@
                             </select>
                         </div>
 
+                        <!-- ⭐ NOVO: Filtro de Produto -->
                         <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-chart-simple"></i> Base de
-                                Cálculo</label>
-                            <select class="filter-select" id="filtroBaseCalculo" required>
-                                <option value="estabelecimentos" selected>📊 Por Nº de Estabelecimentos</option>
-                                <option value="producao">📦 Por Produção (Quantidade)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- BLOCO 2: Configuração do Contrato -->
-                <div class="filter-block">
-                    <h3 class="block-title"><i class="fas fa-link"></i> Configuração do Contrato</h3>
-                    <div class="filters-row">
-                        <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-file-contract"></i> Contrato</label>
-                            <select class="filter-select" id="filtroContrato" required>
-                                <option value="" disabled selected>Carregando contratos...</option>
-                            </select>
-                        </div>
-
-                        <div class="filter-group">
-                            <label class="filter-label required"><i class="fas fa-network-wired"></i> Rede
-                                Blockchain</label>
-                            <select class="filter-select" id="filtroRede" required>
-                                <option value="" disabled selected>Selecione uma rede</option>
+                            <label class="filter-label"><i class="fas fa-apple-alt"></i> Produto</label>
+                            <select class="filter-select" id="filtroProduto" disabled>
+                                <option value="">Todos os produtos</option>
                             </select>
                         </div>
 
@@ -1168,7 +1160,7 @@
                                 <label for="filtroFamiliar">👨‍🌾 Somente Agricultura Familiar</label>
                             </div>
                         </div>
-
+                        
                         <div class="filter-group checkbox-group">
                             <label class="filter-label"><i class="fas fa-file-signature"></i> Regulamentação</label>
                             <div class="checkbox-option">
@@ -1176,15 +1168,27 @@
                                 <label for="filtroObrigatorio">📜 Somente Obrigatório INC 02/2018</label>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
                 <!-- BLOCO 3: Parâmetros da Simulação -->
                 <div class="filter-block">
-                    <h3 class="block-title"><i class="fas fa-cogs"></i> Parâmetros da Simulação</h3>
+                    <h3 class="block-title"><i class="fas fa-cogs"></i> Configuração da Simulação</h3>
 
                     <!-- Primeira linha: Período e Ordenação -->
                     <div class="filters-row">
+
+                        <div class="filter-group">
+                            <label class="filter-label required"><i class="fas fa-chart-simple"></i> Base de
+                                Cálculo</label>
+                            <select class="filter-select" id="filtroBaseCalculo" required>
+                                <option value="estabelecimentos" selected>📊 Por Nº de Estabelecimentos</option>
+                                <option value="producao">📦 Por Produção (Quantidade)</option>
+                            </select>
+                        </div>
+
+
                         <div class="filter-group">
                             <label class="filter-label required"><i class="fas fa-chart-line"></i> Período de
                                 Custo</label>
@@ -1220,7 +1224,7 @@
                         </div>
 
                         <div class="filter-group">
-                            <label class="filter-label"><i class="fas fa-crown"></i> Top N Produtos</label>
+                            <label class="filter-label"><i class="fas fa-crown"></i> Limite de Resultados</label>
                             <input type="number" class="filter-input" id="filtroTop" min="1" max="50"
                                 placeholder="Ex: 10 (todos se vazio)">
                         </div>
@@ -1228,11 +1232,32 @@
 
                 </div>
 
+                <!-- BLOCO 2: Configuração do Contrato -->
+                <div class="filter-block">
+                    <h3 class="block-title"><i class="fas fa-link"></i> Contrato e Rede</h3>
+                    <div class="filters-row">
+                        <div class="filter-group">
+                            <label class="filter-label required"><i class="fas fa-file-contract"></i> Contrato</label>
+                            <select class="filter-select" id="filtroContrato" required>
+                                <option value="" disabled selected>Carregando contratos...</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label class="filter-label required"><i class="fas fa-network-wired"></i> Rede
+                                Blockchain</label>
+                            <select class="filter-select" id="filtroRede" required>
+                                <option value="" disabled selected>Selecione uma rede</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
 
 
                 <!-- BLOCO 4: Funções do Contrato e Quantidade de Contratos (lado a lado) -->
                 <div class="filter-block">
-                    <h3 class="block-title"><i class="fas fa-code-branch"></i> Configuração de Deploy e Funções</h3>
+                    <h3 class="block-title"><i class="fas fa-code-branch"></i> Deploy e Funções</h3>
 
                     <div class="deploy-functions-layout">
                         <!-- Coluna da Esquerda: Quantidade de Contratos -->
@@ -1697,6 +1722,9 @@
 
             if (!classificacao || !subclassificacoes[classificacao]) {
                 filtroSubclassificacao.disabled = true;
+                // ⭐ Também desabilitar o produto
+                document.getElementById("filtroProduto").disabled = true;
+                document.getElementById("filtroProduto").innerHTML = '<option value="">Selecione classificação primeiro</option>';
                 return;
             }
 
@@ -1708,6 +1736,7 @@
             });
 
             filtroSubclassificacao.disabled = false;
+            carregarProdutos();
         });
 
         // Adicione após o evento do filtroClassificacao
@@ -1731,6 +1760,57 @@
                     colunaUnidade.style.display = 'none';
                 }
             });
+        }
+
+        // Carregar produtos baseado na classificação e subclassificação selecionadas
+        async function carregarProdutos() {
+            const classificacao = document.getElementById("filtroClassificacao").value;
+            const subclassificacao = document.getElementById("filtroSubclassificacao").value;
+            const regiao = document.getElementById("filtroRegiao").value;
+            const familiar = document.getElementById("filtroFamiliar").checked ? "1" : "0";
+            const obrigatorio = document.getElementById("filtroObrigatorio").checked ? "1" : "0";
+            
+            const produtoSelect = document.getElementById("filtroProduto");
+            
+            // Se não tiver classificação ou região, desabilita o select
+            if (!classificacao || !regiao) {
+                produtoSelect.disabled = true;
+                produtoSelect.innerHTML = '<option value="">Selecione classificação e região primeiro</option>';
+                return;
+            }
+            
+            produtoSelect.disabled = true;
+            produtoSelect.innerHTML = '<option value="">Carregando produtos...</option>';
+            
+            try {
+                const params = new URLSearchParams();
+                params.append("classificacao", classificacao);
+                if (subclassificacao && subclassificacao !== "") params.append("subclassificacao", subclassificacao);
+                params.append("regiao", regiao);
+                params.append("familiar", familiar);
+                params.append("obrigatorio", obrigatorio);
+                
+                const response = await fetch(`/api/results/produtos-list?${params.toString()}`);
+                const produtos = await response.json();
+
+                if (produtos.length === 0) {
+                    produtoSelect.innerHTML = '<option value="">Nenhum produto encontrado</option>';
+                    produtoSelect.disabled = true;
+                } else {
+                    produtoSelect.innerHTML = '<option value="">Todos os produtos</option>';
+                    produtos.forEach(produto => {
+                        const option = document.createElement("option");
+                        option.value = produto.nome;  // ⭐ Use produto.nome em vez de produto
+                        option.textContent = produto.nome;
+                        produtoSelect.appendChild(option);
+                    });
+                    produtoSelect.disabled = false;
+                }
+            } catch (error) {
+                console.error('❌ Erro ao carregar produtos:', error);
+                produtoSelect.innerHTML = '<option value="">Erro ao carregar produtos</option>';
+                produtoSelect.disabled = true;
+            }
         }
 
 
@@ -1767,9 +1847,15 @@
             const subclassificacao = document.getElementById("filtroSubclassificacao").value;
             // const obrigatorio = document.getElementById("filtroObrigatorio").value;
             const top = document.getElementById("filtroTop").value;
+            const produto = document.getElementById("filtroProduto").value;
 
             const obrigatorioCheckbox = document.getElementById("filtroObrigatorio");
             const obrigatorio = obrigatorioCheckbox.checked ? "1" : "0";
+
+            if (produto && produto !== "") {
+                params.append("produto", produto);
+            }
+            
 
             if (classificacao) params.append("classificacao", classificacao);
             if (subclassificacao) params.append("subclassificacao", subclassificacao);
@@ -2483,6 +2569,28 @@
                 grafico = null;
             }
         }
+
+
+        // ⭐ NOVOS EVENT LISTENERS - ADICIONAR LOGO APÓS O ANTERIOR
+        filtroSubclassificacao.addEventListener("change", () => {
+            carregarProdutos();
+        });
+
+        document.getElementById("filtroRegiao").addEventListener("change", () => {
+            carregarProdutos();
+        });
+
+        document.getElementById("filtroFamiliar").addEventListener("change", () => {
+            carregarProdutos();
+        });
+
+        document.getElementById("filtroObrigatorio").addEventListener("change", () => {
+            carregarProdutos();
+        });
+
+        filtroProduto.addEventListener('change', () => {
+            filtroTop.disabled = filtroProduto.value !== '';
+        });
 
 
 

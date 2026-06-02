@@ -10,6 +10,83 @@ module.exports = (db) => {
     ssl: { rejectUnauthorized: false },
   });
 
+  // Endpoint para listar produtos baseado nos filtros
+router.get("/produtos-list", async (req, res) => {
+  try {
+    const {
+      classificacao,
+      subclassificacao,
+      regiao,
+      familiar,
+      obrigatorio,
+    } = req.query;
+
+    let query = `
+      SELECT DISTINCT
+        p.id,
+        p.nome
+      FROM ibge_dados i
+      JOIN produtos p ON i.produto_id = p.id
+      JOIN regioes r ON i.regiao_id = r.id
+      LEFT JOIN subclassificacoes_ibge s
+        ON p.subclassificacao_id = s.id
+      LEFT JOIN classificacoes_ibge c
+        ON s.classificacao_id = c.id
+      WHERE 1=1
+    `;
+
+    const params = {};
+
+    if (classificacao && classificacao !== "") {
+      query += " AND c.nome = @classificacao";
+      params.classificacao = classificacao;
+    }
+
+    if (subclassificacao && subclassificacao !== "") {
+      query += " AND s.nome = @subclassificacao";
+      params.subclassificacao = subclassificacao;
+    }
+
+    if (regiao && regiao !== "") {
+      query += " AND r.nome = @regiao";
+      params.regiao = regiao;
+    }
+
+    if (familiar !== undefined && familiar !== "") {
+      query += " AND i.familiar = @familiar";
+      params.familiar = Number(familiar);
+    }
+
+    if (obrigatorio !== undefined && obrigatorio !== "") {
+      query += " AND p.rastreabilidade_obrigatoria = @obrigatorio";
+      params.obrigatorio = Number(obrigatorio);
+    }
+
+    query += " ORDER BY p.nome";
+
+    const produtos = db.prepare(query).all(params);
+    
+    // ⭐ Adicione este log para debug
+    console.log(`📦 /produtos-list retornou ${produtos.length} produtos`);
+    console.log(`📦 Primeiro produto: ${produtos[0]?.nome || 'nenhum'}`);
+    
+
+    res.json(produtos);
+
+  } catch (err) {
+    console.error("❌ Erro em /produtos-list:", err);
+
+    res.status(500).json({
+      error: "Erro ao listar produtos",
+      details: err.message,
+    });
+  }
+});
+
+
+
+
+
   // --- Endpoint combinado: IBGE + Custos de Contrato ---
   router.get("/", async (req, res) => {
     try {
@@ -30,8 +107,10 @@ module.exports = (db) => {
         data_fim,
         base_calculo,         
         escopo_deploy,
+        produto,    
       } = req.query;
 
+      console.log("📦 Produto selecionado:", produto);
       // console.log(req.query);
 
       // console.log("🔧 Tipo de cálculo selecionado:", tipo_calculo);
@@ -101,7 +180,11 @@ module.exports = (db) => {
       if (subclassificacao && subclassificacao !== "undefined") {
         queryEstabelecimentos += " AND s.nome = @subclassificacao";
         paramsIBGE.subclassificacao = subclassificacao;
-      }      
+      }    
+      if (produto && produto !== "") {
+        queryEstabelecimentos += " AND p.nome = @produto";
+        paramsIBGE.produto = produto;
+      }  
       if (familiar !== undefined) { queryEstabelecimentos += " AND i.familiar = @familiar"; paramsIBGE.familiar = Number(familiar); }
       if (obrigatorio !== undefined) { queryEstabelecimentos += " AND p.rastreabilidade_obrigatoria = @obrigatorio"; paramsIBGE.obrigatorio = Number(obrigatorio); }
 
@@ -137,6 +220,10 @@ module.exports = (db) => {
         queryProducao += " AND s.nome = @subclassificacao";
         paramsProducao.subclassificacao = subclassificacao;
       }      
+      if (produto && produto !== "") {
+        queryProducao += " AND p.nome = @produto";
+        paramsProducao.produto = produto;
+      }
       if (familiar !== undefined) { queryProducao += " AND pr.familiar = @familiar"; paramsProducao.familiar = Number(familiar); }
       if (obrigatorio !== undefined) { queryProducao += " AND p.rastreabilidade_obrigatoria = @obrigatorio"; paramsProducao.obrigatorio = Number(obrigatorio); }
 
@@ -474,6 +561,7 @@ module.exports = (db) => {
 
       const resultado = Object.values(agregados).map(d => {
         const totalEstimado = d.total_estimado_brl + (custoDeployRateado * d.quantidade);
+        console.log(`🔹 Produto: ${d.produto} | Quantidade: ${d.quantidade} | Custo Total Funções: R$ ${d.total_estimado_brl.toFixed(2)} | Custo Deploy Rateado: R$ ${(custoDeployRateado * d.quantidade).toFixed(2)} | Total Estimado: R$ ${totalEstimado.toFixed(2)} | custoDeployRateado: R$ ${custoDeployRateado}`);
         const valorVendas = (Number(d.valor_vendas) || 0) * 1000;
         const percentual = valorVendas > 0 ? Number(((totalEstimado / valorVendas) * 100).toFixed(2)) : 0;
 
