@@ -28,8 +28,7 @@ module.exports = (db) => {
         funcoes,
         data_inicio,
         data_fim,
-        base_calculo,         
-        escopo_deploy,
+        base_calculo,  // 🔥 NOVO: 'estabelecimentos' ou 'producao'
       } = req.query;
 
       // console.log(req.query);
@@ -279,22 +278,12 @@ module.exports = (db) => {
       
       // Calcular custo TOTAL considerando múltiplas execuções
       let custoTotalFuncoesBRL = 0;
-      let gasTotal = 0;      
-
-      let custoDeployBRL = 0;
-      let gasDeploy = 0;
-      
+      let gasTotal = 0;
       
       if (usarTodasFuncoes) {
         for (const [funcName, custoData] of Object.entries(custoBasePorFuncao)) {
-          const ehDeploy = funcName.toLowerCase().includes('deploy') || funcName.toLowerCase().includes('constructor');
-          if (ehDeploy) {
-            custoDeployBRL += custoData.custo_brl;
-            gasDeploy += custoData.gas_used
-          } else {
-            custoTotalFuncoesBRL += custoData.custo_brl;
-            gasTotal += custoData.gas_used;
-          }
+          custoTotalFuncoesBRL += custoData.custo_brl;
+          gasTotal += custoData.gas_used;
         }
         console.log(`📊 Usando TODAS as funções (${Object.keys(custoBasePorFuncao).length} funções)`);
       } else {
@@ -302,17 +291,9 @@ module.exports = (db) => {
           const custoData = custoBasePorFuncao[funcSelecionada.name];
           if (custoData) {
             const multiplicador = Number(funcSelecionada.executions) || 1;
-            
-            const ehDeploy = funcSelecionada.name.toLowerCase().includes('deploy') || funcSelecionada.name.toLowerCase().includes('constructor');
-            if (ehDeploy) {
-              custoDeployBRL += custoData.custo_brl;
-              gasDeploy += custoData.gas_used
-              console.log(`  🔹 ${funcSelecionada.name}: ${multiplicador}x = R$ ${(custoData.custo_brl * multiplicador).toFixed(6)}`);
-            } else {
-              custoTotalFuncoesBRL += custoData.custo_brl * multiplicador;
-              gasTotal += custoData.gas_used * multiplicador;
-              console.log(`  🔹 ${funcSelecionada.name}: ${multiplicador}x = R$ ${(custoData.custo_brl * multiplicador).toFixed(6)}`);
-            }
+            custoTotalFuncoesBRL += custoData.custo_brl * multiplicador;
+            gasTotal += custoData.gas_used * multiplicador;
+            console.log(`  🔹 ${funcSelecionada.name}: ${multiplicador}x = R$ ${(custoData.custo_brl * multiplicador).toFixed(6)}`);
           } else {
             console.warn(`⚠️ Função "${funcSelecionada.name}" não encontrada no contrato`);
           }
@@ -322,45 +303,6 @@ module.exports = (db) => {
       console.log(`💰 Custo Total Funções: R$ ${custoTotalFuncoesBRL.toFixed(6)}`);
       console.log(`⛽ Gas Total: ${gasTotal}`);
 
-      
-      function resolverNumeroDeploys(escopoDeploy, regiao, quantidadeExecucoes) {
-
-        // padrão
-        if (!escopoDeploy || escopoDeploy === '1_por_estabelecimento') {
-          return quantidadeExecucoes;
-        }
-      
-        // global
-        if (escopoDeploy === 'global') {
-          return 1;
-        }
-      
-        // por cidade/região
-        if (escopoDeploy === '1_por_cidade') {
-      
-          const mapaRegioes = {
-            "Brasil": 5570,
-            "Sul": 1191,
-            "RS": 497,
-            "Alegrete": 1
-          };
-      
-          return mapaRegioes[regiao] || 1;
-        }
-      
-        // número fixo vindo do frontend
-        const numero = Number(escopoDeploy);
-      
-        if (!isNaN(numero) && numero > 0) {
-          return numero;
-        }
-      
-        // fallback
-        return quantidadeExecucoes;
-      }
-
-
-
       // ---------------- AGREGAÇÃO (usando a base de cálculo selecionada) ----------------
       const agregados = {};
       
@@ -369,13 +311,6 @@ module.exports = (db) => {
       const dadosFonte = usarProducao ? dadosProducao : dadosEstabelecimentos;
       
       console.log(`📊 Usando fonte: ${usarProducao ? 'Produção' : 'Estabelecimentos'}`);
-      let estabelecimentosTotais = 0;
-      let custoDeployTotalBRL = 0;
-
-      if (escopo_deploy === "1_por_estabelecimento") {
-        custoTotalFuncoesBRL += custoDeployBRL;
-        gasTotal += gasDeploy;
-      }
       
       dadosFonte.forEach(d => {
         let quantidade = 0;
@@ -408,7 +343,7 @@ module.exports = (db) => {
 
         agregados[chave].quantidade += quantidade;
         agregados[chave].total_estimado_brl += quantidade * custoTotalFuncoesBRL;
-        estabelecimentosTotais += quantidade;
+        
         // Manter os valores separados para referência
         if (usarProducao) {
           agregados[chave].producao += quantidade;
@@ -417,21 +352,6 @@ module.exports = (db) => {
           agregados[chave].estabelecimentos += quantidade;
         }
       });
-
-      let custoDeployRateado = 0;
-      let gasDeployRateado = 0;
-
-      if (escopo_deploy !== "1_por_estabelecimento") {
-        const numeroDeploys = resolverNumeroDeploys(escopo_deploy, regiao, estabelecimentosTotais);
-        custoDeployTotalBRL = custoDeployBRL * numeroDeploys;
-        custoDeployRateado = custoDeployTotalBRL / estabelecimentosTotais;
-        gasDeployRateado = gasDeploy * numeroDeploys / estabelecimentosTotais;
-      }
-      
-
-      console.log(`📊 Quantidade total usada para cálculo: ${estabelecimentosTotais}`);
-      console.log(`📊 Custo deploy estimado (BRL): R$ ${custoDeployBRL}`);
-      console.log(`📊 Custo deploy total considerando escopo (${escopo_deploy}): R$ ${custoDeployTotalBRL}`);
 
       // 🔥 Se usou produção, ainda buscar estabelecimentos para referência
       if (usarProducao && dadosEstabelecimentos.length > 0) {
@@ -470,10 +390,8 @@ module.exports = (db) => {
         });
       }
 
-
-
       const resultado = Object.values(agregados).map(d => {
-        const totalEstimado = d.total_estimado_brl + (custoDeployRateado * d.quantidade);
+        const totalEstimado = d.total_estimado_brl;
         const valorVendas = (Number(d.valor_vendas) || 0) * 1000;
         const percentual = valorVendas > 0 ? Number(((totalEstimado / valorVendas) * 100).toFixed(2)) : 0;
 
@@ -490,10 +408,10 @@ module.exports = (db) => {
           base_calculo_utilizada: base_calculo || 'estabelecimentos',
           valor_vendas: valorVendas,
           total_estimado_brl: Number(totalEstimado.toFixed(2)),
-          custo_total_funcoes_brl: Number((custoTotalFuncoesBRL + custoDeployRateado).toFixed(6)),
-          custo_medio_contrato_brl: Number((custoTotalFuncoesBRL + custoDeployRateado).toFixed(2)),
+          custo_total_funcoes_brl: Number(custoTotalFuncoesBRL.toFixed(6)),
+          custo_medio_contrato_brl: Number(custoTotalFuncoesBRL.toFixed(2)),
           percentual_custo: percentual,
-          gas_contrato: (gasTotal + gasDeployRateado).toFixed(0),
+          gas_contrato: gasTotal,
           periodo_usado: tipo_calculo === 'custom' ? 
             `Personalizado: ${data_inicio ? new Date(Number(data_inicio)).toLocaleDateString('pt-BR') : '?'} até ${data_fim ? new Date(Number(data_fim)).toLocaleDateString('pt-BR') : '?'}` : 
             tipo_calculo
@@ -525,8 +443,8 @@ module.exports = (db) => {
       console.log("=== QUERY RECEBIDA ===");
       console.log(req.query);
 
-      // console.log("=== RESULTADO ===");
-      // console.log(JSON.stringify(resultado.slice(0, topN), null, 2));
+      console.log("=== RESULTADO ===");
+      console.log(JSON.stringify(resultado.slice(0, topN), null, 2));
 
       
       res.json(resultado.slice(0, topN));
