@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartAgro - Análise Blockchain para o Agronegócio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+      :root {
+          --primary: #2E7D32;
+          --primary-dark: #1B5E20;
+          --primary-light: #4CAF50;
+          --secondary: #FF9800;
+          --accent: #2196F3;
+          --accent-light: #64B5F6;
+          --text: #333333;
+          --text-light: #666666;
+          --background: #F5F5F5;
+          --white: #FFFFFF;
+          --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          --transition: all 0.3s ease;
+      }
+      
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+      
+      body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background-color: var(--background);
+          color: var(--text);
+          line-height: 1.6;
+      }
+      
+      .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+      }
+      
+      /* Header */
+      header {
+          background-color: var(--white);
+          box-shadow: var(--shadow);
+          position: sticky;
+          top: 0;
+          z-index: 100;
+      }
+      
+      .header-content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 0;
+      }
+      
+      .logo {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+      }
+      
+      .logo-icon {
+          color: var(--primary);
+          font-size: 28px;
+      }
+      
+      .logo-text {
+          font-size: 24px;
+          font-weight: 700;
+          color: var(--primary);
+      }
+      
+      .logo-subtitle {
+          font-size: 14px;
+          color: var(--text-light);
+          margin-top: -4px;
+      }
+      
+      .user-info {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+      }
+      
+      .user-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: var(--primary-light);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: bold;
+      }
+      
+      /* Hero Section */
+      .hero {
+          background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+          color: white;
+          padding: 60px 0;
+          margin-bottom: 40px;
+      }
+      
+      .hero-content {
+          max-width: 800px;
+          margin: 0 auto;
+          text-align: center;
+      }
+      
+      .hero h1 {
+          font-size: 36px;
+          margin-bottom: 16px;
+          font-weight: 700;
+      }
+      
+      .hero p {
+          font-size: 18px;
+          opacity: 0.9;
+          margin-bottom: 24px;
+      }
+      
+      .workflow-steps {
+          display: flex;
+          justify-content: center;
+          gap: 30px;
+          margin-top: 30px;
+          flex-wrap: wrap;
+      }
+      
+      .step {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          max-width: 150px;
+      }
+      
+      .step-number {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: rgba(255, 255, 255, 0.2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 10px;
+          font-weight: bold;
+      }
+      
+      .step-text {
+          font-size: 14px;
+          text-align: center;
+          opacity: 0.9;
+      }
+      
+      /* Cards Section */
+      .cards-section {
+          padding: 40px 0 80px;
+      }
+      
+      .section-title {
+          text-align: center;
+          margin-bottom: 40px;
+          font-size: 28px;
+          color: var(--text);
+          position: relative;
+      }
+      
+      .section-title::after {
+          content: '';
+          display: block;
+          width: 80px;
+          height: 4px;
+          background-color: var(--primary);
+          margin: 12px auto 0;
+          border-radius: 2px;
+      }
+      
+      .cards-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 24px;
+      }
+      
+      .card {
+          background-color: var(--white);
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: var(--shadow);
+          transition: var(--transition);
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+      }
+      
+      .card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+      }
+      
+      .card-icon {
+          color: white;
+          font-size: 28px;
+          padding: 24px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+      
+      .card-1 .card-icon {
+          background-color: var(--accent);
+      }
+      
+      .card-2 .card-icon {
+          background-color: var(--secondary);
+      }
+      
+      .card-3 .card-icon {
+          background-color: var(--accent-light);
+      }
+      
+      .card-4 .card-icon {
+          background-color: var(--primary);
+      }
+      
+      .card-5 .card-icon {
+          background-color: #00B894;
+      }
+      
+      .card-content {
+          padding: 24px;
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+      }
+      
+      .card-title {
+          font-size: 20px;
+          margin-bottom: 12px;
+          color: var(--text);
+      }
+      
+      .card-description {
+          color: var(--text-light);
+          margin-bottom: 20px;
+          flex-grow: 1;
+      }
+      
+      .mode-tag {
+          display: inline-block;
+          padding: 4px 10px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 600;
+          margin-bottom: 10px;
+      }
+      
+      .automated-tag {
+          background-color: #E3F2FD;
+          color: var(--accent);
+      }
+      
+      .iterative-tag {
+          background-color: #FFF3E0;
+          color: var(--secondary);
+      }
+      
+      .card-button {
+          background-color: var(--primary);
+          color: white;
+          border: none;
+          padding: 12px 20px;
+          border-radius: 6px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: var(--transition);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+      }
+      
+      .card-button:hover {
+          background-color: var(--primary-dark);
+      }
+      
+      /* Footer */
+      footer {
+          background-color: var(--white);
+          padding: 40px 0;
+          border-top: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      
+      .footer-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 24px;
+      }
+      
+      .footer-logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          color: var(--primary);
+          font-weight: 700;
+          font-size: 20px;
+      }
+      
+      .footer-links {
+          display: flex;
+          gap: 24px;
+      }
+      
+      .footer-link {
+          color: var(--text-light);
+          text-decoration: none;
+          transition: var(--transition);
+      }
+      
+      .footer-link:hover {
+          color: var(--primary);
+      }
+      
+      .copyright {
+          color: var(--text-light);
+          font-size: 14px;
+      }
+      
+      /* Responsive */
+      @media (max-width: 768px) {
+          .hero h1 {
+              font-size: 28px;
+          }
+          
+          .hero p {
+              font-size: 16px;
+          }
+          
+          .workflow-steps {
+              gap: 15px;
+          }
+          
+          .step {
+              max-width: 120px;
+          }
+          
+          .step-text {
+              font-size: 12px;
+          }
+          
+          .cards-grid {
+              grid-template-columns: 1fr;
+          }
+          
+          .footer-links {
+              flex-direction: column;
+              gap: 12px;
+              text-align: center;
+          }
+      }
+
+      .btn-help {
+        background: transparent;
+        border: none;
+        color: var(--primary);
+        cursor: pointer;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-help:hover {
+        background: rgba(46, 125, 50, 0.1);
+    }
+
+    .btn-help i {
+        font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+      <div class="container">
+          <div class="header-content">
+              <div class="logo">
+                  <i class="fas fa-seedling logo-icon"></i>
+                  <div>
+                      <div class="logo-text">Smart Agro Cost</div>
+                      <div class="logo-subtitle">Blockchain Intelligence para o Agronegócio</div>
+                  </div>
+              </div>
+              
+              <div class="user-info">
+                <a href="/manual" class="btn-help" target="_blank">
+                    <i class="fas fa-book-open"></i> 
+                    <span>Manual</span>
+                </a>
+                <div class="user-avatar">FS</div>
+                <div>Fábio Silva</div>
+              </div>
+          </div>
+      </div>
+  </header>
+  
+  <section class="hero">
+      <div class="container">
+          <div class="hero-content">
+              <h1>Análise de Viabilidade Blockchain</h1>
+              <p>Calcule custos de implementação e simule a adoção de contratos inteligentes no agronegócio brasileiro</p>
+              
+              <div class="workflow-steps">
+                  <div class="step">
+                      <div class="step-number">1</div>
+                      <div class="step-text">Analise dados do Censo Agropecuário</div>
+                  </div>
+                  <div class="step">
+                      <div class="step-number">2</div>
+                      <div class="step-text">Implemente contratos inteligentes</div>
+                  </div>
+                  <div class="step">
+                      <div class="step-number">3</div>
+                      <div class="step-text">Calcule custos de transação</div>
+                  </div>
+                  <div class="step">
+                      <div class="step-number">4</div>
+                      <div class="step-text">Simule adoção em larga escala</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  
+  <section class="cards-section">
+      <div class="container">
+          <h2 class="section-title">Ferramentas de Análise</h2>
+          <div class="cards-grid">
+              <div class="card card-1" onclick="location.href='/dashboard'">
+                  <div class="card-icon">
+                      <i class="fas fa-database"></i>
+                  </div>
+                  <div class="card-content">
+                      <h3 class="card-title">Indicadores IBGE</h3>
+                      <p class="card-description">Acesse dados do Censo Agropecuário com visualizações interativas de estabelecimentos e comercialização por produto.</p>
+                      <button class="card-button">
+                          <i class="fas fa-chart-bar"></i> Explorar Dados
+                      </button>
+                  </div>
+              </div>
+
+              <!-- NOVO CARD: Histórico de Custos Blockchain -->
+              <div class="card card-5" onclick="location.href='/gas-history'">
+                  <div class="card-icon">
+                      <i class="fas fa-gas-pump"></i>
+                  </div>
+                  <div class="card-content">
+                      <h3 class="card-title">Histórico de Custos</h3>
+                      <p class="card-description">Analise e compare custos de transação entre diferentes redes blockchain ao longo do tempo. Visualize tendências e otimize custos.</p>
+                      <button class="card-button">
+                          <i class="fas fa-gas-pump"></i> Ver Histórico
+                      </button>
+                  </div>
+              </div>
+              
+              <div class="card card-2" onclick="location.href='/gas'">
+                  <div class="card-icon">
+                      <i class="fas fa-bolt"></i>
+                  </div>
+                  <div class="card-content">
+                      <span class="mode-tag automated-tag">MODO AUTOMÁTICO</span>
+                      <h3 class="card-title">Implementação Rápida</h3>
+                      <p class="card-description">Deploy automático com execução sequencial de funções usando argumentos fictícios. Ideal para contratos simples.</p>
+                      <button class="card-button">
+                          <i class="fas fa-play-circle"></i> Executar Automaticamente
+                      </button>
+                  </div>
+              </div>
+              
+              <div class="card card-3" onclick="location.href='/interface'">
+                  <div class="card-icon">
+                      <i class="fas fa-sliders-h"></i>
+                  </div>
+                  <div class="card-content">
+                      <span class="mode-tag iterative-tag">MODO ITERATIVO</span>
+                      <h3 class="card-title">Implementação Controlada</h3>
+                      <p class="card-description">Controle a ordem de execução e preencha argumentos manualmente. Perfeito para contratos complexos.</p>
+                      <button class="card-button">
+                          <i class="fas fa-cogs"></i> Configurar Execução
+                      </button>
+                  </div>
+              </div>
+              
+              <div class="card card-4" onclick="location.href='/results'">
+                  <div class="card-icon">
+                      <i class="fas fa-chart-line"></i>
+                  </div>
+                  <div class="card-content">
+                      <h3 class="card-title">Simulação de Adoção</h3>
+                      <p class="card-description">Cruze custos blockchain com dados do IBGE para projetar viabilidade em diferentes cenários de adoção.</p>
+                      <button class="card-button">
+                          <i class="fas fa-project-diagram"></i> Simular Cenários
+                      </button>
+                  </div>
+              </div>
+
+          </div>
+      </div>
+  </section>
+  
+  <footer>
+      <div class="container">
+          <div class="footer-content">
+              <div class="footer-logo">
+                  <i class="fas fa-seedling"></i>
+                  <span>Smart Agro Cost</span>
+              </div>
+              <div class="footer-links">
+                  <a href="#" class="footer-link">Sobre Nós</a>
+                  <a href="#" class="footer-link">Contato</a>
+                  <a href="#" class="footer-link">Documentação</a>
+                  <a href="#" class="footer-link">Termos de Uso</a>
+              </div>
+              <div class="copyright">
+                  &copy; 2025 Smart Agro Cost. Dados do Censo Agropecuário IBGE.
+              </div>
+          </div>
+      </div>
+  </footer>
+</body>
+</html>

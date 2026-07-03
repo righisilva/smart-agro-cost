@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ===== SEUS ESTILOS EXISTENTES AQUI ===== */
         :root {
             --primary: #2E7D32;
             --primary-dark: #1B5E20;
@@ -42,7 +43,6 @@
             padding: 0 20px;
         }
 
-        /* Header */
         .dashboard-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
@@ -55,6 +55,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .header-title h1 {
@@ -70,7 +72,9 @@
 
         .header-actions {
             display: flex;
-            gap: 15px;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -85,26 +89,37 @@
             gap: 8px;
         }
 
-        .btn-primary {
-            background-color: white;
+        .lang-selector {
+            display: flex;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .lang-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-btn.active {
+            background: white;
             color: var(--primary);
         }
 
-        .btn-primary:hover {
-            background-color: #F0F0F0;
-        }
-
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Filters Section */
         .filters-section {
             background-color: var(--card-bg);
             border-radius: 12px;
@@ -123,11 +138,35 @@
             font-weight: 600;
         }
 
-        .filters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+        .filter-block {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-block:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .block-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .filters-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            align-items: end;
         }
 
         .filter-group {
@@ -168,6 +207,35 @@
             box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
         }
 
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent);
+            margin: 0;
+        }
+
+        .checkbox-option label {
+            font-size: 14px;
+            font-weight: normal;
+            color: var(--text);
+            cursor: pointer;
+            margin: 0;
+        }
+
         .filter-actions {
             display: flex;
             justify-content: space-between;
@@ -181,7 +249,32 @@
             color: var(--text-light);
         }
 
-        /* Charts Section */
+        .btn-large {
+            padding: 14px 32px;
+            font-size: 16px;
+        }
+
+        .btn-voltar {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-voltar:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary-custom {
+            background-color: white;
+            color: var(--primary);
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #F0F0F0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
         .charts-section {
             display: grid;
             grid-template-columns: 1fr;
@@ -201,6 +294,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .chart-title {
@@ -212,6 +307,7 @@
         .chart-actions {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .chart-btn {
@@ -237,7 +333,6 @@
             width: 100%;
         }
 
-        /* Stats Cards */
         .stats-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -290,7 +385,6 @@
             color: var(--text);
         }
 
-        /* Footer */
         .dashboard-footer {
             text-align: center;
             padding: 20px 0;
@@ -306,9 +400,9 @@
             justify-content: center;
             gap: 10px;
             margin-bottom: 10px;
+            flex-wrap: wrap;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -318,9 +412,10 @@
 
             .header-actions {
                 width: 100%;
+                justify-content: flex-start;
             }
 
-            .filters-grid {
+            .filters-row {
                 grid-template-columns: 1fr;
             }
 
@@ -344,273 +439,178 @@
             .chart-container {
                 height: 300px;
             }
-        }
-        /* Padronizar botão voltar igual à tela de simulação */
-        .btn-voltar {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
 
-        .btn-voltar:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Padronizar botão primário */
-        .btn-primary-custom {
-            background-color: white;
-            color: var(--primary);
-        }
-
-        .btn-primary-custom:hover {
-            background-color: #F0F0F0;
-            transform: translateY(-2px);        
-        }
-
-        .btn-primary-custom {
-            transition: var(--transition);
-        }
-
-        .btn-primary-custom:hover {
-            background-color: #F0F0F0;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Estilos para a nova organização de filtros (padrão da tela de simulação) */
-        .filter-block {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .filter-block:last-of-type {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .block-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--primary-light);
-        }
-
-        .block-title i {
-            font-size: 18px;
-            color: var(--primary);
-        }
-
-        .filters-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            align-items: end;
-        }
-
-        /* Estilos para checkboxes */
-        .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .checkbox-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-        }
-
-        .checkbox-option input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: var(--accent);
-            margin: 0;
-        }
-
-        .checkbox-option label {
-            font-size: 14px;
-            font-weight: normal;
-            color: var(--text);
-            cursor: pointer;
-            margin: 0;
-        }
-
-        /* Botão principal destacado */
-        .btn-large {
-            padding: 14px 32px;
-            font-size: 16px;
-        }
-
-        /* Indicador de campo obrigatório */
-        .required-star {
-            color: var(--error);
-            font-weight: bold;
-        }
-
-        /* Ajuste para responsividade */
-        @media (max-width: 768px) {
-            .filters-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .btn-large {
+            .lang-selector {
                 width: 100%;
                 justify-content: center;
             }
         }
-
     </style>
 </head>
 
 <body>
-    <header class="dashboard-header"><div class="container">
-        <div class="header-content">
-            <div class="header-title">
-                <h1><i class="fas fa-chart-bar"></i> Dashboard IBGE - Smart Agro Cost</h1>
-                <p>Análise avançada dos dados do Censo Agropecuário</p>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-voltar" onclick="location.href='/'">
-                    <i class="fas fa-home"></i> Voltar ao Início
-                </button>
-                <button class="btn btn-primary-custom" onclick="exportarDados()">
-                        <i class="fas fa-download"></i> Exportar Dados
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-title">
+                    <h1><i class="fas fa-chart-bar"></i> <span data-i18n="header.title">Dashboard IBGE - Smart Agro
+                            Cost</span></h1>
+                    <p data-i18n="header.subtitle">Análise avançada dos dados do Censo Agropecuário</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-voltar" onclick="location.href='/'">
+                        <i class="fas fa-home"></i> <span data-i18n="header.back">Voltar ao Início</span>
                     </button>
+                    <button class="btn btn-primary-custom" onclick="exportarDados()">
+                        <i class="fas fa-download"></i> <span data-i18n="header.export">Exportar Dados</span>
+                    </button>
+                    <div class="lang-selector">
+                        <button class="lang-btn active" onclick="changeLanguage('pt-BR')" data-lang="pt-BR">PT</button>
+                        <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">EN</button>
+                        <button class="lang-btn" onclick="changeLanguage('es')" data-lang="es">ES</button>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
     <div class="container">
+        <!-- FILTERS SECTION -->
         <section class="filters-section">
             <div class="filters-title">
                 <i class="fas fa-sliders-h"></i>
-                <span>Filtros de Análise</span>
+                <span data-i18n="filters.title">Filtros de Análise</span>
             </div>
-        
-            <!-- BLOCO 1: Dados de Origem -->
+
             <div class="filter-block">
-                <h3 class="block-title"><i class="fas fa-database"></i> Dados de Origem (Censo Agropecuário)</h3>
+                <h3 class="block-title"><i class="fas fa-database"></i> <span data-i18n="filters.block1.title">Dados de
+                        Origem (Censo Agropecuário)</span></h3>
                 <div class="filters-row">
                     <div class="filter-group">
-                        <label class="filter-label required"><i class="fas fa-map-marker-alt"></i> Região</label>
+                        <label class="filter-label required"><i class="fas fa-map-marker-alt"></i> <span
+                                data-i18n="filters.region">Região</span></label>
                         <select class="filter-select" id="filtroRegiao" required>
-                            <option value="" disabled selected>Selecione uma região</option>
-                            <option value="Brasil">Brasil (Total)</option>
-                            <option value="Sul">Região Sul</option>
-                            <option value="RS">Rio Grande do Sul</option>
-                            <option value="Alegrete">Alegrete (Município)</option>
+                            <option value="" disabled selected data-i18n="filters.region_placeholder">Selecione uma
+                                região</option>
+                            <option value="Brasil" data-i18n="filters.region_brazil">Brasil (Total)</option>
+                            <option value="Sul" data-i18n="filters.region_south">Região Sul</option>
+                            <option value="RS" data-i18n="filters.region_rs">Rio Grande do Sul</option>
+                            <option value="Alegrete" data-i18n="filters.region_alegrete">Alegrete (Município)</option>
                         </select>
                     </div>
-        
                     <div class="filter-group">
-                        <label class="filter-label"><i class="fas fa-tags"></i> Classificação</label>
+                        <label class="filter-label"><i class="fas fa-tags"></i> <span
+                                data-i18n="filters.classification">Classificação</span></label>
                         <select class="filter-select" id="filtroClassificacao">
-                            <option value="">Todas</option>
-                            <option value="Agricultura">Agricultura</option>
-                            <option value="Pecuária">Pecuária</option>
-                            <option value="Silvicultura">Silvicultura</option>
-                            <option value="Extração Vegetal">Extração Vegetal</option>
-                            <option value="Aquicultura">Aquicultura</option>
-                            <option value="Agroindústria">Agroindústria</option>
+                            <option value="" data-i18n="filters.classification_all">Todas</option>
+                            <option value="Agricultura" data-i18n="filters.classification_agriculture">Agricultura
+                            </option>
+                            <option value="Pecuária" data-i18n="filters.classification_livestock">Pecuária</option>
+                            <option value="Silvicultura" data-i18n="filters.classification_forestry">Silvicultura
+                            </option>
+                            <option value="Extração Vegetal" data-i18n="filters.classification_extraction">Extração
+                                Vegetal</option>
+                            <option value="Aquicultura" data-i18n="filters.classification_aquaculture">Aquicultura
+                            </option>
+                            <option value="Agroindústria" data-i18n="filters.classification_agroindustry">Agroindústria
+                            </option>
                         </select>
                     </div>
-        
                     <div class="filter-group">
-                        <label class="filter-label"><i class="fas fa-layer-group"></i> Subclassificação</label>
+                        <label class="filter-label"><i class="fas fa-layer-group"></i> <span
+                                data-i18n="filters.subclassification">Subclassificação</span></label>
                         <select class="filter-select" id="filtroSubclassificacao" disabled>
-                            <option value="">Todas</option>
+                            <option value="" data-i18n="filters.subclassification_all">Todas</option>
                         </select>
                     </div>
                 </div>
             </div>
-        
-            <!-- BLOCO 2: Filtros de Produtor -->
+
             <div class="filter-block">
-                <h3 class="block-title"><i class="fas fa-users"></i> Perfil do Produtor</h3>
+                <h3 class="block-title"><i class="fas fa-users"></i> <span data-i18n="filters.block2.title">Perfil do
+                        Produtor</span></h3>
                 <div class="filters-row">
                     <div class="filter-group checkbox-group">
-                        <label class="filter-label"><i class="fas fa-home"></i> Tipo de Produtor</label>
+                        <label class="filter-label"><i class="fas fa-home"></i> <span
+                                data-i18n="filters.producer_type">Tipo de Produtor</span></label>
                         <div class="checkbox-option">
                             <input type="checkbox" id="filtroFamiliar" value="1">
-                            <label for="filtroFamiliar">👨‍🌾 Somente Agricultura Familiar</label>
+                            <label for="filtroFamiliar" data-i18n="filters.family_farming">👨‍🌾 Somente Agricultura
+                                Familiar</label>
                         </div>
                     </div>
-        
                     <div class="filter-group checkbox-group">
-                        <label class="filter-label"><i class="fas fa-file-signature"></i> Regulamentação</label>
+                        <label class="filter-label"><i class="fas fa-file-signature"></i> <span
+                                data-i18n="filters.regulation">Regulamentação</span></label>
                         <div class="checkbox-option">
                             <input type="checkbox" id="filtroObrigatorio" value="1">
-                            <label for="filtroObrigatorio">📜 Somente Obrigatório INC 02/2018</label>
+                            <label for="filtroObrigatorio" data-i18n="filters.mandatory">📜 Somente Obrigatório INC
+                                02/2018</label>
                         </div>
                     </div>
                 </div>
             </div>
-        
-            <!-- BLOCO 3: Parâmetros da Análise -->
+
             <div class="filter-block">
-                <h3 class="block-title"><i class="fas fa-chart-line"></i> Parâmetros da Análise</h3>
+                <h3 class="block-title"><i class="fas fa-chart-line"></i> <span
+                        data-i18n="filters.block3.title">Parâmetros da Análise</span></h3>
                 <div class="filters-row">
                     <div class="filter-group">
-                        <label class="filter-label required"><i class="fas fa-sort-amount-down"></i> Ordenar por</label>
+                        <label class="filter-label required"><i class="fas fa-sort-amount-down"></i> <span
+                                data-i18n="filters.order_by">Ordenar por</span></label>
                         <select class="filter-select" id="filtroOrderBy" required>
-                            <option value="valor_vendas" selected>💰 Valor Vendido (BRL)</option>
-                            <option value="estabelecimentos">🏠 Nº de Estabelecimentos</option>
+                            <option value="valor_vendas" selected data-i18n="filters.order_sales">💰 Valor Vendido (BRL)
+                            </option>
+                            <option value="estabelecimentos" data-i18n="filters.order_establishments">🏠 Nº de
+                                Estabelecimentos</option>
                         </select>
                     </div>
-        
                     <div class="filter-group">
-                        <label class="filter-label"><i class="fas fa-crown"></i> Top N Produtos</label>
+                        <label class="filter-label"><i class="fas fa-crown"></i> <span data-i18n="filters.top_n">Top N
+                                Produtos</span></label>
                         <input type="number" class="filter-input" id="filtroTop" min="1" max="50"
-                            placeholder="Ex: 10 (todos se vazio)">
+                            placeholder="Ex: 10 (todos se vazio)" data-i18n-placeholder="filters.top_placeholder">
                     </div>
                 </div>
             </div>
-        
-            <!-- Botão de Ação Principal -->
+
             <div class="filter-actions">
                 <div class="filter-info">
                     <i class="fas fa-info-circle"></i>
-                    <span>Campos com <span class="required-star">*</span> são obrigatórios</span>
+                    <span><span data-i18n="filters.required_fields">Campos com</span> <span
+                            class="required-star">*</span> <span data-i18n="filters.are_required">são
+                            obrigatórios</span></span>
                 </div>
                 <button class="btn btn-primary btn-large" onclick="atualizarDashboard()">
-                    <i class="fas fa-sync-alt"></i> Atualizar Dashboard
+                    <i class="fas fa-sync-alt"></i> <span data-i18n="filters.update">Atualizar Dashboard</span>
                 </button>
             </div>
         </section>
 
+        <!-- STATS SECTION -->
         <section class="stats-section" id="statsContainer">
-            <!-- Os cards de estatísticas serão preenchidos dinamicamente -->
             <div class="stat-card">
                 <div class="stat-icon stat-icon-1">
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-content">
-                    <h3>Aguardando seleção de filtros</h3>
+                    <h3 data-i18n="stats.waiting">Aguardando seleção de filtros</h3>
                     <div class="stat-value">-</div>
                 </div>
             </div>
         </section>
 
+        <!-- CHARTS SECTION -->
         <section class="charts-section">
             <div class="chart-card">
                 <div class="chart-header">
-                    <div class="chart-title">Valor de Vendas por Produto</div>
+                    <div class="chart-title" data-i18n="charts.sales_title">Valor de Vendas por Produto</div>
                     <div class="chart-actions">
                         <button class="chart-btn" onclick="alternarTipoGrafico('graficoVendas')">
-                            <i class="fas fa-chart-bar"></i> Alternar Tipo
+                            <i class="fas fa-chart-bar"></i> <span data-i18n="charts.toggle">Alternar Tipo</span>
                         </button>
                         <button class="chart-btn" onclick="downloadChart('graficoVendas')">
-                            <i class="fas fa-download"></i> Exportar
+                            <i class="fas fa-download"></i> <span data-i18n="charts.export">Exportar</span>
                         </button>
                     </div>
                 </div>
@@ -621,13 +621,13 @@
 
             <div class="chart-card">
                 <div class="chart-header">
-                    <div class="chart-title">Estabelecimentos por Produto</div>
+                    <div class="chart-title" data-i18n="charts.establishments_title">Estabelecimentos por Produto</div>
                     <div class="chart-actions">
                         <button class="chart-btn" onclick="alternarTipoGrafico('graficoEstabelecimentos')">
-                            <i class="fas fa-chart-bar"></i> Alternar Tipo
+                            <i class="fas fa-chart-bar"></i> <span data-i18n="charts.toggle">Alternar Tipo</span>
                         </button>
                         <button class="chart-btn" onclick="downloadChart('graficoEstabelecimentos')">
-                            <i class="fas fa-download"></i> Exportar
+                            <i class="fas fa-download"></i> <span data-i18n="charts.export">Exportar</span>
                         </button>
                     </div>
                 </div>
@@ -636,16 +636,16 @@
                 </div>
             </div>
 
-            <!-- NOVO GRÁFICO COMBINADO -->
             <div class="chart-card">
                 <div class="chart-header">
-                    <div class="chart-title">Análise Combinada: Valor de Vendas vs Estabelecimentos</div>
+                    <div class="chart-title" data-i18n="charts.combined_title">Análise Combinada: Valor de Vendas vs
+                        Estabelecimentos</div>
                     <div class="chart-actions">
                         <button class="chart-btn" onclick="alternarTipoGrafico('graficoCombinado')">
-                            <i class="fas fa-chart-bar"></i> Alternar Tipo
+                            <i class="fas fa-chart-bar"></i> <span data-i18n="charts.toggle">Alternar Tipo</span>
                         </button>
                         <button class="chart-btn" onclick="downloadChart('graficoCombinado')">
-                            <i class="fas fa-download"></i> Exportar
+                            <i class="fas fa-download"></i> <span data-i18n="charts.export">Exportar</span>
                         </button>
                     </div>
                 </div>
@@ -658,15 +658,421 @@
         <footer class="dashboard-footer">
             <div class="data-source">
                 <i class="fas fa-database"></i>
-                <span>Fonte de dados: Censo Agropecuário IBGE - Processado pela SmartAgro</span>
+                <span data-i18n="footer.data_source">Fonte de dados: Censo Agropecuário IBGE - Processado pela
+                    SmartAgro</span>
             </div>
-            <div class="copyright">
+            <div class="copyright" data-i18n="footer.copyright">
                 &copy; 2025 SmartAgro - Dashboard IBGE. Todos os direitos reservados.
             </div>
         </footer>
     </div>
 
     <script>
+        // ============================================
+        // TRADUÇÕES
+        // ============================================
+        const translations = {
+            'pt-BR': {
+                locale: 'pt-BR',
+                'header.title': 'Dashboard IBGE - Smart Agro Cost',
+                'header.subtitle': 'Análise avançada dos dados do Censo Agropecuário',
+                'header.back': 'Voltar ao Início',
+                'header.export': 'Exportar Dados',
+                'filters.title': 'Filtros de Análise',
+                'filters.block1.title': 'Dados de Origem (Censo Agropecuário)',
+                'filters.region': 'Região',
+                'filters.region_placeholder': 'Selecione uma região',
+                'filters.region_brazil': 'Brasil (Total)',
+                'filters.region_south': 'Região Sul',
+                'filters.region_rs': 'Rio Grande do Sul',
+                'filters.region_alegrete': 'Alegrete (Município)',
+                'filters.classification': 'Classificação',
+                'filters.classification_all': 'Todas',
+                'filters.classification_agriculture': 'Agricultura',
+                'filters.classification_livestock': 'Pecuária',
+                'filters.classification_forestry': 'Silvicultura',
+                'filters.classification_extraction': 'Extração Vegetal',
+                'filters.classification_aquaculture': 'Aquicultura',
+                'filters.classification_agroindustry': 'Agroindústria',
+                'filters.subclassification': 'Subclassificação',
+                'filters.subclassification_all': 'Todas',
+                'filters.block2.title': 'Perfil do Produtor',
+                'filters.producer_type': 'Tipo de Produtor',
+                'filters.family_farming': '👨‍🌾 Somente Agricultura Familiar',
+                'filters.regulation': 'Regulamentação',
+                'filters.mandatory': '📜 Somente Obrigatório INC 02/2018',
+                'filters.block3.title': 'Parâmetros da Análise',
+                'filters.order_by': 'Ordenar por',
+                'filters.order_sales': '💰 Valor Vendido (BRL)',
+                'filters.order_establishments': '🏠 Nº de Estabelecimentos',
+                'filters.top_n': 'Top N Produtos',
+                'filters.top_placeholder': 'Ex: 10 (todos se vazio)',
+                'filters.required_fields': 'Campos com',
+                'filters.are_required': 'são obrigatórios',
+                'filters.update': 'Atualizar Dashboard',
+                'stats.waiting': 'Aguardando seleção de filtros',
+                'stats.loading': 'Carregando dados...',
+                'stats.error': 'Erro ao carregar dados',
+                'stats.error_msg': 'Tente novamente ou verifique sua conexão',
+                'stats.total_sales': 'Valor Total de Vendas',
+                'stats.total_establishments': 'Total de Estabelecimentos',
+                'stats.products_analyzed': 'Produtos Analisados',
+                'charts.sales_title': 'Valor de Vendas por Produto',
+                'charts.establishments_title': 'Estabelecimentos por Produto',
+                'charts.combined_title': 'Análise Combinada: Valor de Vendas vs Estabelecimentos',
+                'charts.toggle': 'Alternar Tipo',
+                'charts.export': 'Exportar',
+                'charts.no_data': 'Nenhum dado disponível para os filtros selecionados',
+                'charts.sales_label': 'Valor de Vendas (R$)',
+                'charts.establishments_label': 'Estabelecimentos',
+                'charts.y_axis_sales': 'Valor de Vendas (R$)',
+                'charts.y_axis_establishments': 'Nº de Estabelecimentos',
+                'charts.product': 'Produto: ',
+                'charts.currency': 'R$',
+                'footer.data_source': 'Fonte de dados: Censo Agropecuário IBGE - Processado pela SmartAgro',
+                'footer.copyright': '© 2025 SmartAgro - Dashboard IBGE. Todos os direitos reservados.'
+            },
+            'en': {
+                locale: 'en-US',
+                'header.title': 'IBGE Dashboard - Smart Agro Cost',
+                'header.subtitle': 'Advanced analysis of Agricultural Census data',
+                'header.back': 'Back to Home',
+                'header.export': 'Export Data',
+                'filters.title': 'Analysis Filters',
+                'filters.block1.title': 'Source Data (Agricultural Census)',
+                'filters.region': 'Region',
+                'filters.region_placeholder': 'Select a region',
+                'filters.region_brazil': 'Brazil (Total)',
+                'filters.region_south': 'South Region',
+                'filters.region_rs': 'Rio Grande do Sul',
+                'filters.region_alegrete': 'Alegrete (Municipality)',
+                'filters.classification': 'Classification',
+                'filters.classification_all': 'All',
+                'filters.classification_agriculture': 'Agriculture',
+                'filters.classification_livestock': 'Livestock',
+                'filters.classification_forestry': 'Forestry',
+                'filters.classification_extraction': 'Plant Extraction',
+                'filters.classification_aquaculture': 'Aquaculture',
+                'filters.classification_agroindustry': 'Agroindustry',
+                'filters.subclassification': 'Subclassification',
+                'filters.subclassification_all': 'All',
+                'filters.block2.title': 'Producer Profile',
+                'filters.producer_type': 'Producer Type',
+                'filters.family_farming': '👨‍🌾 Family Farming Only',
+                'filters.regulation': 'Regulation',
+                'filters.mandatory': '📜 Mandatory INC 02/2018 Only',
+                'filters.block3.title': 'Analysis Parameters',
+                'filters.order_by': 'Order by',
+                'filters.order_sales': '💰 Sales Value (BRL)',
+                'filters.order_establishments': '🏠 Number of Establishments',
+                'filters.top_n': 'Top N Products',
+                'filters.top_placeholder': 'Ex: 10 (all if empty)',
+                'filters.required_fields': 'Fields with',
+                'filters.are_required': 'are required',
+                'filters.update': 'Update Dashboard',
+                'stats.waiting': 'Waiting for filter selection',
+                'stats.loading': 'Loading data...',
+                'stats.error': 'Error loading data',
+                'stats.error_msg': 'Please try again or check your connection',
+                'stats.total_sales': 'Total Sales Value',
+                'stats.total_establishments': 'Total Establishments',
+                'stats.products_analyzed': 'Products Analyzed',
+                'charts.sales_title': 'Sales Value by Product',
+                'charts.establishments_title': 'Establishments by Product',
+                'charts.combined_title': 'Combined Analysis: Sales Value vs Establishments',
+                'charts.toggle': 'Toggle Type',
+                'charts.export': 'Export',
+                'charts.no_data': 'No data available for the selected filters',
+                'charts.sales_label': 'Sales Value (BRL)',
+                'charts.establishments_label': 'Establishments',
+                'charts.y_axis_sales': 'Sales Value (BRL)',
+                'charts.y_axis_establishments': 'Number of Establishments',
+                'charts.product': 'Product: ',
+                'charts.currency': 'BRL',
+                'footer.data_source': 'Data source: IBGE Agricultural Census - Processed by SmartAgro',
+                'footer.copyright': '© 2025 SmartAgro - IBGE Dashboard. All rights reserved.'
+            },
+            'es': {
+                locale: 'es-ES',
+                'header.title': 'Panel IBGE - Smart Agro Cost',
+                'header.subtitle': 'Análisis avanzado de datos del Censo Agropecuario',
+                'header.back': 'Volver al Inicio',
+                'header.export': 'Exportar Datos',
+                'filters.title': 'Filtros de Análisis',
+                'filters.block1.title': 'Datos de Origen (Censo Agropecuario)',
+                'filters.region': 'Región',
+                'filters.region_placeholder': 'Seleccione una región',
+                'filters.region_brazil': 'Brasil (Total)',
+                'filters.region_south': 'Región Sur',
+                'filters.region_rs': 'Rio Grande do Sul',
+                'filters.region_alegrete': 'Alegrete (Municipio)',
+                'filters.classification': 'Clasificación',
+                'filters.classification_all': 'Todas',
+                'filters.classification_agriculture': 'Agricultura',
+                'filters.classification_livestock': 'Ganadería',
+                'filters.classification_forestry': 'Silvicultura',
+                'filters.classification_extraction': 'Extracción Vegetal',
+                'filters.classification_aquaculture': 'Acuicultura',
+                'filters.classification_agroindustry': 'Agroindustria',
+                'filters.subclassification': 'Subclasificación',
+                'filters.subclassification_all': 'Todas',
+                'filters.block2.title': 'Perfil del Productor',
+                'filters.producer_type': 'Tipo de Productor',
+                'filters.family_farming': '👨‍🌾 Solo Agricultura Familiar',
+                'filters.regulation': 'Regulación',
+                'filters.mandatory': '📜 Solo Obligatorio INC 02/2018',
+                'filters.block3.title': 'Parámetros del Análisis',
+                'filters.order_by': 'Ordenar por',
+                'filters.order_sales': '💰 Valor Vendido (BRL)',
+                'filters.order_establishments': '🏠 Nº de Establecimientos',
+                'filters.top_n': 'Top N Productos',
+                'filters.top_placeholder': 'Ej: 10 (todos si vacío)',
+                'filters.required_fields': 'Campos con',
+                'filters.are_required': 'son obligatorios',
+                'filters.update': 'Actualizar Panel',
+                'stats.waiting': 'Esperando selección de filtros',
+                'stats.loading': 'Cargando datos...',
+                'stats.error': 'Error al cargar datos',
+                'stats.error_msg': 'Intente nuevamente o verifique su conexión',
+                'stats.total_sales': 'Valor Total de Ventas',
+                'stats.total_establishments': 'Total de Establecimientos',
+                'stats.products_analyzed': 'Productos Analizados',
+                'charts.sales_title': 'Valor de Ventas por Producto',
+                'charts.establishments_title': 'Establecimientos por Producto',
+                'charts.combined_title': 'Análisis Combinado: Ventas vs Establecimientos',
+                'charts.toggle': 'Alternar Tipo',
+                'charts.export': 'Exportar',
+                'charts.no_data': 'No hay datos disponibles para los filtros seleccionados',
+                'charts.sales_label': 'Valor de Ventas (BRL)',
+                'charts.establishments_label': 'Establecimientos',
+                'charts.y_axis_sales': 'Valor de Ventas (BRL)',
+                'charts.y_axis_establishments': 'Nº de Establecimientos',
+                'charts.product': 'Producto: ',
+                'charts.currency': 'BRL',
+                'footer.data_source': 'Fuente de datos: Censo Agropecuario IBGE - Procesado por SmartAgro',
+                'footer.copyright': '© 2025 SmartAgro - Panel IBGE. Todos los derechos reservados.'
+            }
+        };
+
+        let currentLang = 'pt-BR';
+
+        // ============================================
+        // FUNÇÃO PARA FORMATAR NÚMEROS CONFORME IDIOMA
+        // ============================================
+        function formatNumber(value, isCurrency = false, locale = null) {
+            if (!locale) locale = translations[currentLang].locale || 'pt-BR';
+
+            if (isCurrency) {
+                return new Intl.NumberFormat(locale, {
+                    style: 'currency',
+                    currency: 'BRL',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(value);
+            } else {
+                return new Intl.NumberFormat(locale).format(value);
+            }
+        }
+
+        function formatCurrency(value, locale = null) {
+            if (!locale) locale = translations[currentLang].locale || 'pt-BR';
+            return new Intl.NumberFormat(locale, {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+
+        function formatNumberSimple(value, locale = null) {
+            if (!locale) locale = translations[currentLang].locale || 'pt-BR';
+            return new Intl.NumberFormat(locale).format(value);
+        }
+
+        // ============================================
+        // FUNÇÃO DE MUDANÇA DE IDIOMA
+        // ============================================
+        function changeLanguage(lang) {
+            currentLang = lang;
+
+            // Atualizar botões ativos
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Atualizar elementos com data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Atualizar placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            // Atualizar gráficos se existirem
+            updateChartLabels(lang);
+            updateStatsLanguage(lang);
+        }
+
+        // ============================================
+        // ATUALIZAR LABELS DOS GRÁFICOS (INCLUINDO EIXOS E FORMATOS)
+        // ============================================
+        function updateChartLabels(lang) {
+            const salesLabel = translations[lang]['charts.sales_label'];
+            const estabLabel = translations[lang]['charts.establishments_label'];
+            const yAxisSales = translations[lang]['charts.y_axis_sales'];
+            const yAxisEstab = translations[lang]['charts.y_axis_establishments'];
+            const locale = translations[lang].locale || 'pt-BR';
+
+            if (graficoVendas) {
+                graficoVendas.data.datasets[0].label = salesLabel;
+                if (graficoVendas.options.scales.y.title) {
+                    graficoVendas.options.scales.y.title.text = yAxisSales;
+                }
+                // Atualizar callback do ticks para usar o locale correto
+                if (graficoVendas.options.scales.y.ticks) {
+                    graficoVendas.options.scales.y.ticks.callback = function (value) {
+                        if (value >= 1000000000) {
+                            return new Intl.NumberFormat(locale, {
+                                style: 'currency',
+                                currency: 'BRL',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 1
+                            }).format(value / 1000000000) + 'B';
+                        } else if (value >= 1000000) {
+                            return new Intl.NumberFormat(locale, {
+                                style: 'currency',
+                                currency: 'BRL',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 1
+                            }).format(value / 1000000) + 'M';
+                        } else if (value >= 1000) {
+                            return new Intl.NumberFormat(locale, {
+                                style: 'currency',
+                                currency: 'BRL',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            }).format(value / 1000) + 'k';
+                        }
+                        return new Intl.NumberFormat(locale, {
+                            style: 'currency',
+                            currency: 'BRL',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                        }).format(value);
+                    };
+                }
+                graficoVendas.update();
+            }
+
+            if (graficoEstabelecimentos) {
+                graficoEstabelecimentos.data.datasets[0].label = estabLabel;
+                if (graficoEstabelecimentos.options.scales.y.title) {
+                    graficoEstabelecimentos.options.scales.y.title.text = yAxisEstab;
+                }
+                if (graficoEstabelecimentos.options.scales.y.ticks) {
+                    graficoEstabelecimentos.options.scales.y.ticks.callback = function (value) {
+                        return new Intl.NumberFormat(locale).format(value);
+                    };
+                }
+                graficoEstabelecimentos.update();
+            }
+
+            if (graficoCombinado) {
+                graficoCombinado.data.datasets[0].label = salesLabel;
+                graficoCombinado.data.datasets[1].label = estabLabel;
+                if (graficoCombinado.options.scales.y.title) {
+                    graficoCombinado.options.scales.y.title.text = yAxisSales;
+                }
+                if (graficoCombinado.options.scales.y1.title) {
+                    graficoCombinado.options.scales.y1.title.text = yAxisEstab;
+                }
+                // Atualizar callback do ticks do eixo Y (vendas)
+                if (graficoCombinado.options.scales.y.ticks) {
+                    graficoCombinado.options.scales.y.ticks.callback = function (value) {
+                        if (value >= 1000000000) {
+                            return new Intl.NumberFormat(locale, {
+                                style: 'currency',
+                                currency: 'BRL',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 1
+                            }).format(value / 1000000000) + 'B';
+                        } else if (value >= 1000000) {
+                            return new Intl.NumberFormat(locale, {
+                                style: 'currency',
+                                currency: 'BRL',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 1
+                            }).format(value / 1000000) + 'M';
+                        } else if (value >= 1000) {
+                            return new Intl.NumberFormat(locale, {
+                                style: 'currency',
+                                currency: 'BRL',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            }).format(value / 1000) + 'k';
+                        }
+                        return new Intl.NumberFormat(locale, {
+                            style: 'currency',
+                            currency: 'BRL',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                        }).format(value);
+                    };
+                }
+                // Atualizar callback do ticks do eixo Y1 (estabelecimentos)
+                if (graficoCombinado.options.scales.y1.ticks) {
+                    graficoCombinado.options.scales.y1.ticks.callback = function (value) {
+                        return new Intl.NumberFormat(locale).format(value);
+                    };
+                }
+                graficoCombinado.update();
+            }
+        }
+
+        // ============================================
+        // ATUALIZAR ESTATÍSTICAS
+        // ============================================
+        function updateStatsLanguage(lang) {
+            const statsContainer = document.getElementById('statsContainer');
+            const statCards = statsContainer.querySelectorAll('.stat-card');
+
+            if (statCards.length > 0 && statCards[0].querySelector('.stat-value')?.textContent !== '-') {
+                const titles = [
+                    translations[lang]['stats.total_sales'],
+                    translations[lang]['stats.total_establishments'],
+                    translations[lang]['stats.products_analyzed']
+                ];
+                const locale = translations[lang].locale || 'pt-BR';
+
+                statCards.forEach((card, index) => {
+                    const h3 = card.querySelector('.stat-content h3');
+                    if (h3 && index < titles.length) {
+                        const currentText = h3.textContent;
+                        const regionMatch = currentText.match(/\(([^)]+)\)/);
+                        if (regionMatch) {
+                            h3.textContent = `${titles[index]} (${regionMatch[1]})`;
+                        } else {
+                            h3.textContent = titles[index];
+                        }
+                    }
+                });
+            }
+        }
+
+        // ============================================
+        // CÓDIGO PRINCIPAL DO DASHBOARD
+        // ============================================
         let graficoVendas, graficoEstabelecimentos, graficoCombinado;
         let chartTypes = {
             'graficoVendas': 'bar',
@@ -675,16 +1081,8 @@
         };
 
         const subclassificacoes = {
-            "Agricultura": [
-                "Floricultura",
-                "Horticultura",
-                "Lavouras permanentes",
-                "Lavouras temporárias"
-            ],
-            "Pecuária": [
-                "Animais",
-                "Produtos primários"
-            ],
+            "Agricultura": ["Floricultura", "Horticultura", "Lavouras permanentes", "Lavouras temporárias"],
+            "Pecuária": ["Animais", "Produtos primários"],
             "Silvicultura": ["Não especificada"],
             "Extração Vegetal": ["Não especificada"],
             "Aquicultura": ["Não especificada"],
@@ -696,34 +1094,28 @@
 
         filtroClassificacao.addEventListener("change", () => {
             const classificacao = filtroClassificacao.value;
-
-            filtroSubclassificacao.innerHTML =
-                `<option value="">Todas as subclassificações</option>`;
-
+            filtroSubclassificacao.innerHTML = `<option value="">Todas as subclassificações</option>`;
             if (!classificacao || !subclassificacoes[classificacao]) {
                 filtroSubclassificacao.disabled = true;
                 return;
             }
-
             subclassificacoes[classificacao].forEach(sub => {
                 const option = document.createElement("option");
                 option.value = sub;
                 option.textContent = sub;
                 filtroSubclassificacao.appendChild(option);
             });
-
             filtroSubclassificacao.disabled = false;
         });
 
+        // ============================================
+        // ATUALIZAR DASHBOARD
+        // ============================================
         async function atualizarDashboard() {
-            // Validar filtros obrigatórios
             const regiao = document.getElementById("filtroRegiao").value;
             const orderBy = document.getElementById("filtroOrderBy").value;
-
-            // Ler checkboxes
             const familiarCheckbox = document.getElementById("filtroFamiliar");
             const familiar = familiarCheckbox.checked ? "1" : "0";
-
             const obrigatorioCheckbox = document.getElementById("filtroObrigatorio");
             const obrigatorio = obrigatorioCheckbox.checked ? "1" : "";
 
@@ -736,12 +1128,11 @@
             const subclassificacao = document.getElementById("filtroSubclassificacao").value;
             const top = document.getElementById("filtroTop").value;
 
-            // Mostrar indicador de carregamento
             document.getElementById('statsContainer').innerHTML = `
                 <div class="stat-card" style="grid-column: 1 / -1; text-align: center;">
                     <div style="width: 100%;">
                         <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: var(--primary); margin-bottom: 10px;"></i>
-                        <h3>Carregando dados...</h3>
+                        <h3>${translations[currentLang]['stats.loading']}</h3>
                     </div>
                 </div>
             `;
@@ -750,18 +1141,15 @@
             params.append("regiao", regiao);
             params.append("familiar", familiar);
             params.append("orderBy", orderBy);
-
             if (classificacao) params.append("classificacao", classificacao);
             if (subclassificacao) params.append("subclassificacao", subclassificacao);
             if (top) params.append("top", top);
-
             params.append("obrigatorio", obrigatorio);
 
             try {
                 const res = await fetch("/api/ibge?" + params.toString());
                 const dados = await res.json();
 
-                // Processar dados para gráficos
                 const vendasPorProduto = {};
                 const estabPorProduto = {};
                 let totalVendas = 0;
@@ -771,16 +1159,13 @@
                 dados.forEach(d => {
                     const valorVendas = (d.valor_vendas || 0) * 1000;
                     const estabelecimentos = d.estabelecimentos || 0;
-
                     vendasPorProduto[d.produto] = (vendasPorProduto[d.produto] || 0) + valorVendas;
                     estabPorProduto[d.produto] = (estabPorProduto[d.produto] || 0) + estabelecimentos;
-
                     totalVendas += valorVendas;
                     totalEstabelecimentos += estabelecimentos;
                     produtosUnicos.add(d.produto);
                 });
 
-                // Ordenar produtos pelo critério selecionado
                 const produtosOrdenados = Object.keys(vendasPorProduto).sort((a, b) => {
                     if (orderBy === 'valor_vendas') {
                         return vendasPorProduto[b] - vendasPorProduto[a];
@@ -789,14 +1174,12 @@
                     }
                 });
 
-                // Aplicar limite Top N
                 let dadosVendasParaGrafico = {};
                 let dadosEstabParaGrafico = {};
 
                 if (top && top > 0) {
                     const limite = parseInt(top);
                     const produtosLimitados = produtosOrdenados.slice(0, limite);
-
                     produtosLimitados.forEach(produto => {
                         dadosVendasParaGrafico[produto] = vendasPorProduto[produto];
                         dadosEstabParaGrafico[produto] = estabPorProduto[produto];
@@ -806,13 +1189,15 @@
                     dadosEstabParaGrafico = estabPorProduto;
                 }
 
-                criarGrafico("graficoVendas", "Valor de Vendas por Produto (R$)", dadosVendasParaGrafico, graficoVendas);
-                criarGrafico("graficoEstabelecimentos", "Estabelecimentos por Produto", dadosEstabParaGrafico, graficoEstabelecimentos);
+                const salesLabel = translations[currentLang]['charts.sales_label'];
+                const estabLabel = translations[currentLang]['charts.establishments_label'];
+                const yAxisSales = translations[currentLang]['charts.y_axis_sales'];
+                const yAxisEstab = translations[currentLang]['charts.y_axis_establishments'];
 
-                // Criar gráfico combinado
-                criarGraficoCombinado("graficoCombinado", dadosVendasParaGrafico, dadosEstabParaGrafico, graficoCombinado);
+                criarGrafico("graficoVendas", salesLabel, dadosVendasParaGrafico, graficoVendas, yAxisSales);
+                criarGrafico("graficoEstabelecimentos", estabLabel, dadosEstabParaGrafico, graficoEstabelecimentos, yAxisEstab);
+                criarGraficoCombinado("graficoCombinado", dadosVendasParaGrafico, dadosEstabParaGrafico, graficoCombinado, salesLabel, estabLabel, yAxisSales, yAxisEstab);
 
-                // Atualizar cards de estatísticas
                 atualizarEstatisticas(totalVendas, totalEstabelecimentos, produtosUnicos.size, dados.length, regiao);
 
             } catch (error) {
@@ -821,123 +1206,146 @@
                     <div class="stat-card" style="grid-column: 1 / -1; text-align: center; color: #d32f2f;">
                         <div style="width: 100%;">
                             <i class="fas fa-exclamation-triangle" style="font-size: 24px; margin-bottom: 10px;"></i>
-                            <h3>Erro ao carregar dados</h3>
-                            <p>Tente novamente ou verifique sua conexão</p>
+                            <h3>${translations[currentLang]['stats.error']}</h3>
+                            <p>${translations[currentLang]['stats.error_msg']}</p>
                         </div>
                     </div>
                 `;
-
                 if (graficoVendas) graficoVendas.destroy();
                 if (graficoEstabelecimentos) graficoEstabelecimentos.destroy();
                 if (graficoCombinado) graficoCombinado.destroy();
             }
         }
 
-        function criarGraficoCombinado(canvasId, dadosVendas, dadosEstab, graficoExistente) {
+        // ============================================
+        // CRIAR GRÁFICO COMBINADO
+        // ============================================
+        const tamanhoDaFonte = 18; // Tamanho da fonte em pixels
+        function criarGraficoCombinado(canvasId, dadosVendas, dadosEstab, graficoExistente, salesLabel, estabLabel, yAxisSales, yAxisEstab) {
             const ctx = document.getElementById(canvasId).getContext("2d");
-
             const labels = Object.keys(dadosVendas);
             const valoresVendas = Object.values(dadosVendas);
             const valoresEstab = Object.values(dadosEstab);
+            const noDataMsg = translations[currentLang]['charts.no_data'];
+            const locale = translations[currentLang].locale || 'pt-BR';
 
-            // Normalizar valores de estabelecimentos para a escala do gráfico
-            const maxVendas = Math.max(...valoresVendas);
-            const maxEstab = Math.max(...valoresEstab);
-
-            // Criar dataset para estabelecimentos com escala ajustada
-            const valoresEstabNormalizados = valoresEstab.map(v => (v / maxEstab) * maxVendas);
+            if (!salesLabel) salesLabel = translations[currentLang]['charts.sales_label'];
+            if (!estabLabel) estabLabel = translations[currentLang]['charts.establishments_label'];
+            if (!yAxisSales) yAxisSales = translations[currentLang]['charts.y_axis_sales'];
+            if (!yAxisEstab) yAxisEstab = translations[currentLang]['charts.y_axis_establishments'];
 
             if (labels.length === 0) {
                 if (graficoExistente) graficoExistente.destroy();
-
                 const config = {
                     type: 'bar',
                     data: {
                         labels: ['Sem dados'],
                         datasets: [
-                            {
-                                label: 'Valor de Vendas (R$)',
-                                data: [0],
-                                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1,
-                                yAxisID: 'y'
-                            },
-                            {
-                                label: 'Estabelecimentos',
-                                data: [0],
-                                backgroundColor: 'rgba(76, 175, 80, 0.6)',
-                                borderColor: 'rgba(76, 175, 80, 1)',
-                                borderWidth: 1,
-                                yAxisID: 'y1'
-                            }
+                            { label: salesLabel, data: [0], backgroundColor: 'rgba(41, 128, 185, 0.7)', borderColor: 'rgba(41, 128, 185, 0.9)', borderWidth: 1.5, yAxisID: 'y' },
+                            { label: estabLabel, data: [0], backgroundColor: 'rgba(192, 57, 43, 0.7)', borderColor: 'rgba(192, 57, 43, 0.9)', borderWidth: 1.5, yAxisID: 'y1' }
                         ]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                align: 'center',
+                                labels: {
+                                    font: { size: 14, family: 'Times New Roman, serif', weight: 'bold' },
+                                    color: '#000000',
+                                    padding: 20,
+                                    usePointStyle: true,
+                                    pointStyle: 'rectRounded',
+                                    boxWidth: 18,
+                                    boxHeight: 18
+                                }
+                            },
                             title: {
                                 display: true,
-                                text: 'Nenhum dado disponível para os filtros selecionados'
+                                text: noDataMsg,
+                                font: { size: 16, family: 'Times New Roman, serif' },
+                                color: '#000000'
                             }
                         }
                     }
                 };
-
                 graficoCombinado = new Chart(ctx, config);
                 return;
             }
 
             const config = {
-                type: chartTypes[canvasId],
+                type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Valor de Vendas (R$)',
+                            label: salesLabel,
                             data: valoresVendas,
-                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1,
-                            borderRadius: 4,
-                            yAxisID: 'y'
+                            backgroundColor: 'rgba(41, 128, 185, 0.7)',
+                            borderColor: 'rgba(41, 128, 185, 0.9)',
+                            borderWidth: 1.5,
+                            borderRadius: 2,
+                            yAxisID: 'y',
+                            order: 1
                         },
                         {
-                            label: 'Estabelecimentos',
+                            label: estabLabel,
                             data: valoresEstab,
-                            backgroundColor: 'rgba(76, 175, 80, 0.7)',
-                            borderColor: 'rgba(76, 175, 80, 1)',
-                            borderWidth: 1,
-                            borderRadius: 4,
-                            yAxisID: 'y1'
+                            backgroundColor: 'rgba(192, 57, 43, 0.7)',
+                            borderColor: 'rgba(192, 57, 43, 0.9)',
+                            borderWidth: 1.5,
+                            borderRadius: 2,
+                            yAxisID: 'y1',
+                            order: 2
                         }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: { duration: 0 },
                     plugins: {
                         legend: {
                             display: true,
-                            position: 'top'
+                            position: 'top',
+                            align: 'center',
+                            labels: {
+                                font: { size: tamanhoDaFonte, family: 'Times New Roman, serif', weight: 'bold' },
+                                // font: { size: 14, family: 'Times New Roman, serif', weight: 'bold' },
+                                color: '#000000',
+                                padding: 25,
+                                usePointStyle: true,
+                                pointStyle: 'rectRounded',
+                                boxWidth: 18,
+                                boxHeight: 18
+                            }
                         },
                         tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#000000',
+                            bodyColor: '#000000',
+                            borderColor: '#cccccc',
+                            borderWidth: 1,
+                            cornerRadius: 4,
+                            padding: 12,
+                            titleFont: { size: 13, family: 'Times New Roman, serif', weight: 'bold' },
+                            bodyFont: { size: 12, family: 'Times New Roman, serif' },
                             callbacks: {
                                 label: function (context) {
                                     let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.dataset.label.includes('Valor')) {
-                                        label += new Intl.NumberFormat('pt-BR', {
-                                            style: 'currency',
-                                            currency: 'BRL'
-                                        }).format(context.parsed.y);
+                                    if (label) label += ': ';
+                                    if (context.dataset.label.includes('Valor') || context.dataset.label.includes('Sales') || context.dataset.label.includes('Ventas')) {
+                                        label += formatCurrency(context.parsed.y, locale);
                                     } else {
-                                        label += new Intl.NumberFormat('pt-BR').format(context.parsed.y);
+                                        label += formatNumberSimple(context.parsed.y, locale);
                                     }
                                     return label;
+                                },
+                                title: function (tooltipItems) {
+                                    return translations[currentLang]['charts.product'] + tooltipItems[0].label;
                                 }
                             }
                         }
@@ -948,19 +1356,45 @@
                             position: 'left',
                             title: {
                                 display: true,
-                                text: 'Valor de Vendas (R$)',
-                                color: '#2196F3'
+                                text: yAxisSales,
+                                color: '#000000',
+                                font: { size: tamanhoDaFonte, family: 'Times New Roman, serif', weight: 'bold' }
+                                // font: { size: 14, family: 'Times New Roman, serif', weight: 'bold' }
                             },
+                            grid: { color: 'rgba(0, 0, 0, 0.08)', drawBorder: true, borderColor: '#000000', borderWidth: 1 },
                             ticks: {
+                                font: { size: tamanhoDaFonte, family: 'Times New Roman, serif' },
+                                // font: { size: 12, family: 'Times New Roman, serif' },
+                                color: '#000000',
                                 callback: function (value) {
                                     if (value >= 1000000000) {
-                                        return 'R$ ' + (value / 1000000000).toFixed(1) + 'B';
+                                        return new Intl.NumberFormat(locale, {
+                                            style: 'currency',
+                                            currency: 'BRL',
+                                            minimumFractionDigits: 0,
+                                            maximumFractionDigits: 1
+                                        }).format(value / 1000000000) + 'B';
                                     } else if (value >= 1000000) {
-                                        return 'R$ ' + (value / 1000000).toFixed(1) + 'M';
+                                        return new Intl.NumberFormat(locale, {
+                                            style: 'currency',
+                                            currency: 'BRL',
+                                            minimumFractionDigits: 0,
+                                            maximumFractionDigits: 1
+                                        }).format(value / 1000000) + 'M';
                                     } else if (value >= 1000) {
-                                        return 'R$ ' + (value / 1000).toFixed(0) + 'k';
+                                        return new Intl.NumberFormat(locale, {
+                                            style: 'currency',
+                                            currency: 'BRL',
+                                            minimumFractionDigits: 0,
+                                            maximumFractionDigits: 0
+                                        }).format(value / 1000) + 'k';
                                     }
-                                    return 'R$ ' + value;
+                                    return new Intl.NumberFormat(locale, {
+                                        style: 'currency',
+                                        currency: 'BRL',
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0
+                                    }).format(value);
                                 }
                             }
                         },
@@ -969,172 +1403,127 @@
                             position: 'right',
                             title: {
                                 display: true,
-                                text: 'Número de Estabelecimentos',
-                                color: '#4CAF50'
+                                text: yAxisEstab,
+                                color: '#000000',
+                                font: { size: tamanhoDaFonte, family: 'Times New Roman, serif', weight: 'bold' }
+                                // font: { size: 14, family: 'Times New Roman, serif', weight: 'bold' }
                             },
+                            grid: { drawOnChartArea: false },
                             ticks: {
+                                font: { size: tamanhoDaFonte, family: 'Times New Roman, serif' },
+                                // font: { size: 12, family: 'Times New Roman, serif' },
+                                color: '#000000',
                                 callback: function (value) {
-                                    return new Intl.NumberFormat('pt-BR').format(value);
+                                    return new Intl.NumberFormat(locale).format(value);
                                 }
-                            },
-                            grid: {
-                                drawOnChartArea: false
                             }
                         },
                         x: {
+                            grid: { display: false },
                             ticks: {
                                 maxRotation: 45,
-                                minRotation: 0
+                                minRotation: 0,
+                                font: { size: tamanhoDaFonte, family: 'Times New Roman, serif' },
+                                // font: { size: 11, family: 'Times New Roman, serif' },
+                                color: '#000000',
+                                autoSkip: false,
+                                maxTicksLimit: 15
                             }
                         }
-                    }
+                    },
+                    layout: { padding: { top: 15, bottom: 10, left: 5, right: 5 } }
                 }
             };
 
-            if (graficoExistente) {
-                graficoExistente.destroy();
-            }
-
+            if (graficoExistente) graficoExistente.destroy();
             graficoCombinado = new Chart(ctx, config);
         }
 
-        function atualizarEstatisticas(totalVendas, totalEstabelecimentos, produtosUnicos, registros, regiao) {
-            const statsContainer = document.getElementById('statsContainer');
-
-            const vendasFormatadas = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(totalVendas);
-
-            const estabFormatados = new Intl.NumberFormat('pt-BR').format(totalEstabelecimentos);
-            const registrosFormatados = new Intl.NumberFormat('pt-BR').format(registros);
-
-            statsContainer.innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-icon stat-icon-1">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3>Valor Total de Vendas (${regiao})</h3>
-                        <div class="stat-value">${vendasFormatadas}</div>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon stat-icon-2">
-                        <i class="fas fa-tractor"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3>Total de Estabelecimentos (${regiao})</h3>
-                        <div class="stat-value">${estabFormatados}</div>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon stat-icon-3">
-                        <i class="fas fa-seedling"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3>Produtos Analisados</h3>
-                        <div class="stat-value">${produtosUnicos}</div>
-                    </div>
-                </div>
-                
-                
-            `;
-        }
-
-        function criarGrafico(canvasId, titulo, dados, graficoExistente) {
+        // ============================================
+        // CRIAR GRÁFICO SIMPLES
+        // ============================================
+        function criarGrafico(canvasId, titulo, dados, graficoExistente, yAxisTitle) {
             const ctx = document.getElementById(canvasId).getContext("2d");
-
             const labels = Object.keys(dados);
             const valores = Object.values(dados);
+            const noDataMsg = translations[currentLang]['charts.no_data'];
+            const locale = translations[currentLang].locale || 'pt-BR';
+
+            if (!yAxisTitle) yAxisTitle = titulo;
 
             if (labels.length === 0) {
                 if (graficoExistente) graficoExistente.destroy();
-
                 const config = {
                     type: 'bar',
                     data: {
                         labels: ['Sem dados'],
-                        datasets: [{
-                            label: titulo,
-                            data: [0],
-                            backgroundColor: 'rgba(200, 200, 200, 0.6)',
-                            borderColor: 'rgba(200, 200, 200, 1)',
-                            borderWidth: 1
-                        }]
+                        datasets: [{ label: titulo, data: [0], backgroundColor: 'rgba(200, 200, 200, 0.7)', borderColor: 'rgba(200, 200, 200, 0.9)', borderWidth: 1.5 }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { display: false },
-                            title: {
-                                display: true,
-                                text: 'Nenhum dado disponível para os filtros selecionados'
-                            }
+                            title: { display: true, text: noDataMsg, font: { size: 16, family: 'Times New Roman, serif' }, color: '#000000' }
                         }
                     }
                 };
-
-                if (canvasId === "graficoVendas") {
-                    graficoVendas = new Chart(ctx, config);
-                } else if (canvasId === "graficoEstabelecimentos") {
-                    graficoEstabelecimentos = new Chart(ctx, config);
-                }
+                if (canvasId === "graficoVendas") graficoVendas = new Chart(ctx, config);
+                else graficoEstabelecimentos = new Chart(ctx, config);
                 return;
             }
 
-            let backgroundColor, borderColor;
-
-            if (canvasId === "graficoVendas") {
-                backgroundColor = 'rgba(54, 162, 235, 0.6)';
-                borderColor = 'rgba(54, 162, 235, 1)';
-            } else {
-                backgroundColor = 'rgba(76, 175, 80, 0.6)';
-                borderColor = 'rgba(76, 175, 80, 1)';
-            }
+            const cor = canvasId === "graficoVendas" ? 'rgba(41, 128, 185, 0.7)' : 'rgba(39, 174, 96, 0.7)';
+            const corBorda = canvasId === "graficoVendas" ? 'rgba(41, 128, 185, 0.9)' : 'rgba(39, 174, 96, 0.9)';
 
             const config = {
-                type: chartTypes[canvasId],
+                type: 'bar',
                 data: {
                     labels: labels,
-                    datasets: [{
-                        label: titulo,
-                        data: valores,
-                        backgroundColor: backgroundColor,
-                        borderColor: borderColor,
-                        borderWidth: 1,
-                        borderRadius: 4
-                    }]
+                    datasets: [{ label: titulo, data: valores, backgroundColor: cor, borderColor: corBorda, borderWidth: 1.5, borderRadius: 2 }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: { duration: 0 },
                     plugins: {
                         legend: {
                             display: true,
-                            position: 'top'
+                            position: 'top',
+                            align: 'center',
+                            labels: {
+                                font: { size: 14, family: 'Times New Roman, serif', weight: 'bold' },
+                                color: '#000000',
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'rectRounded',
+                                boxWidth: 18,
+                                boxHeight: 18
+                            }
                         },
                         tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#000000',
+                            bodyColor: '#000000',
+                            borderColor: '#cccccc',
+                            borderWidth: 1,
+                            cornerRadius: 4,
+                            padding: 12,
+                            titleFont: { size: 13, family: 'Times New Roman, serif', weight: 'bold' },
+                            bodyFont: { size: 12, family: 'Times New Roman, serif' },
                             callbacks: {
                                 label: function (context) {
                                     let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
+                                    if (label) label += ': ';
                                     if (canvasId === 'graficoVendas') {
-                                        label += new Intl.NumberFormat('pt-BR', {
-                                            style: 'currency',
-                                            currency: 'BRL'
-                                        }).format(context.parsed.y);
+                                        label += formatCurrency(context.parsed.y, locale);
                                     } else {
-                                        label += new Intl.NumberFormat('pt-BR').format(context.parsed.y);
+                                        label += formatNumberSimple(context.parsed.y, locale);
                                     }
                                     return label;
+                                },
+                                title: function (tooltipItems) {
+                                    return translations[currentLang]['charts.product'] + tooltipItems[0].label;
                                 }
                             }
                         }
@@ -1142,50 +1531,124 @@
                     scales: {
                         y: {
                             beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: yAxisTitle,
+                                color: '#000000',
+                                font: { size: 14, family: 'Times New Roman, serif', weight: 'bold' }
+                            },
+                            grid: { color: 'rgba(0, 0, 0, 0.08)', drawBorder: true, borderColor: '#000000', borderWidth: 1 },
                             ticks: {
+                                font: { size: 12, family: 'Times New Roman, serif' },
+                                color: '#000000',
                                 callback: function (value) {
                                     if (canvasId === 'graficoVendas') {
                                         if (value >= 1000000000) {
-                                            return 'R$ ' + (value / 1000000000).toFixed(1) + 'B';
+                                            return new Intl.NumberFormat(locale, {
+                                                style: 'currency',
+                                                currency: 'BRL',
+                                                minimumFractionDigits: 0,
+                                                maximumFractionDigits: 1
+                                            }).format(value / 1000000000) + 'B';
                                         } else if (value >= 1000000) {
-                                            return 'R$ ' + (value / 1000000).toFixed(1) + 'M';
+                                            return new Intl.NumberFormat(locale, {
+                                                style: 'currency',
+                                                currency: 'BRL',
+                                                minimumFractionDigits: 0,
+                                                maximumFractionDigits: 1
+                                            }).format(value / 1000000) + 'M';
                                         } else if (value >= 1000) {
-                                            return 'R$ ' + (value / 1000).toFixed(0) + 'k';
+                                            return new Intl.NumberFormat(locale, {
+                                                style: 'currency',
+                                                currency: 'BRL',
+                                                minimumFractionDigits: 0,
+                                                maximumFractionDigits: 0
+                                            }).format(value / 1000) + 'k';
                                         }
-                                        return 'R$ ' + value;
+                                        return new Intl.NumberFormat(locale, {
+                                            style: 'currency',
+                                            currency: 'BRL',
+                                            minimumFractionDigits: 0,
+                                            maximumFractionDigits: 0
+                                        }).format(value);
                                     }
-                                    return new Intl.NumberFormat('pt-BR').format(value);
+                                    return new Intl.NumberFormat(locale).format(value);
                                 }
                             }
                         },
                         x: {
+                            grid: { display: false },
                             ticks: {
                                 maxRotation: 45,
-                                minRotation: 0
+                                minRotation: 0,
+                                font: { size: 11, family: 'Times New Roman, serif' },
+                                color: '#000000',
+                                autoSkip: false,
+                                maxTicksLimit: 15
                             }
                         }
-                    }
+                    },
+                    layout: { padding: { top: 15, bottom: 10, left: 5, right: 5 } }
                 }
             };
 
-            if (graficoExistente) {
-                graficoExistente.destroy();
-            }
-
-            if (canvasId === "graficoVendas") {
-                graficoVendas = new Chart(ctx, config);
-            } else if (canvasId === "graficoEstabelecimentos") {
-                graficoEstabelecimentos = new Chart(ctx, config);
-            }
+            if (graficoExistente) graficoExistente.destroy();
+            if (canvasId === "graficoVendas") graficoVendas = new Chart(ctx, config);
+            else graficoEstabelecimentos = new Chart(ctx, config);
         }
 
+        // ============================================
+        // ATUALIZAR ESTATÍSTICAS
+        // ============================================
+        function atualizarEstatisticas(totalVendas, totalEstabelecimentos, produtosUnicos, registros, regiao) {
+            const statsContainer = document.getElementById('statsContainer');
+            const locale = translations[currentLang].locale || 'pt-BR';
+
+            const vendasFormatadas = formatCurrency(totalVendas, locale);
+            const estabFormatados = formatNumberSimple(totalEstabelecimentos, locale);
+            const salesLabel = translations[currentLang]['stats.total_sales'];
+            const estabLabel = translations[currentLang]['stats.total_establishments'];
+            const productsLabel = translations[currentLang]['stats.products_analyzed'];
+
+            statsContainer.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-1"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="stat-content">
+                        <h3>${salesLabel} (${regiao})</h3>
+                        <div class="stat-value">${vendasFormatadas}</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-2"><i class="fas fa-tractor"></i></div>
+                    <div class="stat-content">
+                        <h3>${estabLabel} (${regiao})</h3>
+                        <div class="stat-value">${estabFormatados}</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-3"><i class="fas fa-seedling"></i></div>
+                    <div class="stat-content">
+                        <h3>${productsLabel}</h3>
+                        <div class="stat-value">${produtosUnicos}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // FUNÇÕES AUXILIARES
+        // ============================================
         function alternarTipoGrafico(canvasId) {
             const tipos = ['bar', 'line', 'pie'];
             const tipoAtual = chartTypes[canvasId];
             const indexAtual = tipos.indexOf(tipoAtual);
             const novoTipo = tipos[(indexAtual + 1) % tipos.length];
-
             chartTypes[canvasId] = novoTipo;
+
+            const salesLabel = translations[currentLang]['charts.sales_label'];
+            const estabLabel = translations[currentLang]['charts.establishments_label'];
+            const yAxisSales = translations[currentLang]['charts.y_axis_sales'];
+            const yAxisEstab = translations[currentLang]['charts.y_axis_establishments'];
 
             if (canvasId === 'graficoVendas' && graficoVendas) {
                 const titulo = graficoVendas.data.datasets[0].label;
@@ -1193,16 +1656,15 @@
                 graficoVendas.data.labels.forEach((label, index) => {
                     dados[label] = graficoVendas.data.datasets[0].data[index];
                 });
-                criarGrafico(canvasId, titulo, dados, graficoVendas);
+                criarGrafico(canvasId, titulo, dados, graficoVendas, yAxisSales);
             } else if (canvasId === 'graficoEstabelecimentos' && graficoEstabelecimentos) {
                 const titulo = graficoEstabelecimentos.data.datasets[0].label;
                 const dados = {};
                 graficoEstabelecimentos.data.labels.forEach((label, index) => {
                     dados[label] = graficoEstabelecimentos.data.datasets[0].data[index];
                 });
-                criarGrafico(canvasId, titulo, dados, graficoEstabelecimentos);
+                criarGrafico(canvasId, titulo, dados, graficoEstabelecimentos, yAxisEstab);
             } else if (canvasId === 'graficoCombinado' && graficoCombinado) {
-                // Para o gráfico combinado, precisamos recriar com os dados atuais
                 const labels = graficoCombinado.data.labels;
                 const valoresVendas = graficoCombinado.data.datasets[0].data;
                 const valoresEstab = graficoCombinado.data.datasets[1].data;
@@ -1212,7 +1674,7 @@
                     dadosVendas[label] = valoresVendas[index];
                     dadosEstab[label] = valoresEstab[index];
                 });
-                criarGraficoCombinado(canvasId, dadosVendas, dadosEstab, graficoCombinado);
+                criarGraficoCombinado(canvasId, dadosVendas, dadosEstab, graficoCombinado, salesLabel, estabLabel, yAxisSales, yAxisEstab);
             }
         }
 
@@ -1228,12 +1690,16 @@
             alert('Funcionalidade de exportação de dados será implementada em breve!');
         }
 
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('filtroRegiao').value = 'Brasil';
-            // Checkboxes inicialmente desmarcados
             document.getElementById('filtroFamiliar').checked = false;
             document.getElementById('filtroObrigatorio').checked = false;
             document.getElementById('filtroOrderBy').value = 'valor_vendas';
+
+            changeLanguage('pt-BR');
 
             setTimeout(atualizarDashboard, 500);
 

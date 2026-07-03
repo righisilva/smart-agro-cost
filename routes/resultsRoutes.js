@@ -17,8 +17,6 @@ router.get("/produtos-list", async (req, res) => {
       classificacao,
       subclassificacao,
       regiao,
-      familiar,
-      obrigatorio,
     } = req.query;
 
     let query = `
@@ -50,16 +48,6 @@ router.get("/produtos-list", async (req, res) => {
     if (regiao && regiao !== "") {
       query += " AND r.nome = @regiao";
       params.regiao = regiao;
-    }
-
-    if (familiar !== undefined && familiar !== "") {
-      query += " AND i.familiar = @familiar";
-      params.familiar = Number(familiar);
-    }
-
-    if (obrigatorio !== undefined && obrigatorio !== "") {
-      query += " AND p.rastreabilidade_obrigatoria = @obrigatorio";
-      params.obrigatorio = Number(obrigatorio);
     }
 
     query += " ORDER BY p.nome";
