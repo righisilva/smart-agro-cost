@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartAgro - Dashboard IBGE</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-export"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg2pdf.js/2.3.0/svg2pdf.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ===== SEUS ESTILOS EXISTENTES AQUI ===== */
@@ -644,8 +647,16 @@
                         <button class="chart-btn" onclick="alternarTipoGrafico('graficoCombinado')">
                             <i class="fas fa-chart-bar"></i> <span data-i18n="charts.toggle">Alternar Tipo</span>
                         </button>
+                        <button class="chart-btn" onclick="exportarPDFVetorial('graficoVendas')">
+                            <i class="fas fa-file-pdf"></i> PDF Vetorial           </button>
+                        <button class="chart-btn" onclick="exportarPNGAltaResolucao('graficoCombinado')">
+                            <i class="fas fa-file-image"></i> PNG HD
+                        </button>
+                        <button class="chart-btn" onclick="exportarSVG('graficoCombinado')">
+                            <i class="fas fa-file-code"></i> SVG
+                        </button>
                         <button class="chart-btn" onclick="downloadChart('graficoCombinado')">
-                            <i class="fas fa-download"></i> <span data-i18n="charts.export">Exportar</span>
+                            <i class="fas fa-download"></i> <span data-i18n="charts.export">Exportar</span>           
                         </button>
                     </div>
                 </div>
@@ -923,6 +934,156 @@
             updateChartLabels(lang);
             updateStatsLanguage(lang);
         }
+        
+
+    // ============================================
+    // EXPORTAÇÃO EM ALTA RESOLUÇÃO (300 DPI)
+    // ============================================
+    function exportarPNGAltaResolucao(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        const scale = 3; // 3x para 300 DPI (multiplica por 3)
+
+        // Criar canvas temporário
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.width * scale;
+        tempCanvas.height = canvas.height * scale;
+        const ctx = tempCanvas.getContext('2d');
+
+        // Aplicar escala
+        ctx.scale(scale, scale);
+
+        // Desenhar o gráfico original
+        ctx.drawImage(canvas, 0, 0);
+
+        // Download
+        const link = document.createElement('a');
+        link.download = `smartagro-${canvasId}-${new Date().toISOString().slice(0, 10)}-300dpi.png`;
+        link.href = tempCanvas.toDataURL('image/png');
+        link.click();
+    }
+
+    // ============================================
+    // EXPORTAÇÃO COMO SVG
+    // ============================================
+    function exportarSVG(canvasId) {
+        const canvas = document.getElementById(canvasId);
+
+        // Converte para SVG usando a API nativa
+        const svgData = canvas.toDataURL('image/svg+xml');
+
+        const link = document.createElement('a');
+        link.download = `smartagro-${canvasId}-${new Date().toISOString().slice(0, 10)}.svg`;
+        link.href = svgData;
+        link.click();
+    }
+
+    // ============================================
+    // EXPORTAÇÃO EM ALTA RESOLUÇÃO (MELHORADA)
+    // ============================================
+    function exportarAltaQualidade(canvasId) {
+        const canvas = document.getElementById(canvasId);
+
+        // Fator de escala baseado no tamanho da tela
+        const rect = canvas.getBoundingClientRect();
+        const scale = Math.max(3, Math.round(window.devicePixelRatio * 2));
+
+        // Criar canvas temporário
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = rect.width * scale;
+        tempCanvas.height = rect.height * scale;
+        const ctx = tempCanvas.getContext('2d');
+
+        // Configurar para alta qualidade
+        ctx.scale(scale, scale);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+
+        // Desenhar o gráfico
+        ctx.drawImage(canvas, 0, 0, rect.width, rect.height);
+
+        // Baixar como PNG de alta qualidade
+        const link = document.createElement('a');
+        link.download = `smartagro-${canvasId}-${new Date().toISOString().slice(0, 10)}-hi-res.png`;
+        link.href = tempCanvas.toDataURL('image/png', 1.0);
+        link.click();
+    }
+
+    // ============================================
+        // EXPORTAR COMO PDF VETORIAL
+        // ============================================
+        // ============================================
+            // EXPORTAR PDF VETORIAL COM MAIS OPÇÕES
+            // ============================================
+            function exportarPDFVetorial(canvasId, orientacao = 'landscape', tamanho = 'a4') {
+                try {
+                    const canvas = document.getElementById(canvasId);
+
+                    if (typeof window.jspdf === 'undefined') {
+                        alert('Biblioteca jsPDF não carregada. Por favor, verifique sua conexão com a internet.');
+                        return;
+                    }
+
+                    // Obter dados do canvas como SVG
+                    const svgData = canvas.toDataURL('image/svg+xml');
+
+                    // Criar documento PDF
+                    const { jsPDF } = window.jspdf;
+
+                    // Configurar orientação e tamanho
+                    const orientacoes = ['portrait', 'landscape'];
+                    const tamanhos = ['a4', 'a3', 'letter', 'legal'];
+
+                    const orient = orientacoes.includes(orientacao) ? orientacao : 'landscape';
+                    const size = tamanhos.includes(tamanho) ? tamanho : 'a4';
+
+                    const doc = new jsPDF(orient, 'mm', size);
+
+                    // Ajustar dimensões baseado no tamanho
+                    let width, height;
+                    switch (size) {
+                        case 'a3':
+                            width = 400;
+                            height = 277;
+                            break;
+                        case 'letter':
+                            width = 270;
+                            height = 190;
+                            break;
+                        case 'legal':
+                            width = 280;
+                            height = 200;
+                            break;
+                        default: // a4
+                            width = 280;
+                            height = 190;
+                    }
+
+                    // Adicionar margens
+                    const margin = 10;
+                    const usableWidth = width - (margin * 2);
+                    const usableHeight = height - (margin * 2);
+
+                    // Adicionar o SVG como imagem vetorial
+                    doc.addImage(svgData, 'SVG', margin, margin, usableWidth, usableHeight);
+
+                    // Adicionar rodapé com data
+                    const dataAtual = new Date().toLocaleDateString('pt-BR');
+                    doc.setFontSize(8);
+                    doc.setTextColor(100);
+                    doc.text(`Gerado em: ${dataAtual} | SmartAgro Dashboard`, margin, height - 5);
+
+                    // Salvar o PDF
+                    const nomeArquivo = `smartagro-${canvasId}-${new Date().toISOString().slice(0, 10)}.pdf`;
+                    doc.save(nomeArquivo);
+
+                } catch (error) {
+                    console.error('Erro ao exportar PDF:', error);
+                    alert('Erro ao gerar PDF. Verifique o console para mais detalhes.');
+                }
+            }
+
+
+
 
         // ============================================
         // ATUALIZAR LABELS DOS GRÁFICOS (INCLUINDO EIXOS E FORMATOS)

@@ -11,6 +11,9 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ===== TODOS OS SEUS ESTILOS EXISTENTES AQUI ===== */
+        /* (mantenha todos os estilos que você já tem) */
+        
         :root {
             /* Variáveis para modo escuro (padrão) */
             --primary: #2E7D32;
@@ -81,6 +84,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .header-title h1 {
@@ -98,7 +103,9 @@
 
         .header-actions {
             display: flex;
-            gap: 15px;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -139,6 +146,38 @@
         .btn-sm {
             padding: 8px 12px;
             font-size: 13px;
+        }
+
+        /* Language Selector */
+        .lang-selector {
+            display: flex;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .lang-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--primary);
         }
 
         /* Toggle Theme Button */
@@ -309,22 +348,6 @@
             border-radius: 50%;
         }
 
-        .network-ethereum {
-            background-color: var(--ethereum);
-        }
-
-        .network-bnb {
-            background-color: var(--bnb);
-        }
-
-        .network-polygon {
-            background-color: var(--polygon);
-        }
-
-        .network-hardhat {
-            background-color: var(--hardhat);
-        }
-
         /* Gas Units Input */
         .gas-units-input {
             display: flex;
@@ -393,6 +416,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .chart-title {
@@ -593,6 +618,11 @@
             .period-buttons {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .lang-selector {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         @media (max-width: 480px) {
@@ -655,59 +685,17 @@
             border: 1px solid var(--border);
             margin-bottom: 5px;
         }
-        /* Estilos para redes dinâmicas */
+        
         .loading-filters {
             text-align: center;
             padding: 20px;
             color: var(--text-light);
         }
 
-        .network-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background-color: var(--card-bg-light);
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: var(--transition);
-            margin-bottom: 10px;
-        }
-
-        .network-checkbox:hover {
-            background-color: rgba(33, 150, 243, 0.05);
-            border-color: var(--accent);
-        }
-
-        .network-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: var(--accent);
-        }
-
-        .network-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-            color: var(--text);
-            flex: 1;
-        }
-
-        .network-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        /* Cores dinâmicas para redes - serão aplicadas via JavaScript */
         .network-color-dynamic {
             transition: var(--transition);
         }
 
-        /* Estilos para campos de data */
         .filter-input[type="date"] {
             cursor: pointer;
         }
@@ -720,7 +708,6 @@
         .light-mode .filter-input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(0);
         }
-
     </style>
 </head>
 
@@ -730,19 +717,25 @@
         <header class="dashboard-header">
             <div class="header-content">
                 <div class="header-title">
-                    <h1><i class="fas fa-gas-pump"></i> Histórico de Custos Blockchain</h1>
-                    <p>Análise comparativa de custos de transação entre diferentes redes</p>
+                    <h1><i class="fas fa-gas-pump"></i> <span data-i18n="header.title">Histórico de Custos Blockchain</span></h1>
+                    <p data-i18n="header.subtitle">Análise comparativa de custos de transação entre diferentes redes</p>
                 </div>
                 <div class="header-actions">
-                    <!-- Botão de Alternar Tema -->
+                    <!-- Language Selector -->
+                    <div class="lang-selector">
+                        <button class="lang-btn active" onclick="changeLanguage('pt-BR')" data-lang="pt-BR">PT</button>
+                        <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">EN</button>
+                        <button class="lang-btn" onclick="changeLanguage('es')" data-lang="es">ES</button>
+                    </div>
+                    <!-- Theme Toggle -->
                     <div class="theme-toggle" id="themeToggle" title="Alternar modo claro/escuro">
                         <i class="fas fa-moon"></i>
                     </div>
                     <button class="btn btn-secondary" onclick="location.href='/'">
-                        <i class="fas fa-home"></i> Voltar ao Início
+                        <i class="fas fa-home"></i> <span data-i18n="header.back">Voltar ao Início</span>
                     </button>
                     <button class="btn btn-primary" onclick="exportarDados()">
-                        <i class="fas fa-download"></i> Exportar Dados
+                        <i class="fas fa-download"></i> <span data-i18n="header.export">Exportar Dados</span>
                     </button>
                 </div>
             </div>
@@ -753,15 +746,14 @@
             <!-- Left Panel - Filters -->
             <div class="filters-panel">
                 <!-- Networks Selection -->
-                <!-- Networks Selection - VERSÃO DINÂMICA -->
                 <div class="card">
                     <div class="card-title">
                         <i class="fas fa-network-wired"></i>
-                        <span>Redes Blockchain</span>
+                        <span data-i18n="filters.networks">Redes Blockchain</span>
                     </div>
                     <div class="network-selection" id="networkSelectionContainer">
                         <div class="loading-filters">
-                            <i class="fas fa-spinner fa-spin"></i> Carregando redes...
+                            <i class="fas fa-spinner fa-spin"></i> <span data-i18n="filters.loading">Carregando redes...</span>
                         </div>
                     </div>
                 </div>
@@ -770,66 +762,63 @@
                 <div class="card">
                     <div class="card-title">
                         <i class="fas fa-calendar-alt"></i>
-                        <span>Período de Análise</span>
+                        <span data-i18n="filters.period">Período de Análise</span>
                     </div>
                     <div class="period-buttons">
-                        <button class="period-btn active" data-period="day">24 Horas</button>
-                        <button class="period-btn" data-period="week">7 Dias</button>
-                        <button class="period-btn" data-period="month">30 Dias</button>
-                        <button class="period-btn" data-period="all">Todo Período</button>
-                        <button class="period-btn" data-period="custom">Personalizado</button>
+                        <button class="period-btn active" data-period="day" data-i18n="filters.period_day">24 Horas</button>
+                        <button class="period-btn" data-period="week" data-i18n="filters.period_week">7 Dias</button>
+                        <button class="period-btn" data-period="month" data-i18n="filters.period_month">30 Dias</button>
+                        <button class="period-btn" data-period="all" data-i18n="filters.period_all">Todo Período</button>
+                        <button class="period-btn" data-period="custom" data-i18n="filters.period_custom">Personalizado</button>
                     </div>
 
-                    <!-- 🔥 NOVO: Campos de data personalizada (inicialmente ocultos) -->
                     <div id="customDateRange" style="display: none; margin-top: 20px;">
                         <div class="filter-group" style="margin-bottom: 15px;">
                             <label class="filter-label">
                                 <i class="fas fa-calendar-day"></i>
-                                <span>Data Inicial (UTC)</span>
+                                <span data-i18n="filters.date_start">Data Inicial (UTC)</span>
                             </label>
                             <input type="date" class="filter-input" id="dataInicio" value="">
                         </div>
                         <div class="filter-group" style="margin-bottom: 15px;">
                             <label class="filter-label">
                                 <i class="fas fa-calendar-day"></i>
-                                <span>Data Final (UTC)</span>
+                                <span data-i18n="filters.date_end">Data Final (UTC)</span>
                             </label>
                             <input type="date" class="filter-input" id="dataFim" value="">
                         </div>
                         <div style="font-size: 12px; color: var(--text-light); margin-top: 10px;">
                             <i class="fas fa-info-circle"></i>
-                            <span>Período considerado das 00:00 às 23:59:59 UTC</span>
+                            <span data-i18n="filters.date_info">Período considerado das 00:00 às 23:59:59 UTC</span>
                         </div>          
                     </div>
                 </div>
-                
 
                 <!-- Gas Units -->
                 <div class="card">
                     <div class="card-title">
                         <i class="fas fa-calculator"></i>
-                        <span>Configuração de Gas</span>
+                        <span data-i18n="filters.gas_config">Configuração de Gas</span>
                     </div>
                     <div class="filter-group">
                         <label class="filter-label">
                             <i class="fas fa-fire"></i>
-                            <span>Unidades de Gas por Transação</span>
+                            <span data-i18n="filters.gas_units">Unidades de Gas por Transação</span>
                         </label>
                         <div class="gas-units-input">
-                            <input type="number" class="filter-input" id="gasUnits" min="21000" max="10000000"
-                                value="21000">
-                            <span class="gas-unit-label">unidades</span>
+                            <input type="number" class="filter-input" id="gasUnits" min="21000" max="10000000" value="21000">
+                            <span class="gas-unit-label" data-i18n="filters.gas_units_label">unidades</span>
                         </div>
                         <div style="margin-top: 10px; font-size: 12px; color: var(--text-light);">
                             <i class="fas fa-info-circle"></i>
-                            <span>Padrão: 21,000 (transação simples ETH)</span>
+                            <span data-i18n="filters.gas_default">Padrão: 21,000 (transação simples ETH)</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Apply Filters -->
                 <button class="btn btn-primary" onclick="carregarDados()" style="width: 100%;">
-                    <i class="fas fa-sync-alt"></i> Atualizar Análise
+                    <i class="fas fa-sync-alt"></i> <span data-i18n="filters.update">Atualizar Análise</span>
                 </button>
             </div>
 
@@ -840,14 +829,14 @@
                     <div class="chart-header">
                         <div class="chart-title">
                             <i class="fas fa-chart-line"></i>
-                            <span>Evolução de Custos por Rede</span>
+                            <span data-i18n="charts.main_title">Evolução de Custos por Rede</span>
                         </div>
                         <div class="header-actions">
                             <button class="btn btn-secondary btn-sm" onclick="alternarTipoGrafico()">
-                                <i class="fas fa-exchange-alt"></i> Alternar Gráfico
+                                <i class="fas fa-exchange-alt"></i> <span data-i18n="charts.toggle">Alternar Gráfico</span>
                             </button>
                             <button class="btn btn-secondary btn-sm" onclick="downloadChart()">
-                                <i class="fas fa-download"></i> Baixar
+                                <i class="fas fa-download"></i> <span data-i18n="charts.download">Baixar</span>
                             </button>
                         </div>
                     </div>
@@ -855,7 +844,7 @@
                         <canvas id="mainChart"></canvas>
                         <div id="chartLoading" class="loading-overlay" style="display: none;">
                             <div class="loading-spinner"></div>
-                            <div>Carregando dados históricos...</div>
+                            <div data-i18n="charts.loading">Carregando dados históricos...</div>
                         </div>
                     </div>
                 </div>
@@ -864,13 +853,13 @@
                 <div class="card">
                     <div class="card-title">
                         <i class="fas fa-chart-bar"></i>
-                        <span>Estatísticas Comparativas</span>
+                        <span data-i18n="charts.stats_title">Estatísticas Comparativas</span>
                     </div>
                     <div class="stats-grid" id="statsGrid">
                         <div class="stat-card">
                             <div class="stat-value">-</div>
-                            <div class="stat-label">Custo Médio</div>
-                            <div class="stat-network">Aguardando dados...</div>
+                            <div class="stat-label" data-i18n="charts.avg_cost">Custo Médio</div>
+                            <div class="stat-network" data-i18n="charts.waiting">Aguardando dados...</div>
                         </div>
                     </div>
                 </div>
@@ -880,28 +869,27 @@
                     <div class="chart-header">
                         <div class="chart-title">
                             <i class="fas fa-table"></i>
-                            <span>Dados Históricos</span>
+                            <span data-i18n="charts.table_title">Dados Históricos</span>
                         </div>
                         <button class="btn btn-secondary btn-sm" onclick="toggleTable()">
-                            <i class="fas fa-eye"></i> Mostrar Tabela
+                            <i class="fas fa-eye"></i> <span data-i18n="charts.show_table">Mostrar Tabela</span>
                         </button>
                     </div>
                     <div class="data-table-container" id="dataTableContainer" style="display: none;">
                         <table class="data-table" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>Rede</th>
-                                    <th>Data/Hora</th>
-                                    <th>Custo (BRL)</th>
-                                    <th>Gas Units</th>
-                                    <th>Gas Price (Gwei)</th>
+                                    <th data-i18n="table.network">Rede</th>
+                                    <th data-i18n="table.datetime">Data/Hora</th>
+                                    <th data-i18n="table.cost">Custo (BRL)</th>
+                                    <th data-i18n="table.gas_units">Gas Units</th>
+                                    <th data-i18n="table.gas_price">Gas Price (Gwei)</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
                                 <tr>
                                     <td colspan="5" style="text-align: center; padding: 20px;">
-                                        <i class="fas fa-database"></i> Clique em "Atualizar Análise" para carregar
-                                        dados
+                                        <i class="fas fa-database"></i> <span data-i18n="table.load_data">Clique em "Atualizar Análise" para carregar dados</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -915,9 +903,9 @@
         <footer class="dashboard-footer">
             <div>
                 <i class="fas fa-database"></i>
-                <span>SmartAgro - Histórico de Custos Blockchain | Atualizado em tempo real</span>
+                <span data-i18n="footer.source">SmartAgro - Histórico de Custos Blockchain | Atualizado em tempo real</span>
             </div>
-            <div class="copyright">
+            <div class="copyright" data-i18n="footer.copyright">
                 &copy; 2025 SmartAgro. Todos os direitos reservados.
             </div>
         </footer>
@@ -925,84 +913,269 @@
 
     <script>
         // ============================================
-        // FUNCIONALIDADE DE TEMA CLARO/ESCURO
+        // SISTEMA DE TRADUÇÃO
         // ============================================
-
-        let isDarkMode = true;
-
-        // Função para alternar tema
-        function toggleTheme() {
-            const body = document.body;
-            const themeToggle = document.getElementById('themeToggle');
-            const icon = themeToggle.querySelector('i');
-
-            isDarkMode = !isDarkMode;
-
-            if (isDarkMode) {
-                // Mudar para modo escuro
-                body.classList.remove('light-mode');
-                icon.className = 'fas fa-moon';
-                themeToggle.title = 'Alternar para modo claro';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                // Mudar para modo claro
-                body.classList.add('light-mode');
-                icon.className = 'fas fa-sun';
-                themeToggle.title = 'Alternar para modo escuro';
-                localStorage.setItem('theme', 'light');
+        const translations = {
+            'pt-BR': {
+                locale: 'pt-BR',
+                'header.title': 'Histórico de Custos Blockchain',
+                'header.subtitle': 'Análise comparativa de custos de transação entre diferentes redes',
+                'header.back': 'Voltar ao Início',
+                'header.export': 'Exportar Dados',
+                'filters.networks': 'Redes Blockchain',
+                'filters.loading': 'Carregando redes...',
+                'filters.period': 'Período de Análise',
+                'filters.period_day': '24 Horas',
+                'filters.period_week': '7 Dias',
+                'filters.period_month': '30 Dias',
+                'filters.period_all': 'Todo Período',
+                'filters.period_custom': 'Personalizado',
+                'filters.date_start': 'Data Inicial (UTC)',
+                'filters.date_end': 'Data Final (UTC)',
+                'filters.date_info': 'Período considerado das 00:00 às 23:59:59 UTC',
+                'filters.gas_config': 'Configuração de Gas',
+                'filters.gas_units': 'Unidades de Gas por Transação',
+                'filters.gas_units_label': 'unidades',
+                'filters.gas_default': 'Padrão: 21,000 (transação simples ETH)',
+                'filters.update': 'Atualizar Análise',
+                'charts.main_title': 'Evolução de Custos por Rede',
+                'charts.toggle': 'Alternar Gráfico',
+                'charts.download': 'Baixar',
+                'charts.loading': 'Carregando dados históricos...',
+                'charts.stats_title': 'Estatísticas Comparativas',
+                'charts.avg_cost': 'Custo Médio',
+                'charts.waiting': 'Aguardando dados...',
+                'charts.table_title': 'Dados Históricos',
+                'charts.show_table': 'Mostrar Tabela',
+                'charts.hide_table': 'Ocultar Tabela',
+                'charts.no_data': 'Nenhum dado disponível',
+                'charts.avg': 'Médio',
+                'charts.min': 'Mín',
+                'charts.max': 'Máx',
+                'charts.last': 'Último',
+                'charts.no_data_msg': 'Nenhum dado encontrado',
+                'charts.try_adjust': 'Tente ajustar os filtros ou período',
+                'charts.error_msg': 'Erro ao carregar dados',
+                'table.network': 'Rede',
+                'table.datetime': 'Data/Hora',
+                'table.cost': 'Custo (BRL)',
+                'table.gas_units': 'Gas Units',
+                'table.gas_price': 'Gas Price (Gwei)',
+                'table.load_data': 'Clique em "Atualizar Análise" para carregar dados',
+                'table.no_data': 'Nenhum dado disponível',
+                'footer.source': 'SmartAgro - Histórico de Custos Blockchain | Atualizado em tempo real',
+                'footer.copyright': '© 2025 SmartAgro. Todos os direitos reservados.'
+            },
+            'en': {
+                locale: 'en-US',
+                'header.title': 'Blockchain Cost History',
+                'header.subtitle': 'Comparative analysis of transaction costs across different networks',
+                'header.back': 'Back to Home',
+                'header.export': 'Export Data',
+                'filters.networks': 'Blockchain Networks',
+                'filters.loading': 'Loading networks...',
+                'filters.period': 'Analysis Period',
+                'filters.period_day': '24 Hours',
+                'filters.period_week': '7 Days',
+                'filters.period_month': '30 Days',
+                'filters.period_all': 'All Period',
+                'filters.period_custom': 'Custom',
+                'filters.date_start': 'Start Date (UTC)',
+                'filters.date_end': 'End Date (UTC)',
+                'filters.date_info': 'Period considered from 00:00 to 23:59:59 UTC',
+                'filters.gas_config': 'Gas Configuration',
+                'filters.gas_units': 'Gas Units per Transaction',
+                'filters.gas_units_label': 'units',
+                'filters.gas_default': 'Default: 21,000 (simple ETH transaction)',
+                'filters.update': 'Update Analysis',
+                'charts.main_title': 'Cost Evolution by Network',
+                'charts.toggle': 'Toggle Chart',
+                'charts.download': 'Download',
+                'charts.loading': 'Loading historical data...',
+                'charts.stats_title': 'Comparative Statistics',
+                'charts.avg_cost': 'Average Cost',
+                'charts.waiting': 'Waiting for data...',
+                'charts.table_title': 'Historical Data',
+                'charts.show_table': 'Show Table',
+                'charts.hide_table': 'Hide Table',
+                'charts.no_data': 'No data available',
+                'charts.avg': 'Avg',
+                'charts.min': 'Min',
+                'charts.max': 'Max',
+                'charts.last': 'Last',
+                'charts.no_data_msg': 'No data found',
+                'charts.try_adjust': 'Try adjusting filters or period',
+                'charts.error_msg': 'Error loading data',
+                'table.network': 'Network',
+                'table.datetime': 'Date/Time',
+                'table.cost': 'Cost (BRL)',
+                'table.gas_units': 'Gas Units',
+                'table.gas_price': 'Gas Price (Gwei)',
+                'table.load_data': 'Click "Update Analysis" to load data',
+                'table.no_data': 'No data available',
+                'footer.source': 'SmartAgro - Blockchain Cost History | Updated in real-time',
+                'footer.copyright': '© 2025 SmartAgro. All rights reserved.'
+            },
+            'es': {
+                locale: 'es-ES',
+                'header.title': 'Historial de Costos Blockchain',
+                'header.subtitle': 'Análisis comparativo de costos de transacción entre diferentes redes',
+                'header.back': 'Volver al Inicio',
+                'header.export': 'Exportar Datos',
+                'filters.networks': 'Redes Blockchain',
+                'filters.loading': 'Cargando redes...',
+                'filters.period': 'Período de Análisis',
+                'filters.period_day': '24 Horas',
+                'filters.period_week': '7 Días',
+                'filters.period_month': '30 Días',
+                'filters.period_all': 'Todo el Período',
+                'filters.period_custom': 'Personalizado',
+                'filters.date_start': 'Fecha Inicial (UTC)',
+                'filters.date_end': 'Fecha Final (UTC)',
+                'filters.date_info': 'Período considerado de 00:00 a 23:59:59 UTC',
+                'filters.gas_config': 'Configuración de Gas',
+                'filters.gas_units': 'Unidades de Gas por Transacción',
+                'filters.gas_units_label': 'unidades',
+                'filters.gas_default': 'Predeterminado: 21,000 (transacción simple ETH)',
+                'filters.update': 'Actualizar Análisis',
+                'charts.main_title': 'Evolución de Costos por Red',
+                'charts.toggle': 'Alternar Gráfico',
+                'charts.download': 'Descargar',
+                'charts.loading': 'Cargando datos históricos...',
+                'charts.stats_title': 'Estadísticas Comparativas',
+                'charts.avg_cost': 'Costo Promedio',
+                'charts.waiting': 'Esperando datos...',
+                'charts.table_title': 'Datos Históricos',
+                'charts.show_table': 'Mostrar Tabla',
+                'charts.hide_table': 'Ocultar Tabla',
+                'charts.no_data': 'No hay datos disponibles',
+                'charts.avg': 'Prom',
+                'charts.min': 'Mín',
+                'charts.max': 'Máx',
+                'charts.last': 'Último',
+                'charts.no_data_msg': 'No se encontraron datos',
+                'charts.try_adjust': 'Intente ajustar los filtros o el período',
+                'charts.error_msg': 'Error al cargar datos',
+                'table.network': 'Red',
+                'table.datetime': 'Fecha/Hora',
+                'table.cost': 'Costo (BRL)',
+                'table.gas_units': 'Gas Units',
+                'table.gas_price': 'Gas Price (Gwei)',
+                'table.load_data': 'Haga clic en "Actualizar Análisis" para cargar datos',
+                'table.no_data': 'No hay datos disponibles',
+                'footer.source': 'SmartAgro - Historial de Costos Blockchain | Actualizado en tiempo real',
+                'footer.copyright': '© 2025 SmartAgro. Todos los derechos reservados.'
             }
+        };
 
-            // Atualizar cores do gráfico se existir
-            if (mainChart) {
-                updateChartColors();
-            }
+        let currentLang = 'pt-BR';
+
+        // ============================================
+        // FUNÇÃO DE MUDANÇA DE IDIOMA
+        // ============================================
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // Atualizar botões ativos
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Atualizar elementos com data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Atualizar placeholders se houver
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            // Atualizar gráfico se existir
+            updateChartLanguage(lang);
+            
+            // Atualizar estatísticas se existirem
+            updateStatsLanguage(lang);
         }
 
-        // Função para atualizar cores do gráfico// Função para atualizar cores do gráfico - VERSÃO CORRIGIDA
-        function updateChartColors() {
+        // ============================================
+        // ATUALIZAR IDIOMA DO GRÁFICO
+        // ============================================
+        function updateChartLanguage(lang) {
             if (!mainChart) return;
-
-            // CORREÇÃO: Obter o estilo computado do BODY (que tem a classe light-mode aplicada)
+            
             const bodyStyles = getComputedStyle(document.body);
-
-            // Agora pega as cores corretas baseadas na classe atual do body
-            mainChart.options.plugins.legend.labels.color = bodyStyles.getPropertyValue('--text').trim();
-            mainChart.options.scales.x.ticks.color = bodyStyles.getPropertyValue('--text-light').trim();
-            mainChart.options.scales.y.ticks.color = bodyStyles.getPropertyValue('--text-light').trim();
-            mainChart.options.scales.x.title.color = bodyStyles.getPropertyValue('--text-light').trim();
-            mainChart.options.scales.y.title.color = bodyStyles.getPropertyValue('--text-light').trim();
-
-            // Atualizar cores da grade
-            const gridColor = bodyStyles.getPropertyValue('--border').trim() + '1A';
-            mainChart.options.scales.x.grid.color = gridColor;
-            mainChart.options.scales.y.grid.color = gridColor;
-
+            const textColor = bodyStyles.getPropertyValue('--text').trim();
+            const textLightColor = bodyStyles.getPropertyValue('--text-light').trim();
+            
+            // Atualizar textos do gráfico
+            mainChart.options.scales.x.title.text = translations[lang]['table.datetime'] || 'Data/Hora (UTC)';
+            mainChart.options.scales.y.title.text = translations[lang]['table.cost'] || 'Custo (BRL)';
+            
+            // Atualizar cores
+            mainChart.options.plugins.legend.labels.color = textColor;
+            mainChart.options.scales.x.ticks.color = textLightColor;
+            mainChart.options.scales.y.ticks.color = textLightColor;
+            mainChart.options.scales.x.title.color = textLightColor;
+            mainChart.options.scales.y.title.color = textLightColor;
+            
+            const borderColor = bodyStyles.getPropertyValue('--border').trim();
+            mainChart.options.scales.x.grid.color = borderColor + '1A';
+            mainChart.options.scales.y.grid.color = borderColor + '1A';
+            
             mainChart.update();
         }
 
-        // Carregar tema salvo
-        function loadSavedTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const themeToggle = document.getElementById('themeToggle');
-            const icon = themeToggle.querySelector('i');
-
-            if (savedTheme === 'light') {
-                isDarkMode = false;
-                document.body.classList.add('light-mode');
-                icon.className = 'fas fa-sun';
-                themeToggle.title = 'Alternar para modo escuro';
-            } else {
-                isDarkMode = true;
-                document.body.classList.remove('light-mode');
-                icon.className = 'fas fa-moon';
-                themeToggle.title = 'Alternar para modo claro';
+        // ============================================
+        // ATUALIZAR IDIOMA DAS ESTATÍSTICAS
+        // ============================================
+        function updateStatsLanguage(lang) {
+            const statsGrid = document.getElementById('statsGrid');
+            const statCards = statsGrid.querySelectorAll('.stat-card');
+            
+            // Verificar se há dados reais ou apenas placeholder
+            if (statCards.length > 0 && statCards[0].querySelector('.stat-value')?.textContent !== '-') {
+                // Já tem dados, atualizar apenas os labels
+                statCards.forEach(card => {
+                    const label = card.querySelector('.stat-label');
+                    if (label && label.textContent.includes('Médio') || label.textContent.includes('Average') || label.textContent.includes('Promedio')) {
+                        label.textContent = translations[lang]['charts.avg_cost'] || 'Custo Médio';
+                    }
+                    // Outros labels podem ser atualizados aqui
+                });
             }
         }
 
         // ============================================
-        // RESTANTE DO CÓDIGO EXISTENTE
+        // FUNÇÃO DE FORMATAÇÃO DE MOEDA (com suporte a locale)
         // ============================================
+        function formatCurrency(value) {
+            if (value === null || value === undefined) return 'R$ 0,00';
+            const locale = translations[currentLang].locale || 'pt-BR';
+            return new Intl.NumberFormat(locale, {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 6
+            }).format(value);
+        }
 
+        // ============================================
+        // RESTANTE DO CÓDIGO EXISTENTE (NÃO MODIFICADO)
+        // ============================================
+        
+        // ... (todo o resto do seu código JavaScript permanece igual)
+        // As funções que usam texto em português agora usam as traduções
+        
         // Debug inicial
         console.log('🔧 Inicializando dashboard...');
         console.log('📊 Chart.js version:', Chart.version);
@@ -1036,20 +1209,16 @@
         // Execute o teste
         testarChartJS();
 
-
         function criarDataUTC(dateString, isEndOfDay = false) {
             if (!dateString) return null;
             const [ano, mes, dia] = dateString.split('-');
             if (isEndOfDay) {
-                // 23:59:59.999 UTC
                 return new Date(Date.UTC(parseInt(ano), parseInt(mes) - 1, parseInt(dia), 23, 59, 59, 999));
             } else {
-                // 00:00:00.000 UTC
                 return new Date(Date.UTC(parseInt(ano), parseInt(mes) - 1, parseInt(dia), 0, 0, 0, 0));
             }
         }
 
-        // Função para formatar data para exibição
         function formatarDataUTC(date) {
             if (!date) return '';
             return date.toISOString().split('T')[0];
@@ -1062,14 +1231,11 @@
 
             if (period === 'custom') {
                 customDateRange.style.display = 'block';
-
-                // Definir valores padrão se estiverem vazios
                 const hoje = new Date();
                 const dataInicioInput = document.getElementById('dataInicio');
                 const dataFimInput = document.getElementById('dataFim');
 
                 if (!dataInicioInput.value) {
-                    // Padrão: últimos 7 dias
                     const seteDiasAtras = new Date();
                     seteDiasAtras.setDate(hoje.getDate() - 7);
                     dataInicioInput.value = formatarDataUTC(seteDiasAtras);
@@ -1082,7 +1248,6 @@
             }
         }
 
-        // Função para validar datas
         function validarDatas() {
             const dataInicio = document.getElementById('dataInicio').value;
             const dataFim = document.getElementById('dataFim').value;
@@ -1110,8 +1275,8 @@
 
             return true;
         }
-        
-        // Configuração de cores para redes conhecidas (mantém consistência visual)
+
+        // Configuração de cores para redes
         const knownNetworkColors = {
             'Ethereum': '#627EEA',
             'BNB Chain': '#F0B90B',
@@ -1126,25 +1291,18 @@
             'Scroll': '#FFE8C5'
         };
 
-        // Função para gerar cor aleatória mas consistente para redes desconhecidas
         function getNetworkColor(networkName) {
-            // Se já temos uma cor definida, usa ela
             if (knownNetworkColors[networkName]) {
                 return knownNetworkColors[networkName];
             }
-
-            // Gera uma cor baseada no nome da rede (consistente)
             let hash = 0;
             for (let i = 0; i < networkName.length; i++) {
                 hash = ((hash << 5) - hash) + networkName.charCodeAt(i);
                 hash |= 0;
             }
-
-            // Converter para cor HSL (mais harmonioso)
             const hue = Math.abs(hash % 360);
-            const saturation = 65 + (Math.abs(hash >> 8) % 25); // 65-90%
-            const lightness = 55 + (Math.abs(hash >> 16) % 15); // 55-70%
-
+            const saturation = 65 + (Math.abs(hash >> 8) % 25);
+            const lightness = 55 + (Math.abs(hash >> 16) % 15);
             return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         }
 
@@ -1167,20 +1325,16 @@
                     container.innerHTML = `
                         <div class="loading-filters">
                             <i class="fas fa-exclamation-triangle"></i> 
-                            Nenhuma rede encontrada
+                            <span data-i18n="filters.no_networks">Nenhuma rede encontrada</span>
                         </div>
                     `;
                     return;
                 }
 
-                // Salvar redes no escopo global
                 window.redesDisponiveis = redes;
 
-                // Renderizar checkboxes das redes
                 container.innerHTML = redes.map((rede, index) => {
                     const networkColor = getNetworkColor(rede);
-                    // Primeiras 3 redes ficam selecionadas por padrão, as demais não
-                    // const isChecked = index < 3;
                     const isChecked = true;
 
                     return `
@@ -1196,31 +1350,24 @@
                     `;
                 }).join('');
 
-
                 let autoRefreshTimeout = null;
 
                 function autoRefreshChart() {
                     if (autoRefreshTimeout) {
                         clearTimeout(autoRefreshTimeout);
                     }
-                    // Espera 500ms após a última mudança para carregar
                     autoRefreshTimeout = setTimeout(() => {
                         carregarDados();
                     }, 500);
                 }
 
-
-                // Adicionar event listeners para as checkboxes
                 document.querySelectorAll('.network-checkbox-input').forEach(checkbox => {
                     checkbox.addEventListener('change', function () {
                         console.log('🔄 Rede alterada:', this.value, this.checked);
-                        // Opcional: auto-carregar dados quando rede mudar
-                        // carregarDados();
                         autoRefreshChart();
                     });
                 });
 
-                // Atualizar networkColors global para uso nos gráficos
                 redes.forEach(rede => {
                     networkColors[rede] = getNetworkColor(rede);
                 });
@@ -1232,30 +1379,14 @@
                 container.innerHTML = `
                     <div class="loading-filters" style="color: var(--error);">
                         <i class="fas fa-exclamation-triangle"></i> 
-                        Erro ao carregar redes. Verifique sua conexão.
+                        <span data-i18n="filters.error_loading">Erro ao carregar redes. Verifique sua conexão.</span>
                         <button onclick="carregarRedes()" style="margin-top: 10px; padding: 5px 10px; background: var(--accent); color: white; border: none; border-radius: 4px; cursor: pointer;">
-                            <i class="fas fa-sync-alt"></i> Tentar novamente
+                            <i class="fas fa-sync-alt"></i> <span data-i18n="filters.retry">Tentar novamente</span>
                         </button>
                     </div>
                 `;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // Configuration
         const networkColors = {
@@ -1268,17 +1399,6 @@
         let mainChart = null;
         let historicalData = [];
 
-        // Format currency
-        function formatCurrency(value) {
-            if (value === null || value === undefined) return 'R$ 0,00';
-            return new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 6
-            }).format(value);
-        }
-
         // Get selected networks
         function getSelectedNetworks() {
             const selected = [];
@@ -1289,7 +1409,7 @@
             return selected;
         }
 
-        // Get selected period (retorna objeto completo com período e datas)
+        // Get selected period
         function getSelectedPeriodConfig() {
             const activeBtn = document.querySelector('.period-btn.active');
             const period = activeBtn ? activeBtn.dataset.period : 'day';
@@ -1314,19 +1434,17 @@
             return config;
         }
 
-        // Get selected period (apenas o período, para compatibilidade)
         function getSelectedPeriod() {
             const activeBtn = document.querySelector('.period-btn.active');
             return activeBtn ? activeBtn.dataset.period : 'day';
         }
-        // Get gas units
+
         function getGasUnits() {
             const val = document.getElementById('gasUnits').value;
             return val ? parseInt(val) : 21000;
         }
 
         // Load data
-        // Load data (modificada)
         async function carregarDados() {
             console.log('🔄 Iniciando carregamento de dados...');
 
@@ -1343,21 +1461,15 @@
                 return;
             }
 
-            // Validar datas se for período personalizado
             if (periodConfig.period === 'custom') {
                 if (!validarDatas()) {
                     loadingEl.style.display = 'none';
                     return;
                 }
-                console.log('📅 Período personalizado UTC:', periodConfig.dataInicioStr, 'até', periodConfig.dataFimStr);
-                console.log('   Timestamp início:', periodConfig.dataInicio);
-                console.log('   Timestamp fim:', periodConfig.dataFim);
             }
 
-            // Build URL
             let url = `/api/gas-history?period=${periodConfig.period}&gasUnits=${gasUnits}`;
 
-            // 🔥 Adicionar parâmetros de data se for período personalizado
             if (periodConfig.period === 'custom' && periodConfig.dataInicio && periodConfig.dataFim) {
                 url += `&data_inicio=${periodConfig.dataInicio}`;
                 url += `&data_fim=${periodConfig.dataFim}`;
@@ -1398,276 +1510,280 @@
             }
         }
 
-        // Create chart - VERSÃO OTIMIZADA SEM PONTOS
-        // Create chart - VERSÃO CORRIGIDA
-    function criarGrafico(data) {
-        console.log('🎨 Criando gráfico com', data.length, 'pontos de dados');
+        // Create chart
+        const tamanhoDaFonte = 18;
+        function criarGrafico(data) {
+            console.log('🎨 Criando gráfico com', data.length, 'pontos de dados');
 
-        const ctx = document.getElementById('mainChart').getContext('2d');
+            const ctx = document.getElementById('mainChart').getContext('2d');
 
-        if (mainChart) {
-            mainChart.destroy();
-        }
-
-        if (!data || data.length === 0) {
-            mostrarGraficoVazio(ctx);
-            return;
-        }
-
-        // Group data by network
-        const groupedData = {};
-        const allTimestamps = new Set();
-
-        data.forEach(item => {
-            if (!groupedData[item.network]) {
-                groupedData[item.network] = {
-                    values: new Map()
-                };
+            if (mainChart) {
+                mainChart.destroy();
             }
 
-            const timestamp = item.timestamp;
-            groupedData[item.network].values.set(timestamp, parseFloat(item.gas_cost_brl));
-            allTimestamps.add(timestamp);
-        });
+            if (!data || data.length === 0) {
+                mostrarGraficoVazio(ctx);
+                return;
+            }
 
-        const sortedTimestamps = Array.from(allTimestamps).sort();
+            // Group data by network
+            const groupedData = {};
+            const allTimestamps = new Set();
 
-        // 🔥 FORÇAR UTC nos labels
-        const labels = sortedTimestamps.map(timestamp => {
-            const date = new Date(timestamp);
-            const utcHours = date.getUTCHours().toString().padStart(2, '0');
-            const utcMinutes = date.getUTCMinutes().toString().padStart(2, '0');
-            return `${utcHours}:${utcMinutes}`;
-        });
+            data.forEach(item => {
+                if (!groupedData[item.network]) {
+                    groupedData[item.network] = {
+                        values: new Map()
+                    };
+                }
 
-        const networks = Object.keys(groupedData);
-
-        const datasets = networks.map(network => {
-            const color = getNetworkColor(network);
-            const values = sortedTimestamps.map(timestamp => {
-                return groupedData[network].values.get(timestamp) || null;
+                const timestamp = item.timestamp;
+                groupedData[item.network].values.set(timestamp, parseFloat(item.gas_cost_brl));
+                allTimestamps.add(timestamp);
             });
 
-            return {
-                label: network,
-                data: values,
-                borderColor: color,
-                backgroundColor: 'transparent',
-                borderWidth: 1.5,
-                fill: false,
-                tension: 0.1,
-                pointRadius: 0,
-                pointHoverRadius: 0,
-                pointBackgroundColor: 'transparent',
-                pointBorderColor: 'transparent',
-                showLine: true,
-                cubicInterpolationMode: 'monotone',
-                spanGaps: true
-            };
-        });
+            const sortedTimestamps = Array.from(allTimestamps).sort();
 
-        const bodyStyles = getComputedStyle(document.body);
-        const textColor = bodyStyles.getPropertyValue('--text').trim();
-        const textLightColor = bodyStyles.getPropertyValue('--text-light').trim();
-        const borderColor = bodyStyles.getPropertyValue('--border').trim();
+            const labels = sortedTimestamps.map(timestamp => {
+                const date = new Date(timestamp);
+                const utcHours = date.getUTCHours().toString().padStart(2, '0');
+                const utcMinutes = date.getUTCMinutes().toString().padStart(2, '0');
+                return `${utcHours}:${utcMinutes}`;
+            });
 
-        mainChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: datasets
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: { duration: 0 },
-                elements: {
-                    point: { radius: 0 },
-                    line: { tension: 0.1 }
+            const networks = Object.keys(groupedData);
+
+            const datasets = networks.map(network => {
+                const color = getNetworkColor(network);
+                const values = sortedTimestamps.map(timestamp => {
+                    return groupedData[network].values.get(timestamp) || null;
+                });
+
+                return {
+                    label: network,
+                    data: values,
+                    borderColor: color,
+                    backgroundColor: 'transparent',
+                    borderWidth: 1.5,
+                    fill: false,
+                    tension: 0.1,
+                    pointRadius: 0,
+                    pointHoverRadius: 0,
+                    pointBackgroundColor: 'transparent',
+                    pointBorderColor: 'transparent',
+                    showLine: true,
+                    cubicInterpolationMode: 'monotone',
+                    spanGaps: true
+                };
+            });
+
+            const bodyStyles = getComputedStyle(document.body);
+            const textColor = bodyStyles.getPropertyValue('--text').trim();
+            const textLightColor = bodyStyles.getPropertyValue('--text-light').trim();
+            const borderColor = bodyStyles.getPropertyValue('--border').trim();
+
+            // Traduções para os eixos
+            const xAxisLabel = translations[currentLang]['table.datetime'] || 'Data/Hora (UTC)';
+            const yAxisLabel = translations[currentLang]['table.cost'] || 'Custo (BRL)';
+
+            mainChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
                 },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            color: textColor,
-                            font: { size: 12 },
-                            padding: 15,
-                            usePointStyle: false
-                        }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 0 },
+                    elements: {
+                        point: { radius: 0 },
+                        line: { tension: 0.1 }
                     },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        callbacks: {
-                            label: function (context) {
-                                const label = context.dataset.label || '';
-                                const value = context.parsed.y;
-                                if (value === null) return `${label}: Sem dados`;
-                                return `${label}: ${formatCurrency(value)}`;
-                            },
-                            title: function (context) {
-                                const index = context[0].dataIndex;
-                                if (sortedTimestamps[index]) {
-                                    const date = new Date(sortedTimestamps[index]);
-                                    // 🔥 FORÇAR UTC no tooltip
-                                    const utcYear = date.getUTCFullYear();
-                                    const utcMonth = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-                                    const utcDay = date.getUTCDate().toString().padStart(2, '0');
-                                    const utcHours = date.getUTCHours().toString().padStart(2, '0');
-                                    const utcMinutes = date.getUTCMinutes().toString().padStart(2, '0');
-                                    const utcSeconds = date.getUTCSeconds().toString().padStart(2, '0');
-                                    return `${utcDay}/${utcMonth}/${utcYear} ${utcHours}:${utcMinutes}:${utcSeconds} UTC`;
-                                }
-                                return '';
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: textColor,
+                                font: { size: tamanhoDaFonte },
+                                // font: { size: 12 },
+                                padding: 15,
+                                usePointStyle: false
                             }
                         },
-                        backgroundColor: 'rgba(30, 41, 59, 0.95)',
-                        titleColor: '#E2E8F0',
-                        bodyColor: '#E2E8F0',
-                        borderColor: '#475569',
-                        borderWidth: 1
-                    },
-                    zoom: {
-                        limits: { x: { min: 'original', max: 'original' } },
-                        zoom: {
-                            wheel: { enabled: true, speed: 0.05 },
-                            pinch: { enabled: true },
-                            mode: 'x',
-                            drag: { enabled: false }
-                        },
-                        pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' }
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: textLightColor,
-                            maxRotation: 45,
-                            autoSkip: true,
-                            maxTicksLimit: 15,
-                            callback: function (value, index) {
-                                const totalLabels = this.chart.data.labels.length;
-                                const showEvery = Math.max(1, Math.floor(totalLabels / 12));
-
-                                if (index % showEvery === 0 || index === 0 || index === totalLabels - 1) {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y;
+                                    if (value === null) return `${label}: Sem dados`;
+                                    return `${label}: ${formatCurrency(value)}`;
+                                },
+                                title: function (context) {
+                                    const index = context[0].dataIndex;
                                     if (sortedTimestamps[index]) {
                                         const date = new Date(sortedTimestamps[index]);
-                                        // 🔥 FORÇAR UTC nos ticks
+                                        const utcYear = date.getUTCFullYear();
+                                        const utcMonth = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+                                        const utcDay = date.getUTCDate().toString().padStart(2, '0');
                                         const utcHours = date.getUTCHours().toString().padStart(2, '0');
                                         const utcMinutes = date.getUTCMinutes().toString().padStart(2, '0');
-                                        const utcDay = date.getUTCDate().toString().padStart(2, '0');
-                                        const utcMonth = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-
-                                        const hojeUTC = new Date();
-                                        const isSameDay = utcDay === hojeUTC.getUTCDate().toString().padStart(2, '0') &&
-                                            utcMonth === (hojeUTC.getUTCMonth() + 1).toString().padStart(2, '0') &&
-                                            date.getUTCFullYear() === hojeUTC.getUTCFullYear();
-
-                                        if (isSameDay) {
-                                            return `${utcHours}:${utcMinutes}`;
-                                        } else {
-                                            return `${utcDay}/${utcMonth} ${utcHours}:${utcMinutes}`;
-                                        }
+                                        const utcSeconds = date.getUTCSeconds().toString().padStart(2, '0');
+                                        return `${utcDay}/${utcMonth}/${utcYear} ${utcHours}:${utcMinutes}:${utcSeconds} UTC`;
                                     }
+                                    return '';
                                 }
-                                return '';
-                            }
+                            },
+                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                            titleColor: '#E2E8F0',
+                            bodyColor: '#E2E8F0',
+                            borderColor: '#475569',
+                            borderWidth: 1
                         },
-                        grid: { color: borderColor + '1A', drawBorder: false },
-                        title: {
-                            display: true,
-                            text: 'Data/Hora (UTC)',
-                            color: textLightColor,
-                            font: { size: 12 }
+                        zoom: {
+                            limits: { x: { min: 'original', max: 'original' } },
+                            zoom: {
+                                wheel: { enabled: true, speed: 0.05 },
+                                pinch: { enabled: true },
+                                mode: 'x',
+                                drag: { enabled: false }
+                            },
+                            pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' }
                         }
                     },
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: textLightColor,
-                            callback: function (value) { return formatCurrency(value); },
-                            maxTicksLimit: 8
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: textLightColor,
+                                font: { size: tamanhoDaFonte },
+                                maxRotation: 45,
+                                autoSkip: true,
+                                maxTicksLimit: 15,
+                                callback: function (value, index) {
+                                    const totalLabels = this.chart.data.labels.length;
+                                    const showEvery = Math.max(1, Math.floor(totalLabels / 12));
+
+                                    if (index % showEvery === 0 || index === 0 || index === totalLabels - 1) {
+                                        if (sortedTimestamps[index]) {
+                                            const date = new Date(sortedTimestamps[index]);
+                                            const utcHours = date.getUTCHours().toString().padStart(2, '0');
+                                            const utcMinutes = date.getUTCMinutes().toString().padStart(2, '0');
+                                            const utcDay = date.getUTCDate().toString().padStart(2, '0');
+                                            const utcMonth = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+
+                                            const hojeUTC = new Date();
+                                            const isSameDay = utcDay === hojeUTC.getUTCDate().toString().padStart(2, '0') &&
+                                                utcMonth === (hojeUTC.getUTCMonth() + 1).toString().padStart(2, '0') &&
+                                                date.getUTCFullYear() === hojeUTC.getUTCFullYear();
+
+                                            if (isSameDay) {
+                                                return `${utcHours}:${utcMinutes}`;
+                                            } else {
+                                                return `${utcDay}/${utcMonth} ${utcHours}:${utcMinutes}`;
+                                            }
+                                        }
+                                    }
+                                    return '';
+                                }
+                            },
+                            grid: { color: borderColor + '1A', drawBorder: false },
+                            title: {
+                                display: true,
+                                text: xAxisLabel,
+                                color: textLightColor,
+                                font: { size: tamanhoDaFonte }
+                                // font: { size: 12 }
+                            }
                         },
-                        grid: { color: borderColor + '1A', drawBorder: false },
-                        title: {
-                            display: true,
-                            text: 'Custo (BRL)',
-                            color: textLightColor,
-                            font: { size: 12 }
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: textLightColor,
+                                font: { size: tamanhoDaFonte },
+                                callback: function (value) { return formatCurrency(value); },
+                                maxTicksLimit: 8
+                            },
+                            grid: { color: borderColor + '1A', drawBorder: false },
+                            title: {
+                                display: true,
+                                text: yAxisLabel,
+                                color: textLightColor,
+                                font: { size: tamanhoDaFonte }
+                                // font: { size: 12 }
+                            }
                         }
-                    }
-                },
-                hover: { mode: 'index', intersect: false, animationDuration: 0 },
-                interaction: { mode: 'index', intersect: false }
-            }
-        });
+                    },
+                    hover: { mode: 'index', intersect: false, animationDuration: 0 },
+                    interaction: { mode: 'index', intersect: false }
+                }
+            });
 
-        console.log('✅ Gráfico criado com sucesso!');
-    }
+            console.log('✅ Gráfico criado com sucesso!');
+        }
 
-        // ⚡ Função para mostrar gráfico vazio
+        // Mostrar gráfico vazio
         function mostrarGraficoVazio(ctx) {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-            // Fundo
             ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card-bg');
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-            // Mensagem
             ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-light');
             ctx.font = '16px "Segoe UI"';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('Nenhum dado disponível', ctx.canvas.width / 2, ctx.canvas.height / 2);
+            ctx.fillText(translations[currentLang]['charts.no_data_msg'] || 'Nenhum dado encontrado', ctx.canvas.width / 2, ctx.canvas.height / 2);
+            ctx.font = '14px "Segoe UI"';
+            ctx.fillText(translations[currentLang]['charts.try_adjust'] || 'Tente ajustar os filtros ou período', ctx.canvas.width / 2, ctx.canvas.height / 2 + 30);
         }
 
-        // ⚡ Função para mostrar aviso de otimização
-        function mostrarAvisoOtimizacao(total, mostrados) {
-            // Remover aviso anterior se existir
-            const avisoAnterior = document.getElementById('aviso-otimizacao');
-            if (avisoAnterior) avisoAnterior.remove();
+        // Mostrar erro
+        function mostrarErro(mensagem) {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-            const aviso = document.createElement('div');
-            aviso.id = 'aviso-otimizacao';
-            aviso.innerHTML = `
-                <div style="
-                    position: absolute;
-                    bottom: 10px;
-                    right: 10px;
-                    background: rgba(245, 158, 11, 0.9);
-                    color: white;
-                    padding: 8px 12px;
-                    border-radius: 6px;
-                    font-size: 12px;
-                    z-index: 1000;
-                    max-width: 250px;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-                ">
-                    <i class="fas fa-info-circle" style="margin-right: 5px;"></i>
-                    Gráfico otimizado: ${mostrados} de ${total} pontos
-                    <div style="font-size: 10px; opacity: 0.9; margin-top: 3px;">
-                        (Performance melhorada)
-                    </div>
-                </div>
-            `;
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card-bg');
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-            const chartContainer = document.querySelector('.chart-wrapper');
-            if (chartContainer) {
-                chartContainer.style.position = 'relative';
-                chartContainer.appendChild(aviso);
+            ctx.fillStyle = '#EF4444';
+            ctx.font = 'bold 16px "Segoe UI"';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(translations[currentLang]['charts.error_msg'] || 'Erro ao carregar dados', ctx.canvas.width / 2, ctx.canvas.height / 2 - 20);
 
-                // Remover após 8 segundos
-                setTimeout(() => {
-                    if (aviso.parentNode) {
-                        aviso.style.transition = 'opacity 0.5s';
-                        aviso.style.opacity = '0';
-                        setTimeout(() => aviso.remove(), 500);
-                    }
-                }, 8000);
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-light');
+            ctx.font = '14px "Segoe UI"';
+            ctx.fillText(mensagem.substring(0, 50), ctx.canvas.width / 2, ctx.canvas.height / 2 + 10);
+        }
+
+        // Mostrar dados vazios
+        function mostrarDadosVazios() {
+            console.log('📭 Mostrando estado vazio');
+
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            if (mainChart) {
+                mainChart.destroy();
             }
+
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card-bg');
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-light');
+            ctx.font = '16px "Segoe UI"';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(translations[currentLang]['charts.no_data_msg'] || 'Nenhum dado encontrado', ctx.canvas.width / 2, ctx.canvas.height / 2);
+            ctx.font = '14px "Segoe UI"';
+            ctx.fillText(translations[currentLang]['charts.try_adjust'] || 'Tente ajustar os filtros ou período', ctx.canvas.width / 2, ctx.canvas.height / 2 + 30);
+
+            atualizarEstatisticas([]);
+            atualizarTabela([]);
         }
 
-        // Update statistics
+        // Atualizar estatísticas
         function atualizarEstatisticas(data) {
             const statsGrid = document.getElementById('statsGrid');
 
@@ -1675,14 +1791,13 @@
                 statsGrid.innerHTML = `
                     <div class="stat-card">
                         <div class="stat-value">-</div>
-                        <div class="stat-label">Nenhum dado</div>
-                        <div class="stat-network">Selecione redes</div>
+                        <div class="stat-label" data-i18n="charts.no_data">${translations[currentLang]['charts.no_data'] || 'Nenhum dado'}</div>
+                        <div class="stat-network" data-i18n="charts.waiting">${translations[currentLang]['charts.waiting'] || 'Selecione redes'}</div>
                     </div>
                 `;
                 return;
             }
 
-            // Group by network
             const networkStats = {};
             data.forEach(item => {
                 const network = item.network;
@@ -1697,7 +1812,11 @@
                 networkStats[network].values.push(cost);
             });
 
-            // Create stat cards
+            const avgLabel = translations[currentLang]['charts.avg'] || 'Médio';
+            const minLabel = translations[currentLang]['charts.min'] || 'Mín';
+            const maxLabel = translations[currentLang]['charts.max'] || 'Máx';
+            const lastLabel = translations[currentLang]['charts.last'] || 'Último';
+
             let statsHTML = '';
             Object.values(networkStats).forEach(stats => {
                 if (stats.values.length === 0) return;
@@ -1706,17 +1825,17 @@
                 const min = Math.min(...stats.values);
                 const max = Math.max(...stats.values);
                 const last = stats.values[stats.values.length - 1];
-                const color = getNetworkColor(stats.network); // Usar função dinâmica
+                const color = getNetworkColor(stats.network);
 
                 statsHTML += `
                     <div class="stat-card">
                         <div class="stat-value" style="color: ${color}">${formatCurrency(avg)}</div>
-                        <div class="stat-label">Custo Médio</div>
+                        <div class="stat-label">${translations[currentLang]['charts.avg_cost'] || 'Custo Médio'}</div>
                         <div class="stat-network" style="color: ${color}">${stats.network}</div>
                         <div style="margin-top: 10px; font-size: 11px; color: var(--text-light);">
-                            <div>Mín: ${formatCurrency(min)}</div>
-                            <div>Máx: ${formatCurrency(max)}</div>
-                            <div>Último: ${formatCurrency(last)}</div>
+                            <div>${minLabel}: ${formatCurrency(min)}</div>
+                            <div>${maxLabel}: ${formatCurrency(max)}</div>
+                            <div>${lastLabel}: ${formatCurrency(last)}</div>
                         </div>
                     </div>
                 `;
@@ -1725,29 +1844,26 @@
             statsGrid.innerHTML = statsHTML;
         }
 
-        // Update table
-        // Update table - VERSÃO CORRIGIDA COM UTC
+        // Atualizar tabela
         function atualizarTabela(data) {
             const tableBody = document.getElementById('tableBody');
 
             if (!data || data.length === 0) {
                 tableBody.innerHTML = `
-        <tr>
-            <td colspan="5" style="text-align: center; padding: 20px;">
-                <i class="fas fa-database"></i> Nenhum dado disponível
-            </td>
-        </tr>
-    `;
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 20px;">
+                            <i class="fas fa-database"></i> ${translations[currentLang]['table.no_data'] || 'Nenhum dado disponível'}
+                        </td>
+                    </tr>
+                `;
                 return;
             }
 
-            // Get latest data (max 50 entries)
-            const latestData = [...data].slice(-50).reverse(); // Show newest first
+            const latestData = [...data].slice(-50).reverse();
 
             let tableHTML = '';
             latestData.forEach(item => {
                 const date = new Date(item.timestamp);
-                // 🔥 CORRIGIDO: Usar UTC para exibição na tabela
                 const utcYear = date.getUTCFullYear();
                 const utcMonth = (date.getUTCMonth() + 1).toString().padStart(2, '0');
                 const utcDay = date.getUTCDate().toString().padStart(2, '0');
@@ -1764,76 +1880,29 @@
                                 <div class="badge-dot" style="background-color: ${getNetworkColor(item.network)}"></div>
                                 ${item.network}
                             </div>
-                            </td>
-                            <td>${formattedDate}</td>
-                            <td><strong>${formatCurrency(item.gas_cost_brl)}</strong></td>
-                            <td>${getGasUnits().toLocaleString('pt-BR')}</td>
-                            <td>${item.gas_gwei ? parseFloat(item.gas_gwei).toFixed(2) : '0.00'} Gwei</td>
-                        </tr>
+                        </td>
+                        <td>${formattedDate}</td>
+                        <td><strong>${formatCurrency(item.gas_cost_brl)}</strong></td>
+                        <td>${getGasUnits().toLocaleString('pt-BR')}</td>
+                        <td>${item.gas_gwei ? parseFloat(item.gas_gwei).toFixed(2) : '0.00'} Gwei</td>
+                    </tr>
                 `;
             });
 
             tableBody.innerHTML = tableHTML;
-        }
-        // Show empty state
-        function mostrarDadosVazios() {
-            console.log('📭 Mostrando estado vazio');
-
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            if (mainChart) {
-                mainChart.destroy();
-            }
-
-            // Clear canvas and show message
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card-bg');
-            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-light');
-            ctx.font = '16px "Segoe UI"';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('Nenhum dado encontrado', ctx.canvas.width / 2, ctx.canvas.height / 2);
-            ctx.font = '14px "Segoe UI"';
-            ctx.fillText('Tente ajustar os filtros ou período', ctx.canvas.width / 2, ctx.canvas.height / 2 + 30);
-
-            atualizarEstatisticas([]);
-            atualizarTabela([]);
-        }
-
-        // Show error
-        function mostrarErro(mensagem) {
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card-bg');
-            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-            ctx.fillStyle = '#EF4444';
-            ctx.font = 'bold 16px "Segoe UI"';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('Erro ao carregar dados', ctx.canvas.width / 2, ctx.canvas.height / 2 - 20);
-
-            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-light');
-            ctx.font = '14px "Segoe UI"';
-            ctx.fillText(mensagem.substring(0, 50), ctx.canvas.width / 2, ctx.canvas.height / 2 + 10);
         }
 
         // Toggle table visibility
         function toggleTable() {
             const tableContainer = document.getElementById('dataTableContainer');
             const toggleBtn = document.querySelector('[onclick="toggleTable()"]');
-            const icon = toggleBtn.querySelector('i');
 
             if (tableContainer.style.display === 'none' || !tableContainer.style.display) {
                 tableContainer.style.display = 'block';
-                icon.className = 'fas fa-eye-slash';
-                toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar Tabela';
+                toggleBtn.innerHTML = `<i class="fas fa-eye-slash"></i> ${translations[currentLang]['charts.hide_table'] || 'Ocultar Tabela'}`;
             } else {
                 tableContainer.style.display = 'none';
-                icon.className = 'fas fa-eye';
-                toggleBtn.innerHTML = '<i class="fas fa-eye"></i> Mostrar Tabela';
+                toggleBtn.innerHTML = `<i class="fas fa-eye"></i> ${translations[currentLang]['charts.show_table'] || 'Mostrar Tabela'}`;
             }
         }
 
@@ -1877,7 +1946,7 @@
             mainChart.update();
 
             const btn = document.querySelector('[onclick="alternarTipoGrafico()"]');
-            btn.innerHTML = `<i class="fas fa-exchange-alt"></i> ${newType === 'line' ? 'Barras' : 'Linhas'}`;
+            btn.innerHTML = `<i class="fas fa-exchange-alt"></i> ${newType === 'line' ? (translations[currentLang]['charts.toggle'] || 'Alternar Gráfico') : (translations[currentLang]['charts.toggle'] || 'Alternar Gráfico')}`;
         }
 
         // Download chart as image
@@ -1893,7 +1962,75 @@
             link.click();
         }
 
-        // Initialize
+        // ============================================
+        // FUNÇÃO DE TEMA (CLARO/ESCURO)
+        // ============================================
+        let isDarkMode = true;
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+
+            isDarkMode = !isDarkMode;
+
+            if (isDarkMode) {
+                body.classList.remove('light-mode');
+                icon.className = 'fas fa-moon';
+                themeToggle.title = 'Alternar para modo claro';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.add('light-mode');
+                icon.className = 'fas fa-sun';
+                themeToggle.title = 'Alternar para modo escuro';
+                localStorage.setItem('theme', 'light');
+            }
+
+            if (mainChart) {
+                updateChartColors();
+            }
+        }
+
+        function updateChartColors() {
+            if (!mainChart) return;
+
+            const bodyStyles = getComputedStyle(document.body);
+            const textColor = bodyStyles.getPropertyValue('--text').trim();
+            const textLightColor = bodyStyles.getPropertyValue('--text-light').trim();
+            const borderColor = bodyStyles.getPropertyValue('--border').trim();
+
+            mainChart.options.plugins.legend.labels.color = textColor;
+            mainChart.options.scales.x.ticks.color = textLightColor;
+            mainChart.options.scales.y.ticks.color = textLightColor;
+            mainChart.options.scales.x.title.color = textLightColor;
+            mainChart.options.scales.y.title.color = textLightColor;
+            mainChart.options.scales.x.grid.color = borderColor + '1A';
+            mainChart.options.scales.y.grid.color = borderColor + '1A';
+
+            mainChart.update();
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+
+            if (savedTheme === 'light') {
+                isDarkMode = false;
+                document.body.classList.add('light-mode');
+                icon.className = 'fas fa-sun';
+                themeToggle.title = 'Alternar para modo escuro';
+            } else {
+                isDarkMode = true;
+                document.body.classList.remove('light-mode');
+                icon.className = 'fas fa-moon';
+                themeToggle.title = 'Alternar para modo claro';
+            }
+        }
+
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
         document.addEventListener('DOMContentLoaded', function () {
             console.log('📊 Dashboard pronto - Modo manual');
 
@@ -1903,15 +2040,13 @@
             // Configurar botão de tema
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
-            // Configurar controles de período (no DOMContentLoaded)
-            // Configurar controles de período (no DOMContentLoaded)
+            // Configurar controles de período
             document.querySelectorAll('.period-btn').forEach(btn => {
                 btn.addEventListener('click', function () {
                     document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     toggleCustomDateFields();
 
-                    // 🔥 SÓ CARREGA DADOS se NÃO for o botão "Personalizado"
                     const isCustomPeriod = this.dataset.period === 'custom';
 
                     if (!isCustomPeriod) {
@@ -1923,7 +2058,7 @@
                 });
             });
 
-            
+            // Configurar input de gas
             const gasUnitsInput = document.getElementById('gasUnits');
             if (gasUnitsInput) {
                 let gasTimeout = null;
@@ -1936,7 +2071,7 @@
                 });
             }
 
-            // Adicionar event listeners para as datas (auto-refresh opcional)
+            // Configurar eventos de data
             let dateChangeTimeout = null;
             document.getElementById('dataInicio')?.addEventListener('change', () => {
                 if (getSelectedPeriodConfig().period === 'custom') {
@@ -1952,12 +2087,10 @@
                 }
             });
 
-            // Mostrar estado inicial
-            // Carregar redes e depois carregar dados automaticamente
+            // Carregar redes e dados
             carregarRedes();
             toggleCustomDateFields();
 
-            // Aguardar um pouco para as redes carregarem e depois carregar dados
             setTimeout(() => {
                 console.log('🚀 Carregando dados iniciais automaticamente...');
                 carregarDados();
