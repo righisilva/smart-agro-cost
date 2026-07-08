@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "classificacao_id": 1,
+    "nome": "Floricultura",
+    "nome_en": "Floriculture",
+    "nome_es": "Floricultura"
+  },
+  {
+    "id": 2,
+    "classificacao_id": 1,
+    "nome": "Horticultura",
+    "nome_en": "Horticulture",
+    "nome_es": "Horticultura"
+  },
+  {
+    "id": 3,
+    "classificacao_id": 1,
+    "nome": "Lavouras permanentes",
+    "nome_en": "Permanent crops",
+    "nome_es": "Cultivos permanentes"
+  },
+  {
+    "id": 4,
+    "classificacao_id": 1,
+    "nome": "Lavouras temporárias",
+    "nome_en": "Annual crops",
+    "nome_es": "Cultivos anuales"
+  },
+  {
+    "id": 5,
+    "classificacao_id": 2,
+    "nome": "Animais",
+    "nome_en": "Livestock",
+    "nome_es": "Ganado"
+  },
+  {
+    "id": 6,
+    "classificacao_id": 2,
+    "nome": "Produtos primários",
+    "nome_en": "Primary products",
+    "nome_es": "Productos primarios"
+  },
+  {
+    "id": 7,
+    "classificacao_id": 3,
+    "nome": "Não especificada",
+    "nome_en": "Not specified",
+    "nome_es": "No especificado"
+  },
+  {
+    "id": 8,
+    "classificacao_id": 4,
+    "nome": "Não especificada",
+    "nome_en": "Not specified",
+    "nome_es": "No especificado"
+  },
+  {
+    "id": 9,
+    "classificacao_id": 5,
+    "nome": "Não especificada",
+    "nome_en": "Not specified",
+    "nome_es": "No especificado"
+  },
+  {
+    "id": 10,
+    "classificacao_id": 6,
+    "nome": "Não especificada",
+    "nome_en": "Not specified",
+    "nome_es": "No especificado"
+  }
+]

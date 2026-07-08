@@ -1,0 +1,2506 @@
+[
+  {
+    "id": 1,
+    "nome": "Flores e folhagens para corte",
+    "subclassificacao_id": 1,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cut flowers and foliage",
+    "nome_es": "Flores y follajes para corte"
+  },
+  {
+    "id": 2,
+    "nome": "Gramas",
+    "subclassificacao_id": 1,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Turfgrass",
+    "nome_es": "Césped"
+  },
+  {
+    "id": 3,
+    "nome": "Mudas de plantas ornamentais",
+    "subclassificacao_id": 1,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Ornamental plant seedlings",
+    "nome_es": "Plántulas de plantas ornamentales"
+  },
+  {
+    "id": 4,
+    "nome": "Mudas e outras formas de propagação (produzidas para plantio)",
+    "subclassificacao_id": 1,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Seedlings and other propagation materials (for planting)",
+    "nome_es": "Plántulas y otros materiales de propagación (para siembra)"
+  },
+  {
+    "id": 5,
+    "nome": "Plantas ornamentais em vaso",
+    "subclassificacao_id": 1,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Potted ornamental plants",
+    "nome_es": "Plantas ornamentales en maceta"
+  },
+  {
+    "id": 6,
+    "nome": "Plantas, flores, folhagens medicinais",
+    "subclassificacao_id": 1,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Medicinal plants, flowers and foliage",
+    "nome_es": "Plantas, flores y follajes medicinales"
+  },
+  {
+    "id": 7,
+    "nome": "Sementes (produzidas para plantio)",
+    "subclassificacao_id": 1,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Seeds (for planting)",
+    "nome_es": "Semillas (para siembra)"
+  },
+  {
+    "id": 8,
+    "nome": "Abobrinha",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Zucchini",
+    "nome_es": "Calabacín"
+  },
+  {
+    "id": 9,
+    "nome": "Acelga",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Chinese cabbage",
+    "nome_es": "Acelga"
+  },
+  {
+    "id": 10,
+    "nome": "Agrião",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Watercress",
+    "nome_es": "Berro"
+  },
+  {
+    "id": 11,
+    "nome": "Aipo",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Celery",
+    "nome_es": "Apio"
+  },
+  {
+    "id": 12,
+    "nome": "Alcachofra",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Artichoke",
+    "nome_es": "Alcachofa"
+  },
+  {
+    "id": 13,
+    "nome": "Alcaparra",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Capers",
+    "nome_es": "Alcaparras"
+  },
+  {
+    "id": 14,
+    "nome": "Alecrim",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Rosemary",
+    "nome_es": "Romero"
+  },
+  {
+    "id": 15,
+    "nome": "Alface",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Lettuce",
+    "nome_es": "Lechuga"
+  },
+  {
+    "id": 16,
+    "nome": "Alho-porró",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Leek",
+    "nome_es": "Puerro"
+  },
+  {
+    "id": 17,
+    "nome": "Almeirão",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Chicory",
+    "nome_es": "Achicoria"
+  },
+  {
+    "id": 18,
+    "nome": "Aspargo",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Asparagus",
+    "nome_es": "Espárrago"
+  },
+  {
+    "id": 19,
+    "nome": "Batata-baroa (mandioquinha)",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Arracacha (Peruvian carrot)",
+    "nome_es": "Arracacha"
+  },
+  {
+    "id": 20,
+    "nome": "Batata-doce",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Sweet potato",
+    "nome_es": "Batata"
+  },
+  {
+    "id": 21,
+    "nome": "Berinjela",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Eggplant",
+    "nome_es": "Berenjena"
+  },
+  {
+    "id": 22,
+    "nome": "Bertalha",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Madeira vine",
+    "nome_es": "Bertalha"
+  },
+  {
+    "id": 23,
+    "nome": "Beterraba",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Beetroot",
+    "nome_es": "Remolacha"
+  },
+  {
+    "id": 24,
+    "nome": "Boldo",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Boldo",
+    "nome_es": "Boldo"
+  },
+  {
+    "id": 25,
+    "nome": "Brócolis",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Broccoli",
+    "nome_es": "Brócoli"
+  },
+  {
+    "id": 26,
+    "nome": "Bucha (esponja vegetal)",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Luffa (sponge gourd)",
+    "nome_es": "Lufa (esponja vegetal)"
+  },
+  {
+    "id": 27,
+    "nome": "Camomila",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Chamomile",
+    "nome_es": "Manzanilla"
+  },
+  {
+    "id": 28,
+    "nome": "Cará",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Yam",
+    "nome_es": "Ñame"
+  },
+  {
+    "id": 29,
+    "nome": "Caruru",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Amaranth greens",
+    "nome_es": "Bledo"
+  },
+  {
+    "id": 30,
+    "nome": "Cebolinha",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Chives",
+    "nome_es": "Cebollino"
+  },
+  {
+    "id": 31,
+    "nome": "Cenoura",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Carrot",
+    "nome_es": "Zanahoria"
+  },
+  {
+    "id": 32,
+    "nome": "Chicória",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Endive",
+    "nome_es": "Achicoria"
+  },
+  {
+    "id": 33,
+    "nome": "Chuchu",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Chayote",
+    "nome_es": "Chayote"
+  },
+  {
+    "id": 34,
+    "nome": "Coentro",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Coriander",
+    "nome_es": "Cilantro"
+  },
+  {
+    "id": 35,
+    "nome": "Cogumelos",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Mushrooms",
+    "nome_es": "Hongos"
+  },
+  {
+    "id": 36,
+    "nome": "Couve",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Collard greens",
+    "nome_es": "Col berza"
+  },
+  {
+    "id": 37,
+    "nome": "Couve-flor",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Cauliflower",
+    "nome_es": "Coliflor"
+  },
+  {
+    "id": 38,
+    "nome": "Erva-doce",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Fennel",
+    "nome_es": "Hinojo"
+  },
+  {
+    "id": 39,
+    "nome": "Ervilha (vagem)",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Snow peas",
+    "nome_es": "Guisante de vaina"
+  },
+  {
+    "id": 40,
+    "nome": "Espinafre",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Spinach",
+    "nome_es": "Espinaca"
+  },
+  {
+    "id": 41,
+    "nome": "Gengibre",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Ginger",
+    "nome_es": "Jengibre"
+  },
+  {
+    "id": 42,
+    "nome": "Hortelã",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Mint",
+    "nome_es": "Menta"
+  },
+  {
+    "id": 43,
+    "nome": "Inhame",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Taro",
+    "nome_es": "Malanga"
+  },
+  {
+    "id": 44,
+    "nome": "Jiló",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Scarlet eggplant",
+    "nome_es": "Jiló"
+  },
+  {
+    "id": 45,
+    "nome": "Lentilha",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Lentil",
+    "nome_es": "Lenteja"
+  },
+  {
+    "id": 46,
+    "nome": "Manjericão",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Basil",
+    "nome_es": "Albahaca"
+  },
+  {
+    "id": 47,
+    "nome": "Maxixe",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "West Indian gherkin",
+    "nome_es": "Maxixe"
+  },
+  {
+    "id": 48,
+    "nome": "Milho verde (espiga)",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Green corn (ears)",
+    "nome_es": "Maíz verde (mazorca)"
+  },
+  {
+    "id": 49,
+    "nome": "Morango",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Strawberry",
+    "nome_es": "Fresa"
+  },
+  {
+    "id": 50,
+    "nome": "Mostarda (semente)",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Mustard (seed)",
+    "nome_es": "Mostaza (semilla)"
+  },
+  {
+    "id": 51,
+    "nome": "Mudas e outras formas de propagação (produzidas para plantio)",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Seedlings and other propagation materials (produced for planting)",
+    "nome_es": "Plántulas y otros materiales de propagación (producidos para la siembra)"
+  },
+  {
+    "id": 52,
+    "nome": "Nabiça",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Turnip greens",
+    "nome_es": "Hojas de nabo"
+  },
+  {
+    "id": 53,
+    "nome": "Nabo",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Turnip",
+    "nome_es": "Nabo"
+  },
+  {
+    "id": 54,
+    "nome": "Orégano",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Oregano",
+    "nome_es": "Orégano"
+  },
+  {
+    "id": 55,
+    "nome": "Outros produtos",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Other products",
+    "nome_es": "Otros productos"
+  },
+  {
+    "id": 56,
+    "nome": "Pepino",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Cucumber",
+    "nome_es": "Pepino"
+  },
+  {
+    "id": 57,
+    "nome": "Pimenta",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Pepper",
+    "nome_es": "Ají"
+  },
+  {
+    "id": 58,
+    "nome": "Pimentão",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Bell pepper",
+    "nome_es": "Pimiento"
+  },
+  {
+    "id": 59,
+    "nome": "Quiabo",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Okra",
+    "nome_es": "Quimbombó"
+  },
+  {
+    "id": 60,
+    "nome": "Rabanete",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Radish",
+    "nome_es": "Rábano"
+  },
+  {
+    "id": 61,
+    "nome": "Repolho",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Cabbage",
+    "nome_es": "Repollo"
+  },
+  {
+    "id": 62,
+    "nome": "Rúcula",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Arugula",
+    "nome_es": "Rúcula"
+  },
+  {
+    "id": 63,
+    "nome": "Salsa",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Parsley",
+    "nome_es": "Perejil"
+  },
+  {
+    "id": 64,
+    "nome": "Sementes (produzidas para plantio)",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Seeds (produced for planting)",
+    "nome_es": "Semillas (producidas para la siembra)"
+  },
+  {
+    "id": 65,
+    "nome": "Taioba",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Taro",
+    "nome_es": "Taioba"
+  },
+  {
+    "id": 66,
+    "nome": "Tomate (estaqueado)",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Staked tomato",
+    "nome_es": "Tomate entutorado"
+  },
+  {
+    "id": 67,
+    "nome": "Vagem (feijão vagem)",
+    "subclassificacao_id": 2,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Green bean",
+    "nome_es": "Judía verde"
+  },
+  {
+    "id": 68,
+    "nome": "Abacate",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Avocado",
+    "nome_es": "Aguacate"
+  },
+  {
+    "id": 69,
+    "nome": "Açaí (fruto)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Açaí berry",
+    "nome_es": "Açaí"
+  },
+  {
+    "id": 70,
+    "nome": "Acerola",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Barbados cherry",
+    "nome_es": "Acerola"
+  },
+  {
+    "id": 71,
+    "nome": "Agave, sisal (fibra)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Agave, sisal (fiber)",
+    "nome_es": "Agave, sisal (fibra)"
+  },
+  {
+    "id": 72,
+    "nome": "Agave, sisal (folha)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Agave, sisal (leaf)",
+    "nome_es": "Agave, sisal (hoja)"
+  },
+  {
+    "id": 73,
+    "nome": "Algodão arbóreo",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Tree cotton",
+    "nome_es": "Algodón arbóreo"
+  },
+  {
+    "id": 74,
+    "nome": "Ameixa",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Plum",
+    "nome_es": "Ciruela"
+  },
+  {
+    "id": 75,
+    "nome": "Amora (folha)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Mulberry (leaf)",
+    "nome_es": "Mora (hoja)"
+  },
+  {
+    "id": 76,
+    "nome": "Amora (fruto)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Mulberry (fruit)",
+    "nome_es": "Mora"
+  },
+  {
+    "id": 77,
+    "nome": "Atemoia",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Atemoya",
+    "nome_es": "Atemoya"
+  },
+  {
+    "id": 78,
+    "nome": "Azeitona (oliveira)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Olive",
+    "nome_es": "Aceituna"
+  },
+  {
+    "id": 79,
+    "nome": "Banana",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Banana",
+    "nome_es": "Banana"
+  },
+  {
+    "id": 80,
+    "nome": "Borracha (látex coagulado)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rubber (coagulated latex)",
+    "nome_es": "Caucho (látex coagulado)"
+  },
+  {
+    "id": 81,
+    "nome": "Borracha (látex líquido)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rubber (liquid latex)",
+    "nome_es": "Caucho (látex líquido)"
+  },
+  {
+    "id": 82,
+    "nome": "Cacau (amêndoa)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Cocoa beans",
+    "nome_es": "Cacao (almendra)"
+  },
+  {
+    "id": 83,
+    "nome": "Café arábica em grão (verde)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Arabica coffee beans (green)",
+    "nome_es": "Café arábica en grano (verde)"
+  },
+  {
+    "id": 84,
+    "nome": "Café canephora (robusta, conilon) em grão (verde)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Canephora coffee beans (Robusta/Conilon, green)",
+    "nome_es": "Café canephora (Robusta/Conilon) en grano (verde)"
+  },
+  {
+    "id": 85,
+    "nome": "Caju (castanha)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cashew nut",
+    "nome_es": "Anacardo (nuez)"
+  },
+  {
+    "id": 86,
+    "nome": "Caju (fruto)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Cashew apple",
+    "nome_es": "Anacardo (fruto)"
+  },
+  {
+    "id": 87,
+    "nome": "Camu-camu",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Camu camu",
+    "nome_es": "Camu camu"
+  },
+  {
+    "id": 88,
+    "nome": "Caqui",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Persimmon",
+    "nome_es": "Caqui"
+  },
+  {
+    "id": 89,
+    "nome": "Carambola",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Star fruit",
+    "nome_es": "Carambola"
+  },
+  {
+    "id": 90,
+    "nome": "Chá-da-Índia",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Indian tea",
+    "nome_es": "Té de la India"
+  },
+  {
+    "id": 91,
+    "nome": "Coco-da-baía",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Coconut",
+    "nome_es": "Coco"
+  },
+  {
+    "id": 92,
+    "nome": "Cravo-da-Índia",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Clove",
+    "nome_es": "Clavo de olor"
+  },
+  {
+    "id": 93,
+    "nome": "Cupuaçu",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Cupuaçu",
+    "nome_es": "Cupuaçu"
+  },
+  {
+    "id": 94,
+    "nome": "Dendê (coco)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Oil palm (fruit)",
+    "nome_es": "Palma aceitera (fruto)"
+  },
+  {
+    "id": 95,
+    "nome": "Erva-mate",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Yerba mate",
+    "nome_es": "Yerba mate"
+  },
+  {
+    "id": 96,
+    "nome": "Figo",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Fig",
+    "nome_es": "Higo"
+  },
+  {
+    "id": 97,
+    "nome": "Fruta-de-conde",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Sugar apple",
+    "nome_es": "Anón"
+  },
+  {
+    "id": 98,
+    "nome": "Goiaba",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Guava",
+    "nome_es": "Guayaba"
+  },
+  {
+    "id": 99,
+    "nome": "Graviola",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Soursop",
+    "nome_es": "Guanábana"
+  },
+  {
+    "id": 100,
+    "nome": "Guaraná",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Guarana",
+    "nome_es": "Guaraná"
+  },
+  {
+    "id": 101,
+    "nome": "Jabuticaba",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Jabuticaba",
+    "nome_es": "Jabuticaba"
+  },
+  {
+    "id": 102,
+    "nome": "Jaca",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Jackfruit",
+    "nome_es": "Yaca"
+  },
+  {
+    "id": 103,
+    "nome": "Jambo",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rose apple",
+    "nome_es": "Pomarrosa"
+  },
+  {
+    "id": 104,
+    "nome": "kiwi",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Kiwifruit",
+    "nome_es": "Kiwi"
+  },
+  {
+    "id": 105,
+    "nome": "Laranja",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Orange",
+    "nome_es": "Naranja"
+  },
+  {
+    "id": 106,
+    "nome": "Lichia",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Lychee",
+    "nome_es": "Lichi"
+  },
+  {
+    "id": 107,
+    "nome": "Lima",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Sweet lime",
+    "nome_es": "Lima dulce"
+  },
+  {
+    "id": 108,
+    "nome": "Limão",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Lemon",
+    "nome_es": "Limón"
+  },
+  {
+    "id": 109,
+    "nome": "Louro (folha)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Bay leaves",
+    "nome_es": "Hojas de laurel"
+  },
+  {
+    "id": 110,
+    "nome": "Maçã",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Apple",
+    "nome_es": "Manzana"
+  },
+  {
+    "id": 111,
+    "nome": "Mamão",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Papaya",
+    "nome_es": "Papaya"
+  },
+  {
+    "id": 112,
+    "nome": "Manga",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Mango",
+    "nome_es": "Mango"
+  },
+  {
+    "id": 113,
+    "nome": "Maracujá",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Passion fruit",
+    "nome_es": "Maracuyá"
+  },
+  {
+    "id": 114,
+    "nome": "Mudas de cacau",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cocoa seedlings",
+    "nome_es": "Plántulas de cacao"
+  },
+  {
+    "id": 115,
+    "nome": "Mudas de café",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Coffee seedlings",
+    "nome_es": "Plántulas de café"
+  },
+  {
+    "id": 116,
+    "nome": "Mudas de caju",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cashew seedlings",
+    "nome_es": "Plántulas de anacardo"
+  },
+  {
+    "id": 117,
+    "nome": "Mudas de coco-da-baía",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Coconut seedlings",
+    "nome_es": "Plántulas de coco"
+  },
+  {
+    "id": 118,
+    "nome": "Mudas de frutas cítricas (laranja, limão, tangerina, etc.)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Citrus seedlings (orange, lemon, tangerine, etc.)",
+    "nome_es": "Plántulas de cítricos (naranja, limón, mandarina, etc.)"
+  },
+  {
+    "id": 119,
+    "nome": "Mudas de mamão",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Papaya seedlings",
+    "nome_es": "Plántulas de papaya"
+  },
+  {
+    "id": 120,
+    "nome": "Mudas de outros produtos da lavoura permanente",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Seedlings of other perennial crops",
+    "nome_es": "Plántulas de otros cultivos perennes"
+  },
+  {
+    "id": 121,
+    "nome": "Mudas de uva",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Grapevine seedlings",
+    "nome_es": "Plántulas de vid"
+  },
+  {
+    "id": 122,
+    "nome": "Nectarina",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Nectarine",
+    "nome_es": "Nectarina"
+  },
+  {
+    "id": 123,
+    "nome": "Nêspera",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Loquat",
+    "nome_es": "Níspero"
+  },
+  {
+    "id": 124,
+    "nome": "Noz (europeia, pecã)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Walnuts (European, pecan)",
+    "nome_es": "Nueces (europea, pecana)"
+  },
+  {
+    "id": 125,
+    "nome": "Outros produtos",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Other products",
+    "nome_es": "Otros productos"
+  },
+  {
+    "id": 126,
+    "nome": "Palmito",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Heart of palm",
+    "nome_es": "Palmito"
+  },
+  {
+    "id": 127,
+    "nome": "Pera",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Pear",
+    "nome_es": "Pera"
+  },
+  {
+    "id": 128,
+    "nome": "Pêssego",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Peach",
+    "nome_es": "Melocotón"
+  },
+  {
+    "id": 129,
+    "nome": "Pimenta-do-reino",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Black pepper",
+    "nome_es": "Pimienta negra"
+  },
+  {
+    "id": 130,
+    "nome": "Pitaia",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Dragon fruit",
+    "nome_es": "Pitahaya"
+  },
+  {
+    "id": 131,
+    "nome": "Pitanga",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Surinam cherry",
+    "nome_es": "Pitanga"
+  },
+  {
+    "id": 132,
+    "nome": "Pupunha (cacho frutos)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Peach palm (fruit bunch)",
+    "nome_es": "Pupuña (racimo de frutos)"
+  },
+  {
+    "id": 133,
+    "nome": "Romã",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Pomegranate",
+    "nome_es": "Granada"
+  },
+  {
+    "id": 134,
+    "nome": "Tangerina, bergamota, mexerica",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Mandarin (tangerine)",
+    "nome_es": "Mandarina"
+  },
+  {
+    "id": 135,
+    "nome": "Urucum (semente)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Annatto seeds",
+    "nome_es": "Semillas de achiote"
+  },
+  {
+    "id": 136,
+    "nome": "Uva (mesa)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Table grapes",
+    "nome_es": "Uva de mesa"
+  },
+  {
+    "id": 137,
+    "nome": "Uva (vinho ou suco)",
+    "subclassificacao_id": 3,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Wine or juice grapes",
+    "nome_es": "Uva para vino o jugo"
+  },
+  {
+    "id": 138,
+    "nome": "Abacaxi",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Pineapple",
+    "nome_es": "Piña"
+  },
+  {
+    "id": 139,
+    "nome": "Abóbora, moranga, jerimum",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Pumpkin",
+    "nome_es": "Calabaza"
+  },
+  {
+    "id": 140,
+    "nome": "Algodão herbáceo",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Herbaceous cotton",
+    "nome_es": "Algodón herbáceo"
+  },
+  {
+    "id": 141,
+    "nome": "Alho",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Garlic",
+    "nome_es": "Ajo"
+  },
+  {
+    "id": 142,
+    "nome": "Amendoim em casca",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Peanuts (in shell)",
+    "nome_es": "Maní con cáscara"
+  },
+  {
+    "id": 143,
+    "nome": "Arroz em casca",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Paddy rice",
+    "nome_es": "Arroz con cáscara"
+  },
+  {
+    "id": 144,
+    "nome": "Aveia branca em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "White oat grain",
+    "nome_es": "Avena blanca en grano"
+  },
+  {
+    "id": 145,
+    "nome": "Batata-inglesa",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Potato",
+    "nome_es": "Patata"
+  },
+  {
+    "id": 146,
+    "nome": "Cana forrageira",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Forage cane",
+    "nome_es": "Caña forrajera"
+  },
+  {
+    "id": 147,
+    "nome": "Cana-de-açúcar",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sugarcane",
+    "nome_es": "Caña de azúcar"
+  },
+  {
+    "id": 148,
+    "nome": "Cebola",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Onion",
+    "nome_es": "Cebolla"
+  },
+  {
+    "id": 149,
+    "nome": "Centeio em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rye grain",
+    "nome_es": "Centeno en grano"
+  },
+  {
+    "id": 150,
+    "nome": "Cevada em casca",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Barley (in hull)",
+    "nome_es": "Cebada con cáscara"
+  },
+  {
+    "id": 151,
+    "nome": "Colza (canola)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rapeseed (canola)",
+    "nome_es": "Colza (canola)"
+  },
+  {
+    "id": 152,
+    "nome": "Ervilha em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Dry peas",
+    "nome_es": "Guisantes secos"
+  },
+  {
+    "id": 153,
+    "nome": "Fava em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Broad beans (dry)",
+    "nome_es": "Habas secas"
+  },
+  {
+    "id": 154,
+    "nome": "Feijão de cor em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Colored beans (dry)",
+    "nome_es": "Frijoles de color (grano)"
+  },
+  {
+    "id": 155,
+    "nome": "Feijão fradinho em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cowpeas (dry)",
+    "nome_es": "Frijol caupí (grano)"
+  },
+  {
+    "id": 156,
+    "nome": "Feijão preto em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Black beans (dry)",
+    "nome_es": "Frijol negro (grano)"
+  },
+  {
+    "id": 157,
+    "nome": "Feijão verde",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Green beans",
+    "nome_es": "Frijol verde"
+  },
+  {
+    "id": 158,
+    "nome": "Forrageiras para corte",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Forage crops for cutting",
+    "nome_es": "Forrajes para corte"
+  },
+  {
+    "id": 159,
+    "nome": "Fumo em folha seca",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Dried tobacco leaves",
+    "nome_es": "Hojas de tabaco secas"
+  },
+  {
+    "id": 160,
+    "nome": "Gergelim (semente)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sesame (seed)",
+    "nome_es": "Sésamo (semilla)"
+  },
+  {
+    "id": 161,
+    "nome": "Girassol (semente)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sunflower (seed)",
+    "nome_es": "Girasol (semilla)"
+  },
+  {
+    "id": 162,
+    "nome": "Juta (fibra)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Jute (fiber)",
+    "nome_es": "Yute (fibra)"
+  },
+  {
+    "id": 163,
+    "nome": "Linho (fibra)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Flax (fiber)",
+    "nome_es": "Lino (fibra)"
+  },
+  {
+    "id": 164,
+    "nome": "Malva (fibra)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Malva (fiber)",
+    "nome_es": "Malva (fibra)"
+  },
+  {
+    "id": 165,
+    "nome": "Mamona",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Castor bean",
+    "nome_es": "Ricino"
+  },
+  {
+    "id": 166,
+    "nome": "Mandioca (aipim, macaxeira)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Cassava",
+    "nome_es": "Yuca"
+  },
+  {
+    "id": 167,
+    "nome": "Melancia",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Watermelon",
+    "nome_es": "Sandía"
+  },
+  {
+    "id": 168,
+    "nome": "Melão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Melon",
+    "nome_es": "Melón"
+  },
+  {
+    "id": 169,
+    "nome": "Milho em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Maize",
+    "nome_es": "Maíz"
+  },
+  {
+    "id": 170,
+    "nome": "Milho forrageiro",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Forage corn",
+    "nome_es": "Maíz forrajero"
+  },
+  {
+    "id": 171,
+    "nome": "Outros produtos",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Other products",
+    "nome_es": "Otros productos"
+  },
+  {
+    "id": 172,
+    "nome": "Palma forrageira",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Forage cactus",
+    "nome_es": "Nopal forrajero"
+  },
+  {
+    "id": 173,
+    "nome": "Rami (fibra)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Ramie (fiber)",
+    "nome_es": "Ramio (fibra)"
+  },
+  {
+    "id": 174,
+    "nome": "Sementes de algodão (produzidas para plantio)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cotton seeds (produced for planting)",
+    "nome_es": "Semillas de algodón (producidas para siembra)"
+  },
+  {
+    "id": 175,
+    "nome": "Sementes de arroz (produzidas para plantio)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rice seeds (produced for planting)",
+    "nome_es": "Semillas de arroz (producidas para siembra)"
+  },
+  {
+    "id": 176,
+    "nome": "Sementes de batata-inglesa (produzidas para plantio)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Potato seed tubers (produced for planting)",
+    "nome_es": "Semillas de papa (producidas para siembra)"
+  },
+  {
+    "id": 177,
+    "nome": "Sementes de feijão (produzidas para plantio)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Bean seeds (produced for planting)",
+    "nome_es": "Semillas de frijol (producidas para siembra)"
+  },
+  {
+    "id": 178,
+    "nome": "Sementes de forrageiras (produzidas para plantio)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Forage seeds (produced for planting)",
+    "nome_es": "Semillas de forrajes (producidas para siembra)"
+  },
+  {
+    "id": 179,
+    "nome": "Sementes de milho (produzidas para plantio)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Corn seeds (produced for planting)",
+    "nome_es": "Semillas de maíz (producidas para siembra)"
+  },
+  {
+    "id": 180,
+    "nome": "Sementes de soja (produzidas para plantio)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Soybean seeds (produced for planting)",
+    "nome_es": "Semillas de soja (producidas para siembra)"
+  },
+  {
+    "id": 181,
+    "nome": "Sementes de trigo (produzidas para plantio)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Wheat seeds (produced for planting)",
+    "nome_es": "Semillas de trigo (producidas para siembra)"
+  },
+  {
+    "id": 182,
+    "nome": "Sementes e outras formas de propagação de outros produtos (produzidas para plantio)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Seeds and other propagation materials of other crops (produced for planting)",
+    "nome_es": "Semillas y otros materiales de propagación de otros cultivos (producidos para siembra)"
+  },
+  {
+    "id": 183,
+    "nome": "Soja em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Soybeans",
+    "nome_es": "Soja"
+  },
+  {
+    "id": 184,
+    "nome": "Sorgo em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sorghum (grain)",
+    "nome_es": "Sorgo (grano)"
+  },
+  {
+    "id": 185,
+    "nome": "Sorgo forrageiro",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Forage sorghum",
+    "nome_es": "Sorgo forrajero"
+  },
+  {
+    "id": 186,
+    "nome": "Sorgo vassoura",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Broomcorn",
+    "nome_es": "Sorgo escobero"
+  },
+  {
+    "id": 187,
+    "nome": "Toletes de cana-de-açúcar (produzidas para plantio)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sugarcane cuttings (produced for planting)",
+    "nome_es": "Esquejes de caña de azúcar (producidos para siembra)"
+  },
+  {
+    "id": 188,
+    "nome": "Tomate rasteiro (industrial)",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 1,
+    "nome_en": "Processing tomato",
+    "nome_es": "Tomate industrial"
+  },
+  {
+    "id": 189,
+    "nome": "Trigo em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Wheat (grain)",
+    "nome_es": "Trigo (grano)"
+  },
+  {
+    "id": 190,
+    "nome": "Trigo preto em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Buckwheat (grain)",
+    "nome_es": "Trigo sarraceno (grano)"
+  },
+  {
+    "id": 191,
+    "nome": "Triticale em grão",
+    "subclassificacao_id": 4,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Triticale (grain)",
+    "nome_es": "Triticale (grano)"
+  },
+  {
+    "id": 192,
+    "nome": "Aguardente de cana",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sugarcane spirit",
+    "nome_es": "Aguardiente de caña"
+  },
+  {
+    "id": 193,
+    "nome": "Algodão em pluma",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cotton lint",
+    "nome_es": "Algodón en fibra"
+  },
+  {
+    "id": 194,
+    "nome": "Arroz em grão",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rice (grain)",
+    "nome_es": "Arroz (grano)"
+  },
+  {
+    "id": 195,
+    "nome": "Café torrado e moído",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Ground roasted coffee",
+    "nome_es": "Café tostado y molido"
+  },
+  {
+    "id": 196,
+    "nome": "Café torrado em grão",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Roasted coffee beans",
+    "nome_es": "Café tostado en grano"
+  },
+  {
+    "id": 197,
+    "nome": "Cajuína",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cashew juice",
+    "nome_es": "Cajuína"
+  },
+  {
+    "id": 198,
+    "nome": "Carne de bovinos(verde)",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Fresh beef",
+    "nome_es": "Carne de bovino (fresca)"
+  },
+  {
+    "id": 199,
+    "nome": "Carne de outros animais(verde)",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Fresh meat from other animals",
+    "nome_es": "Carne de otros animales (fresca)"
+  },
+  {
+    "id": 200,
+    "nome": "Carne de suínos(verde)",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Fresh pork",
+    "nome_es": "Carne de cerdo (fresca)"
+  },
+  {
+    "id": 201,
+    "nome": "Carne tratada(de sol, salgada)",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cured meat (sun-dried, salted)",
+    "nome_es": "Carne curada (seca al sol, salada)"
+  },
+  {
+    "id": 202,
+    "nome": "Caroço de algodão",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cottonseed",
+    "nome_es": "Semilla de algodón"
+  },
+  {
+    "id": 203,
+    "nome": "Carvão vegetal",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Charcoal",
+    "nome_es": "Carbón vegetal"
+  },
+  {
+    "id": 204,
+    "nome": "Couros e peles",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Hides and skins",
+    "nome_es": "Cueros y pieles"
+  },
+  {
+    "id": 205,
+    "nome": "Creme de leite",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cream",
+    "nome_es": "Crema de leche"
+  },
+  {
+    "id": 206,
+    "nome": "Doces e geléias",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Jams and preserves",
+    "nome_es": "Dulces y mermeladas"
+  },
+  {
+    "id": 207,
+    "nome": "Embutidos(linguiças, salsichas, etc.)",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Processed meat products (sausages, frankfurters, etc.)",
+    "nome_es": "Embutidos (salchichas, chorizos, etc.)"
+  },
+  {
+    "id": 208,
+    "nome": "Farinha de mandioca",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cassava flour",
+    "nome_es": "Harina de yuca"
+  },
+  {
+    "id": 209,
+    "nome": "Fubá de milho",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cornmeal",
+    "nome_es": "Harina de maíz"
+  },
+  {
+    "id": 210,
+    "nome": "Fumo em rolo ou corda",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Twisted or rope tobacco",
+    "nome_es": "Tabaco en rollo o cuerda"
+  },
+  {
+    "id": 211,
+    "nome": "Goma ou tapioca",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cassava starch (tapioca)",
+    "nome_es": "Almidón de yuca (tapioca)"
+  },
+  {
+    "id": 212,
+    "nome": "Legumes e verduras (processadas)",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Processed vegetables",
+    "nome_es": "Hortalizas procesadas"
+  },
+  {
+    "id": 213,
+    "nome": "Licores",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Liqueurs",
+    "nome_es": "Licores"
+  },
+  {
+    "id": 214,
+    "nome": "Manteiga",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Butter",
+    "nome_es": "Mantequilla"
+  },
+  {
+    "id": 215,
+    "nome": "Melado",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sugarcane syrup",
+    "nome_es": "Melaza de caña"
+  },
+  {
+    "id": 216,
+    "nome": "Óleos vegetais",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Vegetable oils",
+    "nome_es": "Aceites vegetales"
+  },
+  {
+    "id": 217,
+    "nome": "Outros produtos",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Other products",
+    "nome_es": "Otros productos"
+  },
+  {
+    "id": 218,
+    "nome": "Pães, bolos e biscoitos",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Bread, cakes and biscuits",
+    "nome_es": "Panes, pasteles y galletas"
+  },
+  {
+    "id": 219,
+    "nome": "Polpa de frutas",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Fruit pulp",
+    "nome_es": "Pulpa de frutas"
+  },
+  {
+    "id": 220,
+    "nome": "Produtos de madeira",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Wood products",
+    "nome_es": "Productos de madera"
+  },
+  {
+    "id": 221,
+    "nome": "Queijo e requeijão",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cheese and cream cheese",
+    "nome_es": "Queso y requesón"
+  },
+  {
+    "id": 222,
+    "nome": "Rapadura",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rapadura (solid cane sugar)",
+    "nome_es": "Panela"
+  },
+  {
+    "id": 223,
+    "nome": "Sucos de frutas",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Fruit juices",
+    "nome_es": "Jugos de frutas"
+  },
+  {
+    "id": 224,
+    "nome": "Vinho de uva",
+    "subclassificacao_id": 10,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Grape wine",
+    "nome_es": "Vino de uva"
+  },
+  {
+    "id": 225,
+    "nome": "Açaí (fruto)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Açaí",
+    "nome_es": "Açaí"
+  },
+  {
+    "id": 226,
+    "nome": "Andiroba (semente)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Andiroba (seed)",
+    "nome_es": "Andiroba (semilla)"
+  },
+  {
+    "id": 227,
+    "nome": "Araticum (fruto)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Araticum (fruit)",
+    "nome_es": "Araticum (fruto)"
+  },
+  {
+    "id": 228,
+    "nome": "Babaçu (coco)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Babassu (coconut)",
+    "nome_es": "Babasú (coco)"
+  },
+  {
+    "id": 229,
+    "nome": "Babaçu (amêndoa)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Babassu (kernel)",
+    "nome_es": "Babasú (almendra)"
+  },
+  {
+    "id": 230,
+    "nome": "Bacaba (fruto)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Bacaba (fruit)",
+    "nome_es": "Bacaba (fruto)"
+  },
+  {
+    "id": 231,
+    "nome": "Bacuri",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Bacuri",
+    "nome_es": "Bacurí"
+  },
+  {
+    "id": 232,
+    "nome": "Baru (amêndoa)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Baru (nut)",
+    "nome_es": "Barú (almendra)"
+  },
+  {
+    "id": 233,
+    "nome": "Borracha (látex líquido)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rubber (liquid latex)",
+    "nome_es": "Caucho (látex líquido)"
+  },
+  {
+    "id": 234,
+    "nome": "Borracha (látex coagulado)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rubber (coagulated latex)",
+    "nome_es": "Caucho (látex coagulado)"
+  },
+  {
+    "id": 235,
+    "nome": "Buriti (coco)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Buriti (fruit)",
+    "nome_es": "Burití (fruto)"
+  },
+  {
+    "id": 236,
+    "nome": "Buriti (palha)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Buriti (straw)",
+    "nome_es": "Burití (paja)"
+  },
+  {
+    "id": 237,
+    "nome": "Butiá (fibra)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Butia (fiber)",
+    "nome_es": "Butiá (fibra)"
+  },
+  {
+    "id": 238,
+    "nome": "Cacau (amêndoa)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cocoa beans",
+    "nome_es": "Cacao (almendra)"
+  },
+  {
+    "id": 239,
+    "nome": "Cagaita (fruto)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cagaita (fruit)",
+    "nome_es": "Cagaita (fruto)"
+  },
+  {
+    "id": 240,
+    "nome": "Cajarana",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cajarana",
+    "nome_es": "Cajarana"
+  },
+  {
+    "id": 241,
+    "nome": "Camu-camu (fruto)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Camu-camu (fruit)",
+    "nome_es": "Camu-camu (fruto)"
+  },
+  {
+    "id": 242,
+    "nome": "Carnaúba (cera)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Carnauba wax",
+    "nome_es": "Carnaúba (cera)"
+  },
+  {
+    "id": 243,
+    "nome": "Carnaúba (pó de palha)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Carnauba straw powder",
+    "nome_es": "Carnaúba (polvo de paja)"
+  },
+  {
+    "id": 244,
+    "nome": "Casca de angico",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Angico bark",
+    "nome_es": "Corteza de angico"
+  },
+  {
+    "id": 245,
+    "nome": "Castanha-do-Brasil (castanha-do-Pará)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Brazil nut",
+    "nome_es": "Nuez de Brasil"
+  },
+  {
+    "id": 246,
+    "nome": "Caucho (goma elástica)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Caucho (natural rubber)",
+    "nome_es": "Caucho (goma elástica)"
+  },
+  {
+    "id": 247,
+    "nome": "Copaíba (óleo)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Copaiba oil",
+    "nome_es": "Aceite de copaíba"
+  },
+  {
+    "id": 248,
+    "nome": "Cumaru (semente)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cumaru (seed)",
+    "nome_es": "Cumarú (semilla)"
+  },
+  {
+    "id": 249,
+    "nome": "Cupuaçu",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cupuaçu",
+    "nome_es": "Cupuaçú"
+  },
+  {
+    "id": 250,
+    "nome": "Erva-mate",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Yerba mate",
+    "nome_es": "Yerba mate"
+  },
+  {
+    "id": 251,
+    "nome": "Ipecacuanha (raiz)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Ipecacuanha (root)",
+    "nome_es": "Ipecacuana (raíz)"
+  },
+  {
+    "id": 252,
+    "nome": "Jaborandi (folha)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Jaborandi (leaf)",
+    "nome_es": "Jaborandi (hoja)"
+  },
+  {
+    "id": 253,
+    "nome": "Jambu (folha)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Jambu (leaf)",
+    "nome_es": "Jambu (hoja)"
+  },
+  {
+    "id": 254,
+    "nome": "Juçara (fruto)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Juçara (fruit)",
+    "nome_es": "Juçara (fruto)"
+  },
+  {
+    "id": 255,
+    "nome": "Lenha",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Firewood",
+    "nome_es": "Leña"
+  },
+  {
+    "id": 256,
+    "nome": "Licuri (coquilho)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Licuri (nut)",
+    "nome_es": "Licuri (coquito)"
+  },
+  {
+    "id": 257,
+    "nome": "Licuri (cera)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Licuri (wax)",
+    "nome_es": "Licuri (cera)"
+  },
+  {
+    "id": 258,
+    "nome": "Maçaranduba (goma não elástica)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Maçaranduba (non-elastic gum)",
+    "nome_es": "Maçaranduba (goma no elástica)"
+  },
+  {
+    "id": 259,
+    "nome": "Macaúba (fruto)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Macaúba (fruit)",
+    "nome_es": "Macaúba (fruto)"
+  },
+  {
+    "id": 260,
+    "nome": "Mangaba (fruto)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Mangaba (fruit)",
+    "nome_es": "Mangaba (fruto)"
+  },
+  {
+    "id": 261,
+    "nome": "Maniçoba (goma elástica)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Maniçoba (elastic gum)",
+    "nome_es": "Maniçoba (goma elástica)"
+  },
+  {
+    "id": 262,
+    "nome": "Madeira em toras para papel",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Logs for paper production",
+    "nome_es": "Madera en trozas para papel"
+  },
+  {
+    "id": 263,
+    "nome": "Madeira em toras outra finalidade",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Logs for other purposes",
+    "nome_es": "Madera en trozas para otros fines"
+  },
+  {
+    "id": 264,
+    "nome": "Murici",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Murici",
+    "nome_es": "Murici"
+  },
+  {
+    "id": 265,
+    "nome": "Murumuru (semente)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Murumuru (seed)",
+    "nome_es": "Murumuru (semilla)"
+  },
+  {
+    "id": 266,
+    "nome": "Palmito",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Heart of palm",
+    "nome_es": "Palmito"
+  },
+  {
+    "id": 267,
+    "nome": "Oiticica (semente)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Oiticica (seed)",
+    "nome_es": "Oiticica (semilla)"
+  },
+  {
+    "id": 268,
+    "nome": "Pequi",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Pequi",
+    "nome_es": "Pequi"
+  },
+  {
+    "id": 269,
+    "nome": "Piaçava (fibra)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Piassava fiber",
+    "nome_es": "Fibra de piaçava"
+  },
+  {
+    "id": 270,
+    "nome": "Pinhão",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Araucaria pine nut",
+    "nome_es": "Piñón de araucaria"
+  },
+  {
+    "id": 271,
+    "nome": "Pupunha (coco)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Peach palm (fruit)",
+    "nome_es": "Pupuña (fruto)"
+  },
+  {
+    "id": 272,
+    "nome": "Sorva (goma não elástica)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sorva (non-elastic gum)",
+    "nome_es": "Sorva (goma no elástica)"
+  },
+  {
+    "id": 273,
+    "nome": "Ucuuba (amêndoa)",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Ucuuba (kernel)",
+    "nome_es": "Ucuuba (almendra)"
+  },
+  {
+    "id": 274,
+    "nome": "Imbú ou umbú",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Umbu",
+    "nome_es": "Umbú"
+  },
+  {
+    "id": 275,
+    "nome": "Outros produtos",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Other products",
+    "nome_es": "Otros productos"
+  },
+  {
+    "id": 276,
+    "nome": "Tucumã",
+    "subclassificacao_id": 8,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Tucumã",
+    "nome_es": "Tucumã"
+  },
+  {
+    "id": 277,
+    "nome": "Árvore em pé",
+    "subclassificacao_id": 7,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Standing trees",
+    "nome_es": "Árboles en pie"
+  },
+  {
+    "id": 278,
+    "nome": "Casca de acácia negra",
+    "subclassificacao_id": 7,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Black wattle bark",
+    "nome_es": "Corteza de acacia negra"
+  },
+  {
+    "id": 279,
+    "nome": "Lenha",
+    "subclassificacao_id": 7,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Firewood",
+    "nome_es": "Leña"
+  },
+  {
+    "id": 280,
+    "nome": "Madeira em tora para papel",
+    "subclassificacao_id": 7,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Logs for paper production",
+    "nome_es": "Madera en trozas para papel"
+  },
+  {
+    "id": 281,
+    "nome": "Madeira em tora outra finalidade",
+    "subclassificacao_id": 7,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Logs for other purposes",
+    "nome_es": "Madera en trozas para otros fines"
+  },
+  {
+    "id": 282,
+    "nome": "Outros produtos",
+    "subclassificacao_id": 7,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Other products",
+    "nome_es": "Otros productos"
+  },
+  {
+    "id": 283,
+    "nome": "Mudas de eucalipto",
+    "subclassificacao_id": 7,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Eucalyptus seedlings",
+    "nome_es": "Plántulas de eucalipto"
+  },
+  {
+    "id": 284,
+    "nome": "Mudas de pinheiro",
+    "subclassificacao_id": 7,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Pine seedlings",
+    "nome_es": "Plántulas de pino"
+  },
+  {
+    "id": 285,
+    "nome": "Mudas de outras espécies florestais",
+    "subclassificacao_id": 7,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Seedlings of other forest species",
+    "nome_es": "Plántulas de otras especies forestales"
+  },
+  {
+    "id": 286,
+    "nome": "Peixes",
+    "subclassificacao_id": 9,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Fish",
+    "nome_es": "Peces"
+  },
+  {
+    "id": 287,
+    "nome": "Camarões",
+    "subclassificacao_id": 9,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Shrimp",
+    "nome_es": "Camarones"
+  },
+  {
+    "id": 288,
+    "nome": "Ostras/vieiras",
+    "subclassificacao_id": 9,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Oysters/Scallops",
+    "nome_es": "Ostras/Vieiras"
+  },
+  {
+    "id": 289,
+    "nome": "Mexilhões",
+    "subclassificacao_id": 9,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Mussels",
+    "nome_es": "Mejillones"
+  },
+  {
+    "id": 290,
+    "nome": "Alevinos, larvas de camarões, sementes de ostras, vieiras e mexilhões e peixes ornamentais",
+    "subclassificacao_id": 9,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Fish fingerlings, shrimp larvae, oyster, scallop and mussel seed, and ornamental fish",
+    "nome_es": "Alevines, larvas de camarón, semillas de ostras, vieiras y mejillones, y peces ornamentales"
+  },
+  {
+    "id": 291,
+    "nome": "Bovino",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cattle",
+    "nome_es": "Bovinos"
+  },
+  {
+    "id": 292,
+    "nome": "Bubalinos",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Buffalo",
+    "nome_es": "Búfalos"
+  },
+  {
+    "id": 293,
+    "nome": "Equinos",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Horses",
+    "nome_es": "Caballos"
+  },
+  {
+    "id": 294,
+    "nome": "Asininos",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Donkeys",
+    "nome_es": "Asnos"
+  },
+  {
+    "id": 295,
+    "nome": "Muares",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Mules",
+    "nome_es": "Mulas"
+  },
+  {
+    "id": 296,
+    "nome": "Suínos",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Pigs",
+    "nome_es": "Cerdos"
+  },
+  {
+    "id": 297,
+    "nome": "Caprinos",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Goats",
+    "nome_es": "Caprinos"
+  },
+  {
+    "id": 298,
+    "nome": "Ovinos",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sheep",
+    "nome_es": "Ovinos"
+  },
+  {
+    "id": 299,
+    "nome": "Codornas",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Quails",
+    "nome_es": "Codornices"
+  },
+  {
+    "id": 300,
+    "nome": "Coelhos",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Rabbits",
+    "nome_es": "Conejos"
+  },
+  {
+    "id": 301,
+    "nome": "Sericicultura",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sericulture",
+    "nome_es": "Sericicultura"
+  },
+  {
+    "id": 302,
+    "nome": "Ranicultura",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Frog farming",
+    "nome_es": "Ranicultura"
+  },
+  {
+    "id": 303,
+    "nome": "Galinhas, galos, frangos, frangas e pintos",
+    "subclassificacao_id": 5,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Hens, roosters, broilers, pullets, and chicks",
+    "nome_es": "Gallinas, gallos, pollos de engorde, pollitas y pollitos"
+  },
+  {
+    "id": 304,
+    "nome": "Leite de Vaca",
+    "subclassificacao_id": 6,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Cow's milk",
+    "nome_es": "Leche de vaca"
+  },
+  {
+    "id": 305,
+    "nome": "Leite de Búfala",
+    "subclassificacao_id": 6,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Buffalo milk",
+    "nome_es": "Leche de búfala"
+  },
+  {
+    "id": 306,
+    "nome": "Leite de Cabra",
+    "subclassificacao_id": 6,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Goat milk",
+    "nome_es": "Leche de cabra"
+  },
+  {
+    "id": 307,
+    "nome": "Leite de Ovelha",
+    "subclassificacao_id": 6,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Sheep's milk",
+    "nome_es": "Leche de oveja"
+  },
+  {
+    "id": 308,
+    "nome": "Lã",
+    "subclassificacao_id": 6,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Wool",
+    "nome_es": "Lana"
+  },
+  {
+    "id": 309,
+    "nome": "Ovos de Codorna",
+    "subclassificacao_id": 6,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Quail eggs",
+    "nome_es": "Huevos de codorniz"
+  },
+  {
+    "id": 310,
+    "nome": "Ovos de Galinha",
+    "subclassificacao_id": 6,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Chicken eggs",
+    "nome_es": "Huevos de gallina"
+  },
+  {
+    "id": 311,
+    "nome": "Mel",
+    "subclassificacao_id": 6,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Honey",
+    "nome_es": "Miel"
+  },
+  {
+    "id": 312,
+    "nome": "Cera de Abelha",
+    "subclassificacao_id": 6,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Beeswax",
+    "nome_es": "Cera de abeja"
+  },
+  {
+    "id": 313,
+    "nome": "Geleia real, própolis e pólen",
+    "subclassificacao_id": 6,
+    "rastreabilidade_obrigatoria": 0,
+    "nome_en": "Royal jelly, propolis, and pollen",
+    "nome_es": "Jalea real, propóleo y polen"
+  }
+]

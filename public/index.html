@@ -129,29 +129,36 @@
             font-size: 16px;
         }
 
-        /* Language Toggle Button */
-        .lang-toggle {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition);
+        /* Language Selector */
+        .lang-selector {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            gap: 5px;
+            background: var(--primary);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--primary-dark);
         }
 
-        .lang-toggle:hover {
-            background: var(--primary-dark);
-            transform: scale(1.03);
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition);
         }
 
-        .lang-toggle i {
-            font-size: 16px;
+        .lang-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--primary);
         }
 
         /* Hero Section */
@@ -440,12 +447,17 @@
             .user-info {
                 justify-content: center;
             }
+
+            .lang-selector {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         @media (max-width: 480px) {
-            .lang-toggle {
+            .lang-btn {
                 font-size: 12px;
-                padding: 6px 12px;
+                padding: 4px 10px;
             }
 
             .btn-help {
@@ -468,7 +480,7 @@
                     <i class="fas fa-seedling logo-icon"></i>
                     <div>
                         <div class="logo-text">Smart Agro Cost</div>
-                        <div class="logo-subtitle" data-i18n="header.subtitle">Blockchain Intelligence para o
+                        <div class="logo-subtitle" data-i18n="header.subtitle">Blockchain Inteligente para o
                             Agronegócio</div>
                     </div>
                 </div>
@@ -478,10 +490,11 @@
                         <i class="fas fa-book-open"></i>
                         <span data-i18n="header.manual">Manual</span>
                     </a>
-                    <button class="lang-toggle" onclick="toggleLanguage()">
-                        <i class="fas fa-globe"></i>
-                        <span id="langLabel">EN</span>
-                    </button>
+                    <div class="lang-selector">
+                        <button class="lang-btn active" onclick="changeLanguage('pt-BR')" data-lang="pt-BR">PT</button>
+                        <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">EN</button>
+                        <button class="lang-btn" onclick="changeLanguage('es')" data-lang="es">ES</button>
+                    </div>
                     <div class="user-info">
                         <div class="user-avatar">FS</div>
                         <div data-i18n="header.user">Fábio Silva</div>
@@ -559,7 +572,7 @@
                     </div>
                     <div class="card-content">
                         <span class="mode-tag automated-tag" data-i18n="cards.card3.tag">MODO AUTOMÁTICO</span>
-                        <h3 class="card-title" data-i18n="cards.card3.title">Implementação Rápida</h3>
+                        <h3 class="card-title" data-i18n="cards.card3.title">Execução Rápida</h3>
                         <p class="card-description" data-i18n="cards.card3.desc">Deploy automático com execução
                             sequencial de funções usando argumentos fictícios. Ideal para contratos simples.</p>
                         <button class="card-button">
@@ -575,7 +588,7 @@
                     </div>
                     <div class="card-content">
                         <span class="mode-tag iterative-tag" data-i18n="cards.card4.tag">MODO ITERATIVO</span>
-                        <h3 class="card-title" data-i18n="cards.card4.title">Implementação Controlada</h3>
+                        <h3 class="card-title" data-i18n="cards.card4.title">Execução Controlada</h3>
                         <p class="card-description" data-i18n="cards.card4.desc">Controle a ordem de execução e preencha
                             argumentos manualmente. Perfeito para contratos complexos.</p>
                         <button class="card-button">
@@ -623,9 +636,12 @@
     </footer>
 
     <script>
-        // Translation data
+        // ============================================
+        // TRADUÇÕES - PORTUGUÊS, INGLÊS E ESPANHOL
+        // ============================================
         const translations = {
             'pt-BR': {
+                locale: 'pt-BR',
                 'header.subtitle': 'Blockchain Inteligente para o Agronegócio',
                 'header.manual': 'Manual',
                 'header.user': 'Fábio Silva',
@@ -660,6 +676,7 @@
                 'footer.copyright': '© 2025 Smart Agro Cost. Dados do Censo Agropecuário IBGE.'
             },
             'en': {
+                locale: 'en-US',
                 'header.subtitle': 'Blockchain Intelligence for Agribusiness',
                 'header.manual': 'Manual',
                 'header.user': 'Fábio Silva',
@@ -677,12 +694,12 @@
                 'cards.card2.desc': 'Analyze and compare transaction costs across different blockchain networks over time. Visualize trends and optimize costs.',
                 'cards.card2.btn': 'View History',
                 'cards.card3.tag': 'AUTOMATED MODE',
-                'cards.card3.title': 'Quick Contract Execution',
-                'cards.card3.desc': 'Automatically compiles, deploys, and executes smart contracts using automatically generated arguments. Ideal for simple contracts.',
+                'cards.card3.title': 'Quick Execution',
+                'cards.card3.desc': 'Automated deployment with sequential function execution using dummy arguments. Ideal for simple contracts.',
                 'cards.card3.btn': 'Run Automatically',
                 'cards.card4.tag': 'ITERATIVE MODE',
-                'cards.card4.title': 'Controlled Contract Execution',
-                'cards.card4.desc': 'Allows users to control execution order, specify input parameters, and execute selected functions. Suitable for more complex contracts.',
+                'cards.card4.title': 'Controlled Execution',
+                'cards.card4.desc': 'Control execution order and fill arguments manually. Perfect for complex contracts.',
                 'cards.card4.btn': 'Configure Execution',
                 'cards.card5.title': 'Adoption Simulation',
                 'cards.card5.desc': 'Cross blockchain costs with IBGE data to project feasibility across different adoption scenarios.',
@@ -692,44 +709,93 @@
                 'footer.docs': 'Documentation',
                 'footer.terms': 'Terms of Use',
                 'footer.copyright': '© 2025 Smart Agro Cost. Agricultural Census Data from IBGE.'
+            },
+            'es': {
+                locale: 'es-ES',
+                'header.subtitle': 'Blockchain Inteligente para el Agronegocio',
+                'header.manual': 'Manual',
+                'header.user': 'Fábio Silva',
+                'hero.title': 'Análisis de Viabilidad Blockchain',
+                'hero.subtitle': 'Calcule costos de implementación y simule la adopción de contratos inteligentes en el agronegocio brasileño',
+                'hero.step1': 'Analice datos del Censo Agropecuario',
+                'hero.step2': 'Implemente contratos inteligentes',
+                'hero.step3': 'Calcule costos de transacción',
+                'hero.step4': 'Simule adopción a gran escala',
+                'cards.title': 'Herramientas de Análisis',
+                'cards.card1.title': 'Indicadores IBGE',
+                'cards.card1.desc': 'Acceda a datos del Censo Agropecuario con visualizaciones interactivas de establecimientos y comercialización por producto.',
+                'cards.card1.btn': 'Explorar Datos',
+                'cards.card2.title': 'Historial de Costos',
+                'cards.card2.desc': 'Analice y compare costos de transacción entre diferentes redes blockchain a lo largo del tiempo. Visualice tendencias y optimice costos.',
+                'cards.card2.btn': 'Ver Historial',
+                'cards.card3.tag': 'MODO AUTOMÁTICO',
+                'cards.card3.title': 'Ejecución Rápida',
+                'cards.card3.desc': 'Despliegue automático con ejecución secuencial de funciones usando argumentos ficticios. Ideal para contratos simples.',
+                'cards.card3.btn': 'Ejecutar Automáticamente',
+                'cards.card4.tag': 'MODO ITERATIVO',
+                'cards.card4.title': 'Ejecución Controlada',
+                'cards.card4.desc': 'Controle el orden de ejecución y complete argumentos manualmente. Perfecto para contratos complejos.',
+                'cards.card4.btn': 'Configurar Ejecución',
+                'cards.card5.title': 'Simulación de Adopción',
+                'cards.card5.desc': 'Combine costos blockchain con datos del IBGE para proyectar viabilidad en diferentes escenarios de adopción.',
+                'cards.card5.btn': 'Simular Escenarios',
+                'footer.about': 'Sobre Nosotros',
+                'footer.contact': 'Contacto',
+                'footer.docs': 'Documentación',
+                'footer.terms': 'Términos de Uso',
+                'footer.copyright': '© 2025 Smart Agro Cost. Datos del Censo Agropecuario IBGE.'
             }
         };
 
         let currentLang = 'pt-BR';
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'pt-BR' ? 'en' : 'pt-BR';
-            document.documentElement.lang = currentLang;
-            document.getElementById('langLabel').textContent = currentLang === 'pt-BR' ? 'EN' : 'PT';
-            updatePageContent();
-        }
+        // ============================================
+        // FUNÇÃO DE MUDANÇA DE IDIOMA
+        // ============================================
+        function changeLanguage(lang) {
+            currentLang = lang;
 
-        function updatePageContent() {
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(el => {
+            // Atualizar botões ativos
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Atualizar elementos com data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[currentLang] && translations[currentLang][key]) {
-                    // Check if it's a link or button with nested content
-                    if (el.tagName === 'A' || el.tagName === 'BUTTON' || el.tagName === 'SPAN') {
-                        // For inline elements, replace text content but keep child elements
-                        const childNodes = el.childNodes;
-                        let hasTextChild = false;
-                        childNodes.forEach(node => {
-                            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== '') {
-                                node.textContent = translations[currentLang][key];
-                                hasTextChild = true;
-                            }
-                        });
-                        if (!hasTextChild) {
-                            el.textContent = translations[currentLang][key];
+                if (translations[lang] && translations[lang][key]) {
+                    // Verificar se tem filhos (ícones)
+                    const hasIcon = el.querySelector('i');
+                    if (hasIcon) {
+                        // Para elementos com ícone, manter o ícone e trocar o texto
+                        const textNode = el.childNodes[1];
+                        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+                            textNode.textContent = translations[lang][key];
+                        } else {
+                            // Se não tiver nó de texto, criar um
+                            const textSpan = document.createElement('span');
+                            textSpan.textContent = translations[lang][key];
+                            el.appendChild(textSpan);
                         }
                     } else {
-                        el.textContent = translations[currentLang][key];
+                        // Para elementos sem ícone, trocar todo o conteúdo
+                        el.textContent = translations[lang][key];
                     }
                 }
             });
 
-            // Update card buttons specifically to preserve icons
+            // Atualizar placeholders se houver
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            // Atualizar botões dos cards especificamente
             document.querySelectorAll('.card-button').forEach(btn => {
                 const icon = btn.querySelector('i');
                 if (icon) {
@@ -737,7 +803,8 @@
                     if (textNode && textNode.nodeType === Node.TEXT_NODE) {
                         const parentCard = btn.closest('.card-content');
                         if (parentCard) {
-                            const cardIndex = Array.from(parentCard.parentElement.parentElement.children).indexOf(parentCard.parentElement);
+                            const parentCardElement = parentCard.parentElement;
+                            const cardIndex = Array.from(parentCardElement.parentElement.children).indexOf(parentCardElement);
                             const keyMap = {
                                 0: 'cards.card1.btn',
                                 1: 'cards.card2.btn',
@@ -746,19 +813,44 @@
                                 4: 'cards.card5.btn'
                             };
                             const key = keyMap[cardIndex];
-                            if (key && translations[currentLang] && translations[currentLang][key]) {
-                                textNode.textContent = ' ' + translations[currentLang][key];
+                            if (key && translations[lang] && translations[lang][key]) {
+                                textNode.textContent = ' ' + translations[lang][key];
                             }
                         }
                     }
                 }
             });
+
+            // SALVAR IDIOMA NO localStorage
+            localStorage.setItem('language', lang);
+
+            console.log('🌐 Idioma alterado para:', lang);
         }
 
-        // Initialize with Portuguese
+        // ============================================
+        // FUNÇÃO PARA CARREGAR IDIOMA SALVO
+        // ============================================
+        function loadSavedLanguage() {
+            const savedLang = localStorage.getItem('language');
+            if (savedLang && translations[savedLang]) {
+                changeLanguage(savedLang);
+                return savedLang;
+            } else {
+                changeLanguage('pt-BR');
+                return 'pt-BR';
+            }
+        }
+
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('langLabel').textContent = 'EN';
-            updatePageContent();
+            // Carregar idioma salvo
+            const lang = loadSavedLanguage();
+            console.log('📌 Idioma carregado:', lang);
+
+            // Atualizar título da página
+            document.title = translations[currentLang]['hero.title'] + ' - SmartAgro';
         });
     </script>
 </body>

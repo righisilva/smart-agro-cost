@@ -95,6 +95,8 @@
         .header-actions {
             display: flex;
             gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -130,6 +132,38 @@
         .btn-secondary:hover {
             background-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
+        }
+
+        /* Language Selector */
+        .lang-selector {
+            display: flex;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .lang-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--primary);
         }
 
         /* Toggle Theme Button */
@@ -416,6 +450,11 @@
             .log-content {
                 height: 350px;
             }
+
+            .lang-selector {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         @media (max-width: 480px) {
@@ -471,19 +510,23 @@
         <header class="dashboard-header">
             <div class="header-content">
                 <div class="header-title">
-                    <h1><i class="fas fa-gas-pump"></i> Gas Estimator</h1>
-                    <p>Análise e estimativa de custos de gas para contratos inteligentes</p>
+                    <h1><i class="fas fa-gas-pump"></i> <span data-i18n="header.title">Gas Estimator</span></h1>
+                    <p data-i18n="header.subtitle">Análise e estimativa de custos de gas para contratos inteligentes</p>
                 </div>
                 <div class="header-actions">
-                    <!-- Botão de Alternar Tema -->
+                    <div class="lang-selector">
+                        <button class="lang-btn active" onclick="changeLanguage('pt-BR')" data-lang="pt-BR">PT</button>
+                        <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">EN</button>
+                        <button class="lang-btn" onclick="changeLanguage('es')" data-lang="es">ES</button>
+                    </div>
                     <div class="theme-toggle" id="themeToggle" title="Alternar modo claro/escuro">
                         <i class="fas fa-moon"></i>
                     </div>
                     <button class="btn btn-secondary" onclick="location.href='/gas-history'">
-                        <i class="fas fa-chart-line"></i> Histórico
+                        <i class="fas fa-chart-line"></i> <span data-i18n="header.history">Histórico</span>
                     </button>
                     <button class="btn btn-secondary" onclick="location.href='/'">
-                        <i class="fas fa-home"></i> Início
+                        <i class="fas fa-home"></i> <span data-i18n="header.home">Início</span>
                     </button>
                 </div>
             </div>
@@ -493,14 +536,14 @@
         <div class="card">
             <div class="card-title">
                 <i class="fas fa-file-code"></i>
-                <span>Upload do Contrato</span>
+                <span data-i18n="upload.title">Upload do Contrato</span>
             </div>
 
             <!-- Upload Area -->
             <div id="uploadArea" class="upload-area">
                 <i class="fas fa-cloud-upload-alt"></i>
-                <h3>Clique para selecionar ou arraste o arquivo</h3>
-                <p>Suporta arquivos .sol (Solidity)</p>
+                <h3 data-i18n="upload.click_text">Clique para selecionar ou arraste o arquivo</h3>
+                <p data-i18n="upload.supported_files">Suporta arquivos .sol (Solidity)</p>
                 <input type="file" id="contrato" class="file-input" accept=".sol" />
             </div>
 
@@ -512,17 +555,17 @@
                     <div class="file-size" id="fileSize"></div>
                 </div>
                 <button class="btn btn-secondary" onclick="removerArquivo()" style="margin-left: auto;">
-                    <i class="fas fa-times"></i> Remover
+                    <i class="fas fa-times"></i> <span data-i18n="upload.remove">Remover</span>
                 </button>
             </div>
 
             <!-- Action Buttons -->
             <div class="button-group">
                 <button class="btn btn-primary" id="btnAnalisar">
-                    <i class="fas fa-flask"></i> Analisar Contrato
+                    <i class="fas fa-flask"></i> <span data-i18n="upload.analyze">Analisar Contrato</span>
                 </button>
                 <button class="btn btn-secondary" id="btnLimpar">
-                    <i class="fas fa-trash"></i> Limpar Logs
+                    <i class="fas fa-trash"></i> <span data-i18n="upload.clear_logs">Limpar Logs</span>
                 </button>
             </div>
         </div>
@@ -533,15 +576,16 @@
                 <div class="log-header">
                     <div class="log-header-left">
                         <i class="fas fa-terminal"></i>
-                        <span>Logs de Análise</span>
+                        <span data-i18n="logs.title">Logs de Análise</span>
                     </div>
                     <div id="loadingIndicator" class="loading" style="display: none;">
                         <i class="fas fa-spinner"></i>
-                        Processando...
+                        <span data-i18n="logs.processing">Processando...</span>
                     </div>
                 </div>
                 <div id="log" class="log-content">
-                    <span class="info"><i class="fas fa-info-circle"></i> Aguardando upload do contrato...</span>
+                    <span class="info"><i class="fas fa-info-circle"></i> <span data-i18n="logs.waiting">Aguardando
+                            upload do contrato...</span></span>
                 </div>
             </div>
         </div>
@@ -550,15 +594,184 @@
         <footer class="dashboard-footer">
             <div>
                 <i class="fas fa-code-branch"></i>
-                <span>SmartAgro - Gas Estimator | Estimativa de custos em tempo real</span>
+                <span data-i18n="footer.source">SmartAgro - Gas Estimator | Estimativa de custos em tempo real</span>
             </div>
-            <div class="copyright">
+            <div class="copyright" data-i18n="footer.copyright">
                 &copy; 2025 SmartAgro. Todos os direitos reservados.
             </div>
         </footer>
     </div>
 
     <script>
+        // ============================================
+        // SISTEMA DE TRADUÇÃO
+        // ============================================
+        const translations = {
+            'pt-BR': {
+                locale: 'pt-BR',
+                'header.title': 'Gas Estimator',
+                'header.subtitle': 'Análise e estimativa de custos de gas para contratos inteligentes',
+                'header.history': 'Histórico',
+                'header.home': 'Início',
+                'upload.title': 'Upload do Contrato',
+                'upload.click_text': 'Clique para selecionar ou arraste o arquivo',
+                'upload.supported_files': 'Suporta arquivos .sol (Solidity)',
+                'upload.remove': 'Remover',
+                'upload.analyze': 'Analisar Contrato',
+                'upload.clear_logs': 'Limpar Logs',
+                'upload.file_selected': 'Arquivo selecionado: ',
+                'upload.file_removed': 'Arquivo removido. Aguardando novo upload...',
+                'upload.no_file': 'Nenhum arquivo selecionado.',
+                'upload.invalid_format': 'Formato inválido. Por favor, selecione um arquivo .sol (Solidity).',
+                'upload.analyzing': '📦 Iniciando análise do contrato: ',
+                'upload.analysis_complete': '✅ Análise concluída com sucesso!',
+                'upload.error': '❌ Erro ao analisar contrato: ',
+                'logs.title': 'Logs de Análise',
+                'logs.processing': 'Processando...',
+                'logs.waiting': 'Aguardando upload do contrato...',
+                'logs.cleared': 'Logs limpos. Aguardando nova análise...',
+                'logs.welcome': '🎯 Bem-vindo ao Gas Estimator!',
+                'logs.upload_prompt': '📁 Faça upload de um contrato Solidity para iniciar a análise.',
+                'logs.shortcut': '⌨️ Atalho: Ctrl+Enter para analisar rapidamente.',
+                'footer.source': 'SmartAgro - Gas Estimator | Estimativa de custos em tempo real',
+                'footer.copyright': '© 2025 SmartAgro. Todos os direitos reservados.'
+            },
+            'en': {
+                locale: 'en-US',
+                'header.title': 'Gas Estimator',
+                'header.subtitle': 'Gas cost analysis and estimation for smart contracts',
+                'header.history': 'History',
+                'header.home': 'Home',
+                'upload.title': 'Contract Upload',
+                'upload.click_text': 'Click to select or drag and drop the file',
+                'upload.supported_files': 'Supports .sol files (Solidity)',
+                'upload.remove': 'Remove',
+                'upload.analyze': 'Analyze Contract',
+                'upload.clear_logs': 'Clear Logs',
+                'upload.file_selected': 'File selected: ',
+                'upload.file_removed': 'File removed. Waiting for new upload...',
+                'upload.no_file': 'No file selected.',
+                'upload.invalid_format': 'Invalid format. Please select a .sol file (Solidity).',
+                'upload.analyzing': '📦 Starting contract analysis: ',
+                'upload.analysis_complete': '✅ Analysis completed successfully!',
+                'upload.error': '❌ Error analyzing contract: ',
+                'logs.title': 'Analysis Logs',
+                'logs.processing': 'Processing...',
+                'logs.waiting': 'Waiting for contract upload...',
+                'logs.cleared': 'Logs cleared. Waiting for new analysis...',
+                'logs.welcome': '🎯 Welcome to Gas Estimator!',
+                'logs.upload_prompt': '📁 Upload a Solidity contract to start the analysis.',
+                'logs.shortcut': '⌨️ Shortcut: Ctrl+Enter to analyze quickly.',
+                'footer.source': 'SmartAgro - Gas Estimator | Real-time cost estimation',
+                'footer.copyright': '© 2025 SmartAgro. All rights reserved.'
+            },
+            'es': {
+                locale: 'es-ES',
+                'header.title': 'Gas Estimator',
+                'header.subtitle': 'Análisis y estimación de costos de gas para contratos inteligentes',
+                'header.history': 'Historial',
+                'header.home': 'Inicio',
+                'upload.title': 'Carga de Contrato',
+                'upload.click_text': 'Haga clic para seleccionar o arrastre el archivo',
+                'upload.supported_files': 'Admite archivos .sol (Solidity)',
+                'upload.remove': 'Eliminar',
+                'upload.analyze': 'Analizar Contrato',
+                'upload.clear_logs': 'Limpiar Logs',
+                'upload.file_selected': 'Archivo seleccionado: ',
+                'upload.file_removed': 'Archivo eliminado. Esperando nueva carga...',
+                'upload.no_file': 'Ningún archivo seleccionado.',
+                'upload.invalid_format': 'Formato inválido. Por favor, seleccione un archivo .sol (Solidity).',
+                'upload.analyzing': '📦 Iniciando análisis del contrato: ',
+                'upload.analysis_complete': '✅ ¡Análisis completado con éxito!',
+                'upload.error': '❌ Error al analizar contrato: ',
+                'logs.title': 'Logs de Análisis',
+                'logs.processing': 'Procesando...',
+                'logs.waiting': 'Esperando carga del contrato...',
+                'logs.cleared': 'Logs limpiados. Esperando nuevo análisis...',
+                'logs.welcome': '🎯 ¡Bienvenido a Gas Estimator!',
+                'logs.upload_prompt': '📁 Cargue un contrato Solidity para iniciar el análisis.',
+                'logs.shortcut': '⌨️ Atajo: Ctrl+Enter para analizar rápidamente.',
+                'footer.source': 'SmartAgro - Gas Estimator | Estimación de costos en tiempo real',
+                'footer.copyright': '© 2025 SmartAgro. Todos los derechos reservados.'
+            }
+        };
+
+        let currentLang = 'pt-BR';
+
+        // ============================================
+        // FUNÇÃO DE MUDANÇA DE IDIOMA
+        // ============================================
+        function changeLanguage(lang) {
+            currentLang = lang;
+
+            // Atualizar botões ativos
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Atualizar elementos com data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Atualizar placeholders se houver
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            // Atualizar mensagens do log se estiverem vazias
+            updateLogMessages();
+
+            // SALVAR IDIOMA
+            localStorage.setItem('language', lang);
+
+            console.log('🌐 Idioma alterado para:', lang);
+        }
+
+        // ============================================
+        // FUNÇÃO PARA CARREGAR IDIOMA SALVO
+        // ============================================
+        function loadSavedLanguage() {
+            const savedLang = localStorage.getItem('language');
+            if (savedLang && translations[savedLang]) {
+                changeLanguage(savedLang);
+                return savedLang;
+            } else {
+                changeLanguage('pt-BR');
+                return 'pt-BR';
+            }
+        }
+
+        // ============================================
+        // ATUALIZAR MENSAGENS DO LOG
+        // ============================================
+        function updateLogMessages() {
+            const logElem = document.getElementById('log');
+            const t = translations[currentLang];
+
+            // Se o log estiver com a mensagem inicial, atualiza
+            if (logElem.innerHTML.includes('Aguardando upload do contrato...')) {
+                logElem.innerHTML = `<span class="info"><i class="fas fa-info-circle"></i> ${t['logs.waiting'] || 'Aguardando upload do contrato...'}</span>`;
+            }
+
+            // Atualizar mensagens de boas-vindas se existirem
+            const welcomeMsgs = logElem.innerHTML;
+            if (welcomeMsgs.includes('Bem-vindo ao Gas Estimator!') ||
+                welcomeMsgs.includes('Welcome to Gas Estimator!') ||
+                welcomeMsgs.includes('Bienvenido a Gas Estimator!')) {
+                // As mensagens são adicionadas via JavaScript, não via HTML
+            }
+        }
+
         // ============================================
         // FUNCIONALIDADE DE TEMA CLARO/ESCURO
         // ============================================
@@ -653,6 +866,8 @@
         fileInput.addEventListener("change", atualizarInfoArquivo);
 
         function atualizarInfoArquivo() {
+            const t = translations[currentLang];
+
             if (fileInput.files.length) {
                 const file = fileInput.files[0];
                 fileName.textContent = file.name;
@@ -680,15 +895,15 @@
         }
 
         function removerArquivo() {
+            const t = translations[currentLang];
             fileInput.value = '';
             uploadArea.style.display = 'flex';
             fileInfo.style.display = 'none';
             btnAnalisar.disabled = true;
-            adicionarLog('info', 'Arquivo removido. Aguardando novo upload...');
+            adicionarLog('info', t['upload.file_removed'] || 'Arquivo removido. Aguardando novo upload...');
         }
 
         function adicionarLog(tipo, mensagem) {
-
             // Remove mensagem inicial se existir
             if (logElem.innerHTML.includes('Aguardando upload do contrato...')) {
                 logElem.innerHTML = '';
@@ -702,59 +917,18 @@
             logElem.scrollTop = logElem.scrollHeight;
         }
 
-        // function adicionarLog(tipo, mensagem) {
-        //     const timestamp = new Date().toLocaleTimeString('pt-BR', {
-        //         hour: '2-digit',
-        //         minute: '2-digit',
-        //         second: '2-digit'
-        //     });
-
-        //     let icon = '';
-        //     let className = '';
-
-        //     switch (tipo) {
-        //         case 'success':
-        //             icon = 'fa-check-circle';
-        //             className = 'success';
-        //             break;
-        //         case 'warning':
-        //             icon = 'fa-exclamation-triangle';
-        //             className = 'warning';
-        //             break;
-        //         case 'error':
-        //             icon = 'fa-times-circle';
-        //             className = 'error';
-        //             break;
-        //         default:
-        //             icon = 'fa-info-circle';
-        //             className = 'info';
-        //     }
-
-        //     // Remover a mensagem inicial se ainda existir
-        //     if (logElem.innerHTML.includes('Aguardando upload do contrato...')) {
-        //         logElem.innerHTML = '';
-        //     }
-
-        //     const logLine = `<div class="${className}" style="margin-bottom: 6px; line-height: 1.5;">
-        //         <span style="color: var(--text-light); opacity: 0.8;">[${timestamp}]</span>
-        //         <i class="fas ${icon}" style="margin: 0 8px; width: 16px;"></i>
-        //         ${mensagem}
-        //     </div>`;
-
-        //     logElem.innerHTML += logLine;
-        //     logElem.scrollTop = logElem.scrollHeight;
-        // }
-
         function limparLogs() {
-            logElem.innerHTML = '<span class="info"><i class="fas fa-info-circle"></i> Logs limpos. Aguardando nova análise...</span>';
+            const t = translations[currentLang];
+            logElem.innerHTML = `<span class="info"><i class="fas fa-info-circle"></i> ${t['logs.cleared'] || 'Logs limpos. Aguardando nova análise...'}</span>`;
         }
 
         // Analyze button handler
         btnAnalisar.addEventListener("click", async (e) => {
             e.preventDefault();
+            const t = translations[currentLang];
 
             if (!fileInput.files.length) {
-                adicionarLog('warning', 'Nenhum arquivo selecionado.');
+                adicionarLog('warning', t['upload.no_file'] || 'Nenhum arquivo selecionado.');
                 return;
             }
 
@@ -762,11 +936,11 @@
 
             // Validate file extension
             if (!file.name.toLowerCase().endsWith('.sol')) {
-                adicionarLog('error', 'Formato inválido. Por favor, selecione um arquivo .sol (Solidity).');
+                adicionarLog('error', t['upload.invalid_format'] || 'Formato inválido. Por favor, selecione um arquivo .sol (Solidity).');
                 return;
             }
 
-            adicionarLog('info', `📦 Iniciando análise do contrato: <strong>${file.name}</strong>`);
+            adicionarLog('info', `${t['upload.analyzing'] || '📦 Iniciando análise do contrato: '}<strong>${file.name}</strong>`);
 
             const formData = new FormData();
             formData.append("contrato", file);
@@ -791,7 +965,7 @@
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) {
-                        adicionarLog('success', '✅ Análise concluída com sucesso!');
+                        adicionarLog('success', t['upload.analysis_complete'] || '✅ Análise concluída com sucesso!');
                         break;
                     }
 
@@ -801,7 +975,8 @@
                     const lines = text.split('\n');
                     lines.forEach(line => {
                         if (line.trim()) {
-                            if (line.includes('✅') || line.includes('sucesso') || line.includes('concluída')) {
+                            if (line.includes('✅') || line.includes('sucesso') || line.includes('concluída') ||
+                                line.includes('success') || line.includes('completed')) {
                                 adicionarLog('success', line);
                             } else if (line.includes('⚠️') || line.includes('atenção') || line.includes('warning')) {
                                 adicionarLog('warning', line);
@@ -815,7 +990,7 @@
                 }
 
             } catch (error) {
-                adicionarLog('error', `❌ Erro ao analisar contrato: ${error.message}`);
+                adicionarLog('error', `${t['upload.error'] || '❌ Erro ao analisar contrato: '}${error.message}`);
                 console.error('Erro:', error);
             } finally {
                 // Hide loading
@@ -835,10 +1010,16 @@
             }
         });
 
-        // Initialize
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
         document.addEventListener('DOMContentLoaded', function () {
             // Carregar tema salvo
             loadSavedTheme();
+
+            // Carregar idioma salvo
+            const lang = loadSavedLanguage();
+            console.log('📌 Idioma carregado:', lang);
 
             // Configurar botão de tema
             const themeToggle = document.getElementById('themeToggle');
@@ -849,10 +1030,12 @@
             // Disable analyze button initially
             btnAnalisar.disabled = true;
 
+            const t = translations[currentLang];
+
             // Welcome log
-            adicionarLog('info', '🎯 Bem-vindo ao Gas Estimator!');
-            adicionarLog('info', '📁 Faça upload de um contrato Solidity para iniciar a análise.');
-            adicionarLog('info', '⌨️ Atalho: <kbd>Ctrl+Enter</kbd> para analisar rapidamente.');
+            adicionarLog('info', t['logs.welcome'] || '🎯 Bem-vindo ao Gas Estimator!');
+            adicionarLog('info', t['logs.upload_prompt'] || '📁 Faça upload de um contrato Solidity para iniciar a análise.');
+            adicionarLog('info', t['logs.shortcut'] || '⌨️ Atalho: Ctrl+Enter para analisar rapidamente.');
         });
     </script>
 </body>

@@ -759,10 +759,10 @@
                 'filters.region_alegrete': 'Alegrete (Municipality)',
                 'filters.classification': 'Classification',
                 'filters.classification_all': 'All',
-                'filters.classification_agriculture': 'Agriculture',
-                'filters.classification_livestock': 'Livestock',
+                'filters.classification_agriculture': 'Crop Production',
+                'filters.classification_livestock': 'Livestock Production',
                 'filters.classification_forestry': 'Forestry',
-                'filters.classification_extraction': 'Plant Extraction',
+                'filters.classification_extraction': 'Forest Extractive Activities',
                 'filters.classification_aquaculture': 'Aquaculture',
                 'filters.classification_agroindustry': 'Agroindustry',
                 'filters.subclassification': 'Subclassification',
@@ -819,10 +819,10 @@
                 'filters.region_alegrete': 'Alegrete (Municipio)',
                 'filters.classification': 'Clasificación',
                 'filters.classification_all': 'Todas',
-                'filters.classification_agriculture': 'Agricultura',
-                'filters.classification_livestock': 'Ganadería',
+                'filters.classification_agriculture': 'Producción de Cultivos',
+                'filters.classification_livestock': 'Producción Pecuaria',
                 'filters.classification_forestry': 'Silvicultura',
-                'filters.classification_extraction': 'Extracción Vegetal',
+                'filters.classification_extraction': '"Actividades Extractivas Forestales',
                 'filters.classification_aquaculture': 'Acuicultura',
                 'filters.classification_agroindustry': 'Agroindustria',
                 'filters.subclassification': 'Subclasificación',
@@ -933,7 +933,32 @@
             // Atualizar gráficos se existirem
             updateChartLabels(lang);
             updateStatsLanguage(lang);
+
+            localStorage.setItem('language', lang);
+
+            // 🔥 NOVO: recarrega os dados traduzidos, se já houver filtro aplicado
+            if (document.getElementById('filtroRegiao').value) {
+                atualizarDashboard();
+            }
+
         }
+
+        // ============================================
+            // CARREGANDO O IDIOMA SALVO
+            // ============================================
+
+            function loadSavedLanguage() {
+                // 🔥 BUSCAR NO localStorage
+                const savedLang = localStorage.getItem('language');
+
+                if (savedLang && translations[savedLang]) {
+                    // Aplicar o idioma salvo
+                    changeLanguage(savedLang);
+                } else {
+                    // Idioma padrão (português)
+                    changeLanguage('pt-BR');
+                }
+            }
         
 
     // ============================================
@@ -1253,21 +1278,32 @@
         const filtroClassificacao = document.getElementById("filtroClassificacao");
         const filtroSubclassificacao = document.getElementById("filtroSubclassificacao");
 
-        filtroClassificacao.addEventListener("change", () => {
-            const classificacao = filtroClassificacao.value;
-            filtroSubclassificacao.innerHTML = `<option value="">Todas as subclassificações</option>`;
-            if (!classificacao || !subclassificacoes[classificacao]) {
-                filtroSubclassificacao.disabled = true;
-                return;
-            }
-            subclassificacoes[classificacao].forEach(sub => {
-                const option = document.createElement("option");
-                option.value = sub;
-                option.textContent = sub;
-                filtroSubclassificacao.appendChild(option);
+        filtroClassificacao.addEventListener("change", async () => {
+                const classificacao = filtroClassificacao.value;
+                filtroSubclassificacao.innerHTML = `<option value="">${translations[currentLang]['filters.subclassification_all']}</option>`;
+                if (!classificacao) {
+                    filtroSubclassificacao.disabled = true;
+                    return;
+                }
+
+                const idiomaMap = { 'pt-BR': 'pt', 'en': 'en', 'es': 'es' };
+                const idioma = idiomaMap[currentLang] || 'pt';
+
+                try {
+                    const res = await fetch(`/api/ibge/subclassificacoes?classificacao=${encodeURIComponent(classificacao)}&idioma=${idioma}`);
+                    const dados = await res.json();
+
+                    dados.forEach(sub => {
+                        const option = document.createElement("option");
+                        option.value = sub.value;       // pt, pro filtro
+                        option.textContent = sub.label; // traduzido, pra exibição
+                        filtroSubclassificacao.appendChild(option);
+                    });
+                    filtroSubclassificacao.disabled = dados.length === 0;
+                } catch (err) {
+                    console.error("Erro ao buscar subclassificações:", err);
+                }
             });
-            filtroSubclassificacao.disabled = false;
-        });
 
         // ============================================
         // ATUALIZAR DASHBOARD
@@ -1279,6 +1315,7 @@
             const familiar = familiarCheckbox.checked ? "1" : "0";
             const obrigatorioCheckbox = document.getElementById("filtroObrigatorio");
             const obrigatorio = obrigatorioCheckbox.checked ? "1" : "";
+            
 
             if (!regiao || !orderBy) {
                 alert("Por favor, preencha todos os campos obrigatórios (*) antes de atualizar o dashboard.");
@@ -1306,6 +1343,10 @@
             if (subclassificacao) params.append("subclassificacao", subclassificacao);
             if (top) params.append("top", top);
             params.append("obrigatorio", obrigatorio);
+
+            // 🔥 NOVO: manda o idioma atual pro backend
+            const idiomaMap = { 'pt-BR': 'pt', 'en': 'en', 'es': 'es' };
+            params.append("idioma", idiomaMap[currentLang] || 'pt');
 
             try {
                 const res = await fetch("/api/ibge?" + params.toString());
@@ -1860,7 +1901,14 @@
             document.getElementById('filtroObrigatorio').checked = false;
             document.getElementById('filtroOrderBy').value = 'valor_vendas';
 
-            changeLanguage('pt-BR');
+            
+            // 🔥 CARREGAR IDIOMA SALVO
+            const savedLang = localStorage.getItem('language');
+            if (savedLang && translations[savedLang]) {
+                changeLanguage(savedLang);
+            } else {
+                changeLanguage('pt-BR'); // Idioma padrão
+            }
 
             setTimeout(atualizarDashboard, 500);
 

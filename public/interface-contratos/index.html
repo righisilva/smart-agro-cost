@@ -73,6 +73,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .header-title h1 {
@@ -91,6 +93,8 @@
         .header-actions {
             display: flex;
             gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -128,7 +132,6 @@
             transform: translateY(-2px);
         }
 
-        /* Botão de auto-preenchimento específico (opcional) */
         .btn-auto {
             background-color: var(--card-bg);
             color: var(--text);
@@ -149,6 +152,38 @@
         .btn-success:hover {
             background-color: #0DA675;
             transform: translateY(-2px);
+        }
+
+        /* Language Selector */
+        .lang-selector {
+            display: flex;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .lang-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--primary);
         }
 
         /* Toggle Theme Button */
@@ -409,37 +444,33 @@
         }
 
         .input-field {
-    padding: 8px 10px;
-    background-color: var(--card-bg-light);  /* Muda com o tema */
-    border: 1px solid var(--border);         /* Já está usando variável */
-    border-radius: 6px;
-    color: var(--text);                       /* Já está usando variável */
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    transition: var(--transition);
-}
+            padding: 8px 10px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            transition: var(--transition);
+        }
 
-.input-field:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
-}
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
 
-/* Opcional: se quiser um fundo um pouco diferente para inputs */
-.input-field {
-    background-color: var(--card-bg);  /* ou var(--card-bg-light) */
-}
-
-/* Ou se quiser um efeito de "profundidade" diferente em cada modo */
-.light-mode .input-field {
-    background-color: #FFFFFF;  /* branco puro no modo claro */
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* sombra interna suave */
-}
+        .light-mode .input-field {
+            background-color: #FFFFFF;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
 
         .function-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .btn-sm {
@@ -532,6 +563,38 @@
             margin-top: 25px;
         }
 
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-select {
+            padding: 10px 12px;
+            background-color: var(--card-bg-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 13px;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .main-content {
@@ -574,6 +637,11 @@
             .contract-select-wrapper {
                 flex-direction: column;
             }
+
+            .lang-selector {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         /* Scrollbar */
@@ -604,19 +672,24 @@
         <header class="dashboard-header">
             <div class="header-content">
                 <div class="header-title">
-                    <h1><i class="fas fa-file-contract"></i> Interface de Contratos Inteligentes</h1>
-                    <p>Modo Iterativo - Controle manual das execuções</p>
+                    <h1><i class="fas fa-file-contract"></i> <span data-i18n="header.title">Interface de Contratos
+                            Inteligentes</span></h1>
+                    <p data-i18n="header.subtitle">Modo Iterativo - Controle manual das execuções</p>
                 </div>
                 <div class="header-actions">
-                    <!-- Botão de Alternar Tema -->
+                    <div class="lang-selector">
+                        <button class="lang-btn active" onclick="changeLanguage('pt-BR')" data-lang="pt-BR">PT</button>
+                        <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">EN</button>
+                        <button class="lang-btn" onclick="changeLanguage('es')" data-lang="es">ES</button>
+                    </div>
                     <div class="theme-toggle" id="themeToggle" title="Alternar modo claro/escuro">
                         <i class="fas fa-moon"></i>
                     </div>
                     <button class="btn btn-secondary" onclick="location.href='/'">
-                        <i class="fas fa-home"></i> Voltar ao Início
+                        <i class="fas fa-home"></i> <span data-i18n="header.back">Voltar ao Início</span>
                     </button>
                     <button class="btn btn-secondary" onclick="limparLogs()">
-                        <i class="fas fa-trash"></i> Limpar Logs
+                        <i class="fas fa-trash"></i> <span data-i18n="header.clear_logs">Limpar Logs</span>
                     </button>
                 </div>
             </div>
@@ -630,36 +703,36 @@
                 <div class="card">
                     <div class="card-title">
                         <i class="fas fa-upload"></i>
-                        <span>1. Carregar Contrato</span>
+                        <span data-i18n="upload.title">1. Carregar Contrato</span>
                     </div>
                     <div class="upload-section">
                         <div class="file-input-wrapper">
                             <input type="file" id="contrato" accept=".sol" multiple onchange="atualizarNomeArquivo()">
                             <div class="file-input-label">
                                 <i class="fas fa-cloud-upload-alt"></i>
-                                <span id="fileLabel">Selecione arquivo .sol</span>
+                                <span id="fileLabel" data-i18n="upload.select_file">Selecione arquivo .sol</span>
                             </div>
                         </div>
                         <div id="fileName" class="file-name"></div>
 
-                        <!-- 🔥 NOVA CAIXA DE SELEÇÃO -->
                         <div class="filter-group">
-                            <label class="filter-label required">
+                            <label class="filter-label required" data-i18n="upload.quote_type">
                                 Cotação das Redes
                             </label>
                             <select class="filter-select" id="filtroTipoCalculo" required>
-                                <option value="" disabled selected>Selecione o tipo</option>
-                                <option value="last" selected>Última Cotação</option>
-                                <option value="day">Média Últimas 24h</option>
-                                <option value="week">Média Última Semana</option>
-                                <option value="month">Média Último Mês</option>
-                                <option value="all">Média Histórica</option>
-                                <!-- <option value="current">Atual da Rede (CoinGecko)</option> -->
+                                <option value="" disabled selected data-i18n="upload.select_type">Selecione o tipo
+                                </option>
+                                <option value="last" selected data-i18n="upload.last_quote">Última Cotação</option>
+                                <option value="day" data-i18n="upload.day_avg">Média Últimas 24h</option>
+                                <option value="week" data-i18n="upload.week_avg">Média Última Semana</option>
+                                <option value="month" data-i18n="upload.month_avg">Média Último Mês</option>
+                                <option value="all" data-i18n="upload.historical_avg">Média Histórica</option>
                             </select>
                         </div>
-                    
+
                         <button class="btn btn-primary" onclick="carregarContrato()">
-                            <i class="fas fa-code"></i> Carregar ABI do Contrato
+                            <i class="fas fa-code"></i> <span data-i18n="upload.load_contract">Carregar ABI do
+                                Contrato</span>
                         </button>
                     </div>
                 </div>
@@ -668,12 +741,12 @@
                 <div class="card">
                     <div class="card-title">
                         <i class="fas fa-list"></i>
-                        <span>2. Contratos Disponíveis</span>
+                        <span data-i18n="contracts.title">2. Contratos Disponíveis</span>
                     </div>
                     <div class="contracts-list">
                         <div class="contract-select-wrapper">
                             <select class="contract-select" id="contratoSelect" onchange="selecionarContrato()">
-                                <option value="">Selecione um contrato...</option>
+                                <option value="" data-i18n="contracts.select">Selecione um contrato...</option>
                             </select>
                             <button class="btn btn-secondary btn-sm" onclick="atualizarContratos()">
                                 <i class="fas fa-sync-alt"></i>
@@ -682,15 +755,15 @@
 
                         <div id="contractInfo" class="contract-info" style="display: none;">
                             <div class="info-row">
-                                <span class="info-label">Status:</span>
+                                <span class="info-label" data-i18n="contracts.status">Status:</span>
                                 <span id="contractStatus" class="info-value"></span>
                             </div>
                             <div class="info-row">
-                                <span class="info-label">Endereço:</span>
+                                <span class="info-label" data-i18n="contracts.address">Endereço:</span>
                                 <span id="contractAddress" class="info-value address-value"></span>
                             </div>
                             <div class="info-row">
-                                <span class="info-label">Gas Deploy:</span>
+                                <span class="info-label" data-i18n="contracts.gas">Gas Deploy:</span>
                                 <span id="contractGas" class="info-value"></span>
                             </div>
                         </div>
@@ -701,13 +774,13 @@
                 <div class="card scrollable-card">
                     <div class="card-title">
                         <i class="fas fa-cogs"></i>
-                        <span>3. Funções do Contrato</span>
+                        <span data-i18n="functions.title">3. Funções do Contrato</span>
                         <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
-                            <span id="functionsCount" style="font-size: 12px; color: var(--text-light);">0
-                                funções</span>
+                            <span id="functionsCount" style="font-size: 12px; color: var(--text-light);"
+                                data-i18n="functions.count">0 funções</span>
                             <button class="btn btn-success btn-sm" onclick="preencherTodasFuncoes()"
                                 title="Pré-preencher todas as funções">
-                                <i class="fas fa-magic"></i> Pré-preencher
+                                <i class="fas fa-magic"></i> <span data-i18n="functions.prefill">Pré-preencher</span>
                             </button>
                         </div>
                     </div>
@@ -717,7 +790,8 @@
                             <div style="text-align: center; padding: 40px 20px; color: var(--text-light);">
                                 <i class="fas fa-code-branch"
                                     style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
-                                <p style="font-size: 14px;">Carregue um contrato para ver as funções disponíveis</p>
+                                <p style="font-size: 14px;" data-i18n="functions.waiting">Carregue um contrato para ver
+                                    as funções disponíveis</p>
                             </div>
                         </div>
                     </div>
@@ -730,7 +804,7 @@
                     <div class="log-header">
                         <div class="card-title">
                             <i class="fas fa-terminal"></i>
-                            <span>4. Logs de Execução</span>
+                            <span data-i18n="logs.title">4. Logs de Execução</span>
                         </div>
                         <div class="header-actions">
                             <button class="btn btn-secondary btn-sm" onclick="limparLogs()">
@@ -742,7 +816,7 @@
                         </div>
                     </div>
                     <div class="log-content" id="log">
-                        // Aguardando carregamento do contrato...
+                        // <span data-i18n="logs.waiting">Aguardando carregamento do contrato...</span>
                     </div>
                 </div>
             </div>
@@ -750,6 +824,408 @@
     </div>
 
     <script>
+        // ============================================
+        // SISTEMA DE TRADUÇÃO
+        // ============================================
+        const translations = {
+            'pt-BR': {
+                locale: 'pt-BR',
+                'header.title': 'Interface de Contratos Inteligentes',
+                'header.subtitle': 'Modo Iterativo - Controle manual das execuções',
+                'header.back': 'Voltar ao Início',
+                'header.clear_logs': 'Limpar Logs',
+                'upload.title': '1. Carregar Contrato',
+                'upload.select_file': 'Selecione arquivo .sol',
+                'upload.quote_type': 'Cotação das Redes',
+                'upload.select_type': 'Selecione o tipo',
+                'upload.last_quote': 'Última Cotação',
+                'upload.day_avg': 'Média Últimas 24h',
+                'upload.week_avg': 'Média Última Semana',
+                'upload.month_avg': 'Média Último Mês',
+                'upload.historical_avg': 'Média Histórica',
+                'upload.load_contract': 'Carregar ABI do Contrato',
+                'contracts.title': '2. Contratos Disponíveis',
+                'contracts.select': 'Selecione um contrato...',
+                'contracts.status': 'Status:',
+                'contracts.address': 'Endereço:',
+                'contracts.gas': 'Gas Deploy:',
+                'contracts.deployed': 'Deployado',
+                'contracts.undeployed': 'Não Deployado',
+                'contracts.no_contracts': 'Nenhum contrato encontrado',
+                'contracts.no_abi': 'ABI não disponível para este contrato',
+                'functions.title': '3. Funções do Contrato',
+                'functions.count': '0 funções',
+                'functions.prefill': 'Pré-preencher',
+                'functions.waiting': 'Carregue um contrato para ver as funções disponíveis',
+                'functions.no_functions': 'Nenhuma função mutável disponível.',
+                'functions.loading': 'Carregando funções...',
+                'functions.auto_fill': 'Auto-preenchimento',
+                'functions.execute': 'Executar Função',
+                'functions.exec_count': 'Nº de execuções',
+                'logs.title': '4. Logs de Execução',
+                'logs.waiting': 'Aguardando carregamento do contrato...',
+                'logs.cleared': '// Logs limpos em ',
+                'logs.copied': 'Logs copiados para a área de transferência!',
+                'logs.error_copy': 'Erro ao copiar logs: ',
+                'logs.loading': '📦 Iniciando carregamento do contrato...',
+                'logs.contract_loaded': 'contrato(s) carregado(s):',
+                'logs.contract': '📄 Contrato: ',
+                'logs.address': '🏠 Endereço: ',
+                'logs.gas_used': '⛽ Gas usado no deploy: ',
+                'logs.costs': '🌍 Custos por rede:',
+                'logs.deployed': '✅ Contrato(s) deployado(s) detectado(s).',
+                'logs.undeployed': '⚠️ Nenhum contrato com endereço detectado.',
+                'logs.error_load': '❌ Erro ao carregar contrato: ',
+                'logs.functions_loaded': '✅ Funções do contrato "',
+                'logs.functions_loaded_end': '" carregadas com sucesso.',
+                'logs.auto_prefilled': '⚡ Inputs da função ',
+                'logs.auto_prefilled_end': ' auto-preenchidos.',
+                'logs.all_prefilled': '✨ Todas as funções foram pré-preenchidas com valores de exemplo!',
+                'logs.executing': '⚙️ Executando ',
+                'logs.contract_selected': '📘 Contrato selecionado: ',
+                'logs.function_executed': '✅ Função executada: ',
+                'logs.gas_estimated': '⛽ Gas estimado: ',
+                'logs.gas_real': '🔥 Gas real usado: ',
+                'logs.cost_by_network': '🌍 Custos por rede:',
+                'logs.error_unexpected': '❌ Erro inesperado: ',
+                'logs.not_deployed': 'O contrato precisa ser deployado antes de executar funções.',
+                'logs.initialized': 'Interface de Contratos Inteligentes inicializada.',
+                'logs.mode': 'Modo: Iterativo (controle manual das execuções)',
+                'functions.count_suffix': 'função(ões) disponível(is)',
+                'contracts.updated': '✅ Lista de contratos atualizada ({count} encontrados)',
+                'functions.enter_value': 'Digite o valor para'
+            },
+            'en': {
+                locale: 'en-US',
+                'header.title': 'Smart Contract Interface',
+                'header.subtitle': 'Iterative Mode - Manual execution control',
+                'header.back': 'Back to Home',
+                'header.clear_logs': 'Clear Logs',
+                'upload.title': '1. Load Contract',
+                'upload.select_file': 'Select .sol file',
+                'upload.quote_type': 'Network Quote',
+                'upload.select_type': 'Select type',
+                'upload.last_quote': 'Last Quote',
+                'upload.day_avg': 'Average Last 24h',
+                'upload.week_avg': 'Average Last Week',
+                'upload.month_avg': 'Average Last Month',
+                'upload.historical_avg': 'Historical Average',
+                'upload.load_contract': 'Load Contract ABI',
+                'contracts.title': '2. Available Contracts',
+                'contracts.select': 'Select a contract...',
+                'contracts.status': 'Status:',
+                'contracts.address': 'Address:',
+                'contracts.gas': 'Deploy Gas:',
+                'contracts.deployed': 'Deployed',
+                'contracts.undeployed': 'Not Deployed',
+                'contracts.no_contracts': 'No contracts found',
+                'contracts.no_abi': 'ABI not available for this contract',
+                'functions.title': '3. Contract Functions',
+                'functions.count': '0 functions',
+                'functions.prefill': 'Pre-fill',
+                'functions.waiting': 'Load a contract to see available functions',
+                'functions.no_functions': 'No mutable functions available.',
+                'functions.loading': 'Loading functions...',
+                'functions.auto_fill': 'Auto-fill',
+                'functions.execute': 'Execute Function',
+                'functions.exec_count': 'Executions #',
+                'logs.title': '4. Execution Logs',
+                'logs.waiting': 'Waiting for contract loading...',
+                'logs.cleared': '// Logs cleared at ',
+                'logs.copied': 'Logs copied to clipboard!',
+                'logs.error_copy': 'Error copying logs: ',
+                'logs.loading': '📦 Starting contract loading...',
+                'logs.contract_loaded': 'contract(s) loaded:',
+                'logs.contract': '📄 Contract: ',
+                'logs.address': '🏠 Address: ',
+                'logs.gas_used': '⛽ Gas used in deploy: ',
+                'logs.costs': '🌍 Costs by network:',
+                'logs.deployed': '✅ Deployed contract(s) detected.',
+                'logs.undeployed': '⚠️ No contract with address detected.',
+                'logs.error_load': '❌ Error loading contract: ',
+                'logs.functions_loaded': '✅ Contract "',
+                'logs.functions_loaded_end': '" functions loaded successfully.',
+                'logs.auto_prefilled': '⚡ Inputs of function ',
+                'logs.auto_prefilled_end': ' auto-filled.',
+                'logs.all_prefilled': '✨ All functions pre-filled with example values!',
+                'logs.executing': '⚙️ Executing ',
+                'logs.contract_selected': '📘 Selected contract: ',
+                'logs.function_executed': '✅ Function executed: ',
+                'logs.gas_estimated': '⛽ Estimated gas: ',
+                'logs.gas_real': '🔥 Real gas used: ',
+                'logs.cost_by_network': '🌍 Costs by network:',
+                'logs.error_unexpected': '❌ Unexpected error: ',
+                'logs.not_deployed': 'Contract needs to be deployed before executing functions.',
+                'logs.initialized': 'Smart Contract Interface initialized.',
+                'logs.mode': 'Mode: Iterative (manual execution control)',
+                'functions.count_suffix': 'function(s) available',
+                'contracts.updated': '✅ Contract list updated ({count} found)',
+                'functions.enter_value': 'Enter value for'
+            },
+            'es': {
+                locale: 'es-ES',
+                'header.title': 'Interfaz de Contratos Inteligentes',
+                'header.subtitle': 'Modo Iterativo - Control manual de ejecuciones',
+                'header.back': 'Volver al Inicio',
+                'header.clear_logs': 'Limpiar Logs',
+                'upload.title': '1. Cargar Contrato',
+                'upload.select_file': 'Seleccione archivo .sol',
+                'upload.quote_type': 'Cotización de Redes',
+                'upload.select_type': 'Seleccione el tipo',
+                'upload.last_quote': 'Última Cotización',
+                'upload.day_avg': 'Promedio Últimas 24h',
+                'upload.week_avg': 'Promedio Última Semana',
+                'upload.month_avg': 'Promedio Último Mes',
+                'upload.historical_avg': 'Promedio Histórico',
+                'upload.load_contract': 'Cargar ABI del Contrato',
+                'contracts.title': '2. Contratos Disponibles',
+                'contracts.select': 'Seleccione un contrato...',
+                'contracts.status': 'Estado:',
+                'contracts.address': 'Dirección:',
+                'contracts.gas': 'Gas Deploy:',
+                'contracts.deployed': 'Desplegado',
+                'contracts.undeployed': 'No Desplegado',
+                'contracts.no_contracts': 'No se encontraron contratos',
+                'contracts.no_abi': 'ABI no disponible para este contrato',
+                'functions.title': '3. Funciones del Contrato',
+                'functions.count': '0 funciones',
+                'functions.prefill': 'Pre-rellenar',
+                'functions.waiting': 'Cargue un contrato para ver las funciones disponibles',
+                'functions.no_functions': 'No hay funciones mutables disponibles.',
+                'functions.loading': 'Cargando funciones...',
+                'functions.auto_fill': 'Auto-rellenar',
+                'functions.execute': 'Ejecutar Función',
+                'functions.exec_count': 'Nº de ejecuciones',
+                'logs.title': '4. Logs de Ejecución',
+                'logs.waiting': 'Esperando carga del contrato...',
+                'logs.cleared': '// Logs limpiados en ',
+                'logs.copied': '¡Logs copiados al portapapeles!',
+                'logs.error_copy': 'Error al copiar logs: ',
+                'logs.loading': '📦 Iniciando carga del contrato...',
+                'logs.contract_loaded': 'contrato(s) cargado(s):',
+                'logs.contract': '📄 Contrato: ',
+                'logs.address': '🏠 Dirección: ',
+                'logs.gas_used': '⛽ Gas usado en deploy: ',
+                'logs.costs': '🌍 Costos por red:',
+                'logs.deployed': '✅ Contrato(s) desplegado(s) detectado(s).',
+                'logs.undeployed': '⚠️ Ningún contrato con dirección detectada.',
+                'logs.error_load': '❌ Error al cargar contrato: ',
+                'logs.functions_loaded': '✅ Funciones del contrato "',
+                'logs.functions_loaded_end': '" cargadas correctamente.',
+                'logs.auto_prefilled': '⚡ Inputs de la función ',
+                'logs.auto_prefilled_end': ' auto-rellenados.',
+                'logs.all_prefilled': '✨ ¡Todas las funciones han sido pre-rellenadas con valores de ejemplo!',
+                'logs.executing': '⚙️ Ejecutando ',
+                'logs.contract_selected': '📘 Contrato seleccionado: ',
+                'logs.function_executed': '✅ Función ejecutada: ',
+                'logs.gas_estimated': '⛽ Gas estimado: ',
+                'logs.gas_real': '🔥 Gas real usado: ',
+                'logs.cost_by_network': '🌍 Costos por red:',
+                'logs.error_unexpected': '❌ Error inesperado: ',
+                'logs.not_deployed': 'El contrato debe estar desplegado antes de ejecutar funciones.',
+                'logs.initialized': 'Interfaz de Contratos Inteligentes inicializada.',
+                'logs.mode': 'Modo: Iterativo (control manual de ejecuciones)',
+                'functions.count_suffix': 'función(es) disponible(s)',
+                'contracts.updated': '✅ Lista de contratos actualizada ({count} encontrados)',
+                'functions.enter_value': 'Ingrese el valor para'
+            }
+        };
+
+        let currentLang = 'pt-BR';
+
+    // ============================================
+    // FUNÇÃO DE MUDANÇA DE IDIOMA - VERSÃO CORRIGIDA
+    // ============================================
+    function changeLanguage(lang) {
+        currentLang = lang;
+
+        // Atualizar botões ativos
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.lang === lang) {
+                btn.classList.add('active');
+            }
+        });
+
+        // Atualizar elementos com data-i18n
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+                el.textContent = translations[lang][key];
+            }
+        });
+
+        // Atualizar placeholders
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (translations[lang] && translations[lang][key]) {
+                el.placeholder = translations[lang][key];
+            }
+        });
+
+        // 🔥 ATUALIZAR ELEMENTOS DINÂMICOS
+        updateDynamicElements();
+
+        // SALVAR IDIOMA
+        localStorage.setItem('language', lang);
+
+        console.log('🌐 Idioma alterado para:', lang);
+    }
+
+        // ============================================
+        // FUNÇÃO PARA CARREGAR IDIOMA SALVO
+        // ============================================
+        function loadSavedLanguage() {
+            const savedLang = localStorage.getItem('language');
+            if (savedLang && translations[savedLang]) {
+                changeLanguage(savedLang);
+                return savedLang;
+            } else {
+                changeLanguage('pt-BR');
+                return 'pt-BR';
+            }
+        }
+
+        // ============================================
+        // FUNÇÃO DE FORMATAÇÃO (com suporte a locale)
+        // ============================================
+        function formatNumber(value) {
+            if (isNaN(value) || !isFinite(value)) return '0';
+            const locale = translations[currentLang].locale || 'pt-BR';
+            return new Intl.NumberFormat(locale).format(value);
+        }
+
+        function formatCurrency(value) {
+            if (isNaN(value) || !isFinite(value)) {
+                const fallback = currentLang === 'pt-BR' ? 'R$ 0' : currentLang === 'en' ? 'BRL 0' : 'BRL 0';
+                return fallback;
+            }
+            const locale = translations[currentLang].locale || 'pt-BR';
+            return new Intl.NumberFormat(locale, {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 6
+            }).format(value);
+        }
+
+
+        // ============================================
+            // ATUALIZAR ELEMENTOS DINÂMICOS
+            // ============================================
+
+            // Atualizar o texto do select de contratos
+            function updateContractSelectLanguage() {
+                const select = document.getElementById("contratoSelect");
+                const t = translations[currentLang];
+
+                // Se o select tiver apenas a opção padrão, atualiza ela
+                if (select.options.length === 1 && select.options[0].value === "") {
+                    select.options[0].textContent = t['contracts.select'] || 'Selecione um contrato...';
+                } else {
+                    // Se tiver outras opções, verifica se a primeira é a padrão
+                    if (select.options[0] && select.options[0].value === "") {
+                        select.options[0].textContent = t['contracts.select'] || 'Selecione um contrato...';
+                    }
+                }
+            }
+
+            // Atualizar placeholders dos inputs das funções
+            function updateFunctionPlaceholders() {
+                const inputs = document.querySelectorAll('.input-field');
+                const t = translations[currentLang];
+                const placeholderText = t['functions.enter_value'] || 'Digite o valor para';
+
+                inputs.forEach(input => {
+                    const type = input.getAttribute('data-type');
+                    if (type && !input.value) { // Só atualiza se estiver vazio
+                        input.placeholder = `${placeholderText} ${type}...`;
+                    }
+                });
+            }
+
+            // Atualizar o contador de funções
+            function updateFunctionsCount() {
+                const functionsCount = document.getElementById("functionsCount");
+                const funcoesDiv = document.getElementById("funcoes");
+                const functionCards = funcoesDiv.querySelectorAll('.function-card');
+                const t = translations[currentLang];
+
+                if (functionCards.length > 0) {
+                    const count = functionCards.length;
+                    const suffix = t['functions.count_suffix'] || 'função(ões) disponível(is)';
+                    functionsCount.textContent = `${count} ${suffix}`;
+                }
+            }
+
+            // Atualizar textos dos botões das funções
+            function updateFunctionButtons() {
+                const t = translations[currentLang];
+
+                // Atualizar botões "Executar Função"
+                document.querySelectorAll('.btn-execute').forEach(btn => {
+                    const icon = btn.querySelector('i');
+                    if (icon) {
+                        btn.innerHTML = `<i class="fas fa-play"></i> ${t['functions.execute'] || 'Executar Função'}`;
+                    }
+                });
+
+                // Atualizar botões "Auto-preenchimento"
+                document.querySelectorAll('.btn-auto').forEach(btn => {
+                    const icon = btn.querySelector('i');
+                    if (icon) {
+                        btn.innerHTML = `<i class="fas fa-bolt"></i> ${t['functions.auto_fill'] || 'Auto-preenchimento'}`;
+                    }
+                });
+            }
+
+            // Atualizar status do contrato
+            function updateContractStatus() {
+                const t = translations[currentLang];
+                const statusElement = document.getElementById("contractStatus");
+
+                if (statusElement) {
+                    const isDeployed = statusElement.innerHTML.includes('Deployado') ||
+                        statusElement.innerHTML.includes('Deployed') ||
+                        statusElement.innerHTML.includes('Desplegado');
+
+                    if (contratoDeployado) {
+                        statusElement.innerHTML = `<span class="status-badge status-deployed"><i class="fas fa-check-circle"></i> ${t['contracts.deployed'] || 'Deployado'}</span>`;
+                    } else {
+                        statusElement.innerHTML = `<span class="status-badge status-undeployed"><i class="fas fa-clock"></i> ${t['contracts.undeployed'] || 'Não Deployado'}</span>`;
+                    }
+                }
+            }
+
+
+
+    // Atualizar mensagens iniciais do log
+    function updateLogInitialMessages() {
+        const logArea = document.getElementById('log');
+        const currentLog = logArea.innerHTML;
+        const t = translations[currentLang];
+
+        // Verifica se o log contém as mensagens iniciais
+        if (currentLog.includes('✅ Interface de Contratos Inteligentes inicializada.')) {
+            const data = new Date().toLocaleString(t.locale || 'pt-BR');
+            logArea.innerHTML = currentLog
+                .replace(/✅ Interface de Contratos Inteligentes inicializada\./g, `✅ ${t['logs.initialized'] || 'Interface de Contratos Inteligentes inicializada.'}`)
+                .replace(/⚙️ Modo: Iterativo \(controle manual das execuções\)/g, `⚙️ ${t['logs.mode'] || 'Modo: Iterativo (controle manual das execuções)'}`)
+                .replace(/🕒 .*\n/g, `🕒 ${data}\n`);
+        }
+    }
+
+            // Função principal para atualizar todos os elementos dinâmicos
+            function updateDynamicElements() {
+                updateContractSelectLanguage();
+                updateFunctionPlaceholders();
+                updateFunctionsCount();
+                updateFunctionButtons();
+                updateContractStatus();
+                updateLogInitialMessages();
+            }
+
+
         // ============================================
         // FUNCIONALIDADE DE TEMA CLARO/ESCURO
         // ============================================
@@ -798,7 +1274,7 @@
         }
 
         // ============================================
-        // FUNCIONALIDADE EXISTENTE (NÃO MODIFICADA)
+        // FUNCIONALIDADE EXISTENTE (MODIFICADA)
         // ============================================
 
         let contratoDeployado = false;
@@ -817,13 +1293,31 @@
                 fileLabel.textContent = nome.length > 30 ? nome.substring(0, 30) + '...' : nome;
             } else {
                 fileName.textContent = '';
-                fileLabel.textContent = 'Selecione arquivo .sol';
+                fileLabel.textContent = translations[currentLang]['upload.select_file'] || 'Selecione arquivo .sol';
             }
+        }
+
+        // Função de log única (com suporte a tradução)
+        function log(mensagem) {
+            const logArea = document.getElementById('log');
+            logArea.innerHTML += `\n${mensagem}`;
+            logArea.scrollTop = logArea.scrollHeight;
+        }
+
+        function logTraduzido(key, ...args) {
+            const t = translations[currentLang];
+            let msg = t[key] || key;
+            args.forEach((arg, i) => {
+                msg = msg.replace(`{${i}}`, arg);
+            });
+            log(msg);
         }
 
         // Limpar logs
         function limparLogs() {
-            document.getElementById('log').innerHTML = '// Logs limpos em ' + new Date().toLocaleTimeString('pt-BR');
+            const t = translations[currentLang];
+            const data = new Date().toLocaleString(t.locale || 'pt-BR');
+            document.getElementById('log').innerHTML = `${t['logs.cleared'] || '// Logs limpos em '}${data}`;
         }
 
         // Copiar logs
@@ -831,60 +1325,57 @@
             try {
                 const logContent = document.getElementById('log').innerText;
                 await navigator.clipboard.writeText(logContent);
-                alert('Logs copiados para a área de transferência!');
+                alert(translations[currentLang]['logs.copied'] || 'Logs copiados para a área de transferência!');
             } catch (err) {
-                alert('Erro ao copiar logs: ' + err.message);
+                alert((translations[currentLang]['logs.error_copy'] || 'Erro ao copiar logs: ') + err.message);
             }
         }
 
         // Atualizar lista de contratos do servidor
-        async function atualizarContratos() {
-            const select = document.getElementById("contratoSelect");
-            select.innerHTML = "<option>Carregando...</option>";
+            async function atualizarContratos() {
+                const select = document.getElementById("contratoSelect");
+                const t = translations[currentLang];
+                select.innerHTML = `<option>${t['contracts.loading'] || 'Carregando...'}</option>`;
 
-            try {
-                const res = await fetch("/api/deployed-contracts");
-                if (!res.ok) throw new Error("Erro ao buscar contratos.");
+                try {
+                    const res = await fetch("/api/deployed-contracts");
+                    if (!res.ok) throw new Error("Erro ao buscar contratos.");
 
-                const contratos = await res.json();
-                select.innerHTML = '<option value="">Selecione um contrato...</option>';
+                    const contratos = await res.json();
+                    select.innerHTML = `<option value="">${t['contracts.select'] || 'Selecione um contrato...'}</option>`;
 
-                if (!contratos.length) {
-                    select.innerHTML += '<option>Nenhum contrato encontrado</option>';
-                    return;
+                    if (!contratos.length) {
+                        select.innerHTML += `<option>${t['contracts.no_contracts'] || 'Nenhum contrato encontrado'}</option>`;
+                        return;
+                    }
+
+                    contratos.forEach(c => {
+                        const opt = document.createElement("option");
+                        opt.value = c.name || c.address;
+                        opt.textContent = `${c.name || "Sem nome"} ${c.address ? `(${t['contracts.deployed'] || 'Deployado'})` : ''}`;
+                        select.appendChild(opt);
+                    });
+
+                    // 🔥 CORRIGIDO: Usar tradução com contador
+                    const msg = t['contracts.updated'] || '✅ Lista de contratos atualizada ({count} encontrados)';
+                    log(msg.replace('{count}', contratos.length));
+
+                } catch (err) {
+                    log(`❌ Erro ao atualizar contratos: ${err.message}`);
+                    select.innerHTML = `<option value="">${t['contracts.error'] || 'Erro ao carregar'}</option>`;
                 }
-
-                contratos.forEach(c => {
-                    const opt = document.createElement("option");
-                    opt.value = c.name || c.address;
-                    opt.textContent = `${c.name || "Sem nome"} ${c.address ? `(Deployado)` : ''}`;
-                    select.appendChild(opt);
-                });
-
-                log(`✅ Lista de contratos atualizada (${contratos.length} encontrados)`);
-
-            } catch (err) {
-                log(`❌ Erro ao atualizar contratos: ${err.message}`);
-                select.innerHTML = '<option value="">Erro ao carregar</option>';
             }
-        }
-
-        // Função de log única
-        function log(mensagem) {
-            const logArea = document.getElementById('log');
-            logArea.innerHTML += `\n${mensagem}`;
-            logArea.scrollTop = logArea.scrollHeight;
-        }
 
         // Carregar contrato e ABI
         async function carregarContrato() {
             const fileInput = document.getElementById("contrato");
             if (!fileInput.files.length) {
-                alert("Selecione um arquivo Solidity.");
+                alert(translations[currentLang]['upload.select_file'] || "Selecione um arquivo Solidity.");
                 return;
             }
 
-            log('\n📦 Iniciando carregamento do contrato...');
+            const t = translations[currentLang];
+            log(`\n${t['logs.loading'] || '📦 Iniciando carregamento do contrato...'}`);
             const periodo = document.getElementById("filtroTipoCalculo").value;
 
             const formData = new FormData();
@@ -892,9 +1383,7 @@
                 formData.append("contratos", file);
             }
 
-
-            // 🔥 NOVO
-            formData.append("tipo_calculo", periodo);     // ou 7d, 30d etc
+            formData.append("tipo_calculo", periodo);
 
             try {
                 const res = await fetch("/api/load-abi", { method: "POST", body: formData });
@@ -911,34 +1400,38 @@
                 }
 
                 const select = document.getElementById("contratoSelect");
-                select.innerHTML = '<option value="">Selecione um contrato...</option>';
+                select.innerHTML = `<option value="">${t['contracts.select'] || 'Selecione um contrato...'}</option>`;
 
                 contratosCarregados.forEach(c => {
                     const opt = document.createElement("option");
                     opt.value = c.nome;
-                    opt.textContent = `${c.nome} ${c.endereco ? '(Deployado)' : '(Não deployado)'}`;
+                    opt.textContent = `${c.nome} ${c.endereco ? `(${t['contracts.deployed'] || 'Deployado'})` : `(${t['contracts.undeployed'] || 'Não deployado'})`}`;
                     select.appendChild(opt);
                 });
 
-                log(`\n✅ ${data.contratos.length} contrato(s) carregado(s):`);
+                log(`\n✅ ${data.contratos.length} ${t['logs.contract_loaded'] || 'contrato(s) carregado(s):'}`);
 
                 for (const contrato of data.contratos) {
                     const { nome, endereco, gas, custosPorRede } = contrato;
 
                     log(
-                        `\n📄 Contrato: ${nome}\n` +
-                        `🏠 Endereço: ${endereco || "Não disponível"}\n` +
-                        `⛽ Gas usado no deploy: ${gas || "N/A"}\n`
+                        `\n${t['logs.contract'] || '📄 Contrato: '}${nome}\n` +
+                        `${t['logs.address'] || '🏠 Endereço: '}${endereco || "Não disponível"}\n` +
+                        `${t['logs.gas_used'] || '⛽ Gas usado no deploy: '}${gas || "N/A"}\n`
                     );
 
                     if (custosPorRede && Object.keys(custosPorRede).length > 0) {
-                        log(`🌍 Custos por rede:\n`);
+                        log(`${t['logs.costs'] || '🌍 Custos por rede:'}\n`);
                         for (const [token, info] of Object.entries(custosPorRede)) {
+                            const custoTotalFormatado = typeof info.custoTotalToken === 'number' ?
+                                info.custoTotalToken.toFixed(4) : info.custoTotalToken;
+                            const cotacaoUSD = info.cotacao?.usd || 'N/A';
+                            const cotacaoBRL = info.cotacao?.brl || 'N/A';
                             log(
-                                `  • ${info.name}: ${info.custoTotalToken} ${info.token}` +
-                                ` ≈ ${info.custoUSD} / ${info.custoBRL}` +
+                                `  • ${info.name}: ${custoTotalFormatado} ${info.token}` +
+                                ` ≈ ${info.custoUSD || 'N/A'} / ${info.custoBRL || 'N/A'}` +
                                 ` (gasPrice: ${info.gasPrice})` +
-                                ` | Cotação: U$${info.cotacao?.usd ?? "N/A"} / R$${info.cotacao?.brl ?? "N/A"}`
+                                ` | Cotação: U$${cotacaoUSD} / R$${cotacaoBRL}`
                             );
                         }
                     }
@@ -946,10 +1439,10 @@
 
                 if (data.contratos.some(c => c.endereco)) {
                     contratoDeployado = true;
-                    log(`\n✅ Contrato(s) deployado(s) detectado(s).`);
+                    log(`\n${t['logs.deployed'] || '✅ Contrato(s) deployado(s) detectado(s).'}`);
                 } else {
                     contratoDeployado = false;
-                    log(`\n⚠️ Nenhum contrato com endereço detectado.`);
+                    log(`\n${t['logs.undeployed'] || '⚠️ Nenhum contrato com endereço detectado.'}`);
                 }
 
                 if (contratosCarregados.length > 0) {
@@ -957,7 +1450,7 @@
                 }
 
             } catch (err) {
-                log(`\n❌ Erro ao carregar contrato: ${err.message}`);
+                log(`\n${t['logs.error_load'] || '❌ Erro ao carregar contrato: '}${err.message}`);
             }
         }
 
@@ -967,13 +1460,14 @@
             const nomeContrato = select.value;
             const funcoesDiv = document.getElementById("funcoes");
             const contractInfo = document.getElementById("contractInfo");
+            const t = translations[currentLang];
 
             if (!nomeContrato) {
                 contractInfo.style.display = 'none';
                 funcoesDiv.innerHTML = `
                     <div style="text-align: center; padding: 40px 20px; color: var(--text-light);">
                         <i class="fas fa-code-branch" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
-                        <p style="font-size: 14px;">Selecione um contrato para ver as funções</p>
+                        <p style="font-size: 14px;">${t['functions.waiting'] || 'Carregue um contrato para ver as funções disponíveis'}</p>
                     </div>
                 `;
                 return;
@@ -989,119 +1483,139 @@
             contratoDeployado = !!contrato.endereco;
 
             document.getElementById("contractStatus").innerHTML = contratoDeployado
-                ? '<span class="status-badge status-deployed"><i class="fas fa-check-circle"></i> Deployado</span>'
-                : '<span class="status-badge status-undeployed"><i class="fas fa-clock"></i> Não Deployado</span>';
+                ? `<span class="status-badge status-deployed"><i class="fas fa-check-circle"></i> ${t['contracts.deployed'] || 'Deployado'}</span>`
+                : `<span class="status-badge status-undeployed"><i class="fas fa-clock"></i> ${t['contracts.undeployed'] || 'Não Deployado'}</span>`;
 
             document.getElementById("contractAddress").textContent = contrato.endereco ?
                 `${contrato.endereco.substring(0, 10)}...${contrato.endereco.substring(38)}` : "N/A";
-            document.getElementById("contractGas").textContent = contrato.gas ? contrato.gas.toLocaleString() : "N/A";
+            document.getElementById("contractGas").textContent = contrato.gas ? formatNumber(contrato.gas) : "N/A";
             contractInfo.style.display = 'block';
 
             await carregarFuncoesContrato(contrato);
         }
 
         // Carregar funções do contrato
-        async function carregarFuncoesContrato(contrato) {
-            const funcoesDiv = document.getElementById("funcoes");
-            const functionsCount = document.getElementById("functionsCount");
+    async function carregarFuncoesContrato(contrato) {
+        const funcoesDiv = document.getElementById("funcoes");
+        const functionsCount = document.getElementById("functionsCount");
+        const t = translations[currentLang];
 
-            funcoesDiv.innerHTML = "<div style='text-align: center; padding: 30px;'><i class='fas fa-spinner fa-spin'></i> Carregando funções...</div>";
+        funcoesDiv.innerHTML = `<div style='text-align: center; padding: 30px;'><i class='fas fa-spinner fa-spin'></i> ${t['functions.loading'] || 'Carregando funções...'}</div>`;
 
-            const abi = contrato.abi;
-            if (!abi || !Array.isArray(abi)) {
-                funcoesDiv.innerHTML = "<div style='color: var(--error); text-align: center; padding: 30px;'>ABI não disponível para este contrato.</div>";
-                functionsCount.textContent = "ABI não disponível";
-                return;
-            }
+        const abi = contrato.abi;
+        if (!abi || !Array.isArray(abi)) {
+            funcoesDiv.innerHTML = `<div style='color: var(--error); text-align: center; padding: 30px;'>${t['contracts.no_abi'] || 'ABI não disponível para este contrato.'}</div>`;
+            functionsCount.textContent = t['contracts.no_abi'] || 'ABI não disponível';
+            return;
+        }
 
-            const functions = abi.filter(f => f.type === "function" && !["view", "pure"].includes(f.stateMutability));
+        const functions = abi.filter(f => f.type === "function" && !["view", "pure"].includes(f.stateMutability));
 
-            functionsCount.textContent = `${functions.length} função(s) disponível(is)`;
+        // 🔥 USAR A TRADUÇÃO CORRETA
+        const countSuffix = t['functions.count_suffix'] || 'função(ões) disponível(is)';
+        functionsCount.textContent = `${functions.length} ${countSuffix}`;
 
-            if (!functions.length) {
-                funcoesDiv.innerHTML = "<div style='color: var(--warning); text-align: center; padding: 30px;'>Nenhuma função mutável disponível.</div>";
-                return;
-            }
+        if (!functions.length) {
+            funcoesDiv.innerHTML = `<div style='color: var(--warning); text-align: center; padding: 30px;'>${t['functions.no_functions'] || 'Nenhuma função mutável disponível.'}</div>`;
+            return;
+        }
 
-            funcoesDiv.innerHTML = '';
+        funcoesDiv.innerHTML = '';
 
-            functions.forEach((f, index) => {
-                const functionCard = document.createElement('div');
-                functionCard.className = 'function-card';
-                functionCard.id = `func-${contrato.nome}-${f.name}`;
+        const placeholderText = t['functions.enter_value'] || 'Digite o valor para';
+        const executeText = t['functions.execute'] || 'Executar Função';
+        const autoFillText = t['functions.auto_fill'] || 'Auto-preenchimento';
+        const execCountText = t['functions.exec_count'] || 'Nº de execuções';
 
-                const titleDiv = document.createElement('div');
-                titleDiv.className = 'function-title';
-                titleDiv.innerHTML = `
-                    <i class="fas fa-cube"></i>
-                    <span class="function-name">${f.name}</span>
-                    <span style="font-size: 12px; color: var(--text-light);">(${f.inputs.map(i => i.type).join(', ')})</span>
-                `;
+        functions.forEach((f, index) => {
+            const functionCard = document.createElement('div');
+            functionCard.className = 'function-card';
+            functionCard.id = `func-${contrato.nome}-${f.name}`;
 
-                const inputsDiv = document.createElement('div');
-                inputsDiv.className = 'function-inputs';
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'function-title';
+            titleDiv.innerHTML = `
+            <i class="fas fa-cube"></i>
+            <span class="function-name">${f.name}</span>
+            <span style="font-size: 12px; color: var(--text-light);">(${f.inputs.map(i => i.type).join(', ')})</span>
+        `;
 
-                f.inputs.forEach((input, idx) => {
-                    const inputGroup = document.createElement('div');
-                    inputGroup.className = 'input-group';
+            const inputsDiv = document.createElement('div');
+            inputsDiv.className = 'function-inputs';
 
-                    inputGroup.innerHTML = `
-                        <div class="input-label">
-                            ${input.name || `arg${idx}`}
-                            <span class="input-type">${input.type}</span>
-                        </div>
-                        <input type="text" 
-                               class="input-field" 
-                               id="${contrato.nome}_${f.name}_arg${idx}"
-                               placeholder="Digite o valor para ${input.type}..."
-                               data-type="${input.type}"
-                               data-name="${input.name || `arg${idx}`}">
-                    `;
+            f.inputs.forEach((input, idx) => {
+                const inputGroup = document.createElement('div');
+                inputGroup.className = 'input-group';
 
-                    inputsDiv.appendChild(inputGroup);
-                });
+                inputGroup.innerHTML = `
+                <div class="input-label">
+                    ${input.name || `arg${idx}`}
+                    <span class="input-type">${input.type}</span>
+                </div>
+                <input type="text" 
+                       class="input-field" 
+                       id="${contrato.nome}_${f.name}_arg${idx}"
+                       placeholder="${placeholderText} ${input.type}..."
+                       data-type="${input.type}"
+                       data-name="${input.name || `arg${idx}`}">
+            `;
 
-                const actionsDiv = document.createElement('div');
-                actionsDiv.className = 'function-actions';
-
-                const execCountInput = document.createElement('input');
-                execCountInput.type = 'number';
-                execCountInput.min = '1';
-                execCountInput.value = '1';
-                execCountInput.className = 'input-field';
-                execCountInput.style.width = '80px';
-                execCountInput.title = 'Número de execuções';
-                execCountInput.id = `${contrato.nome}_${f.name}_execCount`;
-
-                const autoFillBtn = document.createElement('button');
-                autoFillBtn.className = 'btn btn-auto btn-sm';
-                autoFillBtn.innerHTML = '<i class="fas fa-bolt"></i> Auto-preenchimento';
-                autoFillBtn.title = "Preencher automaticamente";
-                autoFillBtn.onclick = () => autoPreencherInputs(contrato.nome, f.name, f.inputs);
-
-                const executeBtn = document.createElement('button');
-                executeBtn.className = 'btn btn-execute btn-sm';
-                executeBtn.innerHTML = '<i class="fas fa-play"></i> Executar Função';
-                executeBtn.disabled = !contratoDeployado;
-                executeBtn.title = contratoDeployado ? "Executar função" : "Contrato não deployado";
-                executeBtn.onclick = () => {
-                    const execCount = document.getElementById(`${contrato.nome}_${f.name}_execCount`).value;
-                    executarFuncao(contrato.nome, f.name, f.inputs.length, execCount);
-                };
-
-                actionsDiv.appendChild(execCountInput);
-                actionsDiv.appendChild(autoFillBtn);
-                actionsDiv.appendChild(executeBtn);
-
-                functionCard.appendChild(titleDiv);
-                functionCard.appendChild(inputsDiv);
-                functionCard.appendChild(actionsDiv);
-
-                funcoesDiv.appendChild(functionCard);
+                inputsDiv.appendChild(inputGroup);
             });
 
-            log(`✅ Funções do contrato "${contrato.nome}" carregadas com sucesso.`);
-        }
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'function-actions';
+
+            const execCountInput = document.createElement('input');
+            execCountInput.type = 'number';
+            execCountInput.min = '1';
+            execCountInput.value = '1';
+            execCountInput.className = 'input-field';
+            execCountInput.style.width = '80px';
+            execCountInput.title = execCountText;
+            execCountInput.id = `${contrato.nome}_${f.name}_execCount`;
+
+            const autoFillBtn = document.createElement('button');
+            autoFillBtn.className = 'btn btn-auto btn-sm';
+            autoFillBtn.innerHTML = `<i class="fas fa-bolt"></i> ${autoFillText}`;
+            autoFillBtn.title = t['functions.auto_fill_tooltip'] || "Preencher automaticamente";
+            autoFillBtn.onclick = () => autoPreencherInputs(contrato.nome, f.name, f.inputs);
+
+            const executeBtn = document.createElement('button');
+            executeBtn.className = 'btn btn-execute btn-sm';
+            executeBtn.innerHTML = `<i class="fas fa-play"></i> ${executeText}`;
+            executeBtn.disabled = !contratoDeployado;
+            executeBtn.title = contratoDeployado ? (t['functions.execute_tooltip'] || "Executar função") : (t['logs.not_deployed'] || "Contrato não deployado");
+            executeBtn.onclick = () => {
+                const execCount = document.getElementById(`${contrato.nome}_${f.name}_execCount`).value;
+                executarFuncao(contrato.nome, f.name, f.inputs.length, execCount);
+            };
+
+            const countLabel = document.createElement('span');
+            countLabel.className = 'input-label';
+            countLabel.textContent = execCountText;
+            countLabel.style.marginRight = '5px';
+
+            const countWrapper = document.createElement('div');
+            countWrapper.style.display = 'flex';
+            countWrapper.style.alignItems = 'center';
+            countWrapper.style.gap = '5px';
+            countWrapper.appendChild(countLabel);
+            countWrapper.appendChild(execCountInput);
+
+            actionsDiv.appendChild(countWrapper);
+            actionsDiv.appendChild(autoFillBtn);
+            actionsDiv.appendChild(executeBtn);
+
+            functionCard.appendChild(titleDiv);
+            functionCard.appendChild(inputsDiv);
+            functionCard.appendChild(actionsDiv);
+
+            funcoesDiv.appendChild(functionCard);
+        });
+
+        log(`${t['logs.functions_loaded'] || '✅ Funções do contrato "'}${contrato.nome}${t['logs.functions_loaded_end'] || '" carregadas com sucesso.'}`);
+    }
 
         // Auto-preenchimento de inputs
         async function autoPreencherInputs(contratoNome, funcaoNome, inputs) {
@@ -1122,13 +1636,13 @@
                 }
             });
 
-            log(`⚡ Inputs da função ${funcaoNome} auto-preenchidos.`);
+            log(`${translations[currentLang]['logs.auto_prefilled'] || '⚡ Inputs da função '}${funcaoNome}${translations[currentLang]['logs.auto_prefilled_end'] || ' auto-preenchidos.'}`);
         }
 
         // Pré-preencher todas as funções
         async function preencherTodasFuncoes() {
             if (!contratoDeployado) {
-                alert("Contrato ainda não deployado.");
+                alert(translations[currentLang]['logs.not_deployed'] || "O contrato precisa ser deployado antes de executar funções.");
                 return;
             }
 
@@ -1154,13 +1668,15 @@
                 argIndex++;
             });
 
-            log(`✨ Todas as funções foram pré-preenchidas com valores de exemplo!`);
+            log(translations[currentLang]['logs.all_prefilled'] || '✨ Todas as funções foram pré-preenchidas com valores de exemplo!');
         }
 
         // Executar função
         async function executarFuncao(nomeContrato, nomeFuncao, numArgs, execCount = 1) {
+            const t = translations[currentLang];
+
             if (!contratoDeployado) {
-                alert('O contrato precisa ser deployado antes de executar funções.');
+                alert(t['logs.not_deployed'] || 'O contrato precisa ser deployado antes de executar funções.');
                 return;
             }
 
@@ -1170,8 +1686,8 @@
                 args.push(campo ? campo.value : "");
             }
 
-            log(`\n📘 Contrato selecionado: ${nomeContrato}`);
-            log(`⚙️ Executando ${nomeFuncao}(${args.join(", ")})...\n`);
+            log(`\n${t['logs.contract_selected'] || '📘 Contrato selecionado: '}${nomeContrato}`);
+            log(`${t['logs.executing'] || '⚙️ Executando '}${nomeFuncao}(${args.join(", ")})...\n`);
 
             try {
                 const res = await fetch("/api/execute-function", {
@@ -1188,12 +1704,12 @@
 
                 const out = await res.json();
 
-                log(`✅ Função executada: ${out.funcao}`);
-                log(`⛽ Gas estimado: ${out.gasEstimado}`);
-                log(`🔥 Gas real usado: ${out.gasReal}`);
+                log(`${t['logs.function_executed'] || '✅ Função executada: '}${out.funcao}`);
+                log(`${t['logs.gas_estimated'] || '⛽ Gas estimado: '}${out.gasEstimado}`);
+                log(`${t['logs.gas_real'] || '🔥 Gas real usado: '}${out.gasReal}`);
 
                 if (out.custosPorRede) {
-                    log(`\n🌍 Custos por rede:`);
+                    log(`\n${t['logs.cost_by_network'] || '🌍 Custos por rede:'}`);
                     for (const [key, info] of Object.entries(out.custosPorRede)) {
                         log(
                             `  ${info.name}: ${info.custoTotalToken} ${info.token}` +
@@ -1206,7 +1722,7 @@
                 log(`\n--------------------------------------------\n`);
 
             } catch (err) {
-                log(`\n❌ Erro inesperado: ${err.message}\n`);
+                log(`\n${t['logs.error_unexpected'] || '❌ Erro inesperado: '}${err.message}\n`);
             }
         }
 
@@ -1263,20 +1779,34 @@
             }
         }
 
-        // Inicialização
-        window.addEventListener('DOMContentLoaded', function () {
-            // Carregar tema salvo
-            loadSavedTheme();
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+    // ============================================
+    // INICIALIZAÇÃO
+    // ============================================
+    window.addEventListener('DOMContentLoaded', function () {
+        // Carregar tema salvo
+        loadSavedTheme();
 
-            // Configurar botão de tema
-            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        // Carregar idioma salvo
+        const lang = loadSavedLanguage();
+        console.log('📌 Idioma carregado:', lang);
 
-            log(`✅ Interface de Contratos Inteligentes inicializada.`);
-            log(`⚙️ Modo: Iterativo (controle manual das execuções)`);
-            log(`🕒 ${new Date().toLocaleString('pt-BR')}`);
-            log(`────────────────────────────────────────────`);
-            atualizarContratos();
-        });
+        // Configurar botão de tema
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+        const t = translations[currentLang];
+        const data = new Date().toLocaleString(t.locale || 'pt-BR');
+
+        // 🔥 USAR AS TRADUÇÕES NAS MENSAGENS INICIAIS
+        log(`✅ ${t['logs.initialized'] || 'Interface de Contratos Inteligentes inicializada.'}`);
+        log(`⚙️ ${t['logs.mode'] || 'Modo: Iterativo (controle manual das execuções)'}`);
+        log(`🕒 ${data}`);
+        log(`────────────────────────────────────────────`);
+
+        atualizarContratos();
+    });
 
         // Expor funções para uso global
         window.carregarContrato = carregarContrato;
@@ -1287,6 +1817,7 @@
         window.limparLogs = limparLogs;
         window.copiarLogs = copiarLogs;
         window.atualizarNomeArquivo = atualizarNomeArquivo;
+        window.changeLanguage = changeLanguage;
     </script>
 </body>
 

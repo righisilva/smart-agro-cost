@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "nome": "Brasil",
+    "tipo": "Pais",
+    "nome_en": "Brazil",
+    "nome_es": "Brasil"
+  },
+  {
+    "id": 2,
+    "nome": "Sul",
+    "tipo": "Regiao",
+    "nome_en": "South Region",
+    "nome_es": "Región Sur"
+  },
+  {
+    "id": 3,
+    "nome": "RS",
+    "tipo": "Estado",
+    "nome_en": "Rio Grande do Sul",
+    "nome_es": "Rio Grande do Sul"
+  },
+  {
+    "id": 4,
+    "nome": "Alegrete",
+    "tipo": "Municipio",
+    "nome_en": "Alegrete",
+    "nome_es": "Alegrete"
+  }
+]

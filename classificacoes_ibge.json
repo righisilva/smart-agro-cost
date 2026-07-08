@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "nome": "Agricultura",
+    "nome_en": "Crop Production",
+    "nome_es": "Producción de Cultivos"
+  },
+  {
+    "id": 2,
+    "nome": "Pecuária",
+    "nome_en": "Livestock Production",
+    "nome_es": "Producción Pecuaria"
+  },
+  {
+    "id": 3,
+    "nome": "Silvicultura",
+    "nome_en": "Forestry",
+    "nome_es": "Silvicultura"
+  },
+  {
+    "id": 4,
+    "nome": "Extração Vegetal",
+    "nome_en": "Forest Extractive Activities",
+    "nome_es": "Actividades Extractivas Forestales"
+  },
+  {
+    "id": 5,
+    "nome": "Aquicultura",
+    "nome_en": "Aquaculture",
+    "nome_es": "Acuicultura"
+  },
+  {
+    "id": 6,
+    "nome": "Agroindústria",
+    "nome_en": "Agroindustry",
+    "nome_es": "Agroindustria"
+  }
+]

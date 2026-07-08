@@ -17,6 +17,28 @@
             --background: #F5F5F5;
             --white: #FFF;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border: #E0E0E0;
+            --transition: all 0.3s ease;
+        }
+
+        /* Modo Claro */
+        .light-mode {
+            --background: #F5F5F5;
+            --white: #FFFFFF;
+            --text: #333333;
+            --text-light: #666666;
+            --border: #E0E0E0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Modo Escuro */
+        .dark-mode {
+            --background: #0F172A;
+            --white: #1E293B;
+            --text: #E2E8F0;
+            --text-light: #94A3B8;
+            --border: #475569;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -30,6 +52,7 @@
             background: var(--background);
             color: var(--text);
             line-height: 1.6;
+            transition: var(--transition);
         }
 
         /* Layout com índice lateral */
@@ -52,6 +75,8 @@
             margin: 20px 20px 20px 0;
             padding: 20px;
             box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
         }
 
         .sidebar-title {
@@ -122,19 +147,61 @@
             margin-bottom: 10px;
         }
 
-        .btn-voltar {
-            display: inline-block;
+        .manual-header p {
+            opacity: 0.9;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
             margin-top: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
             padding: 10px 20px;
             border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
             text-decoration: none;
-            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-voltar {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
         }
 
         .btn-voltar:hover {
             background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Toggle Theme Button */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(15deg);
+        }
+
+        .theme-toggle i {
+            font-size: 20px;
+            color: white;
         }
 
         /* Seções de conteúdo */
@@ -145,6 +212,8 @@
             margin-bottom: 30px;
             box-shadow: var(--shadow);
             scroll-margin-top: 20px;
+            transition: var(--transition);
+            border: 1px solid var(--border);
         }
 
         .manual-section h2 {
@@ -159,6 +228,19 @@
             color: var(--accent);
         }
 
+        .manual-section p {
+            color: var(--text);
+        }
+
+        .manual-section ul,
+        .manual-section ol {
+            color: var(--text);
+        }
+
+        .manual-section li {
+            color: var(--text);
+        }
+
         /* Cards das ferramentas no índice */
         .tool-card-index {
             background: var(--background);
@@ -168,6 +250,7 @@
             border-left: 4px solid var(--primary);
             cursor: pointer;
             transition: all 0.3s;
+            color: var(--text);
         }
 
         .tool-card-index:hover {
@@ -185,36 +268,17 @@
             color: var(--text-light);
         }
 
-        /* Conteúdo detalhado das ferramentas */
-        .tool-detail {
-            margin-top: 20px;
-            padding: 20px;
-            background: var(--background);
-            border-radius: 10px;
-        }
-
-        .tool-detail h4 {
-            font-size: 20px;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .tool-detail ul,
-        .tool-detail ol {
-            padding-left: 20px;
-            margin: 15px 0;
-        }
-
-        .tool-detail li {
-            margin-bottom: 8px;
-        }
-
         .tip-box {
             background: #E3F2FD;
             border-left: 4px solid var(--accent);
             padding: 15px;
             border-radius: 8px;
             margin: 20px 0;
+            color: var(--text);
+        }
+
+        .dark-mode .tip-box {
+            background: #1a2a4a;
         }
 
         .tip-box i {
@@ -222,21 +286,25 @@
             margin-right: 10px;
         }
 
-        .screenshot-placeholder {
-            background: #e0e0e0;
-            border: 2px dashed #999;
-            border-radius: 8px;
-            padding: 40px;
-            text-align: center;
-            margin: 20px 0;
-            color: #666;
+        .faq-item {
+            margin-bottom: 20px;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .faq-answer {
+            color: var(--text);
         }
 
         .footer-manual {
             text-align: center;
             padding: 30px;
             color: var(--text-light);
-            border-top: 1px solid #ddd;
+            border-top: 1px solid var(--border);
             margin-top: 40px;
         }
 
@@ -276,6 +344,19 @@
         @media (max-width: 768px) {
             .manual-section {
                 padding: 20px;
+            }
+
+            .manual-header {
+                padding: 25px;
+            }
+
+            .manual-header h1 {
+                font-size: 24px;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
@@ -320,7 +401,13 @@
             <div class="manual-header">
                 <h1><i class="fas fa-book-open"></i> Manual do Usuário</h1>
                 <p>Smart Agro Cost - Análise Blockchain para o Agronegócio</p>
-                <a href="/" class="btn-voltar"><i class="fas fa-arrow-left"></i> Voltar para a página inicial</a>
+                <div class="header-actions">
+                    <div class="theme-toggle" id="themeToggle" title="Alternar modo claro/escuro">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <a href="/" class="btn btn-voltar"><i class="fas fa-arrow-left"></i> Voltar para a página
+                        inicial</a>
+                </div>
             </div>
 
             <!-- Sobre a ferramenta -->
@@ -328,7 +415,8 @@
                 <h2><i class="fas fa-info-circle"></i> Sobre o Smart Agro Cost</h2>
                 <p>O Smart Agro Cost é uma plataforma que cruza dados do <strong>Censo Agropecuário IBGE</strong> com
                     <strong>custos de transação em blockchain</strong> para simular a viabilidade de adoção de contratos
-                    inteligentes no agronegócio brasileiro.</p>
+                    inteligentes no agronegócio brasileiro.
+                </p>
                 <div class="tip-box">
                     <i class="fas fa-lightbulb"></i>
                     <strong>Objetivo:</strong> Ajudar produtores, pesquisadores e empresas a entender os custos reais da
@@ -386,7 +474,8 @@
                     <li>Selecione a <strong>região</strong> desejada (Brasil, Sul, RS ou Alegrete)</li>
                     <li>Escolha a <strong>classificação</strong> e <strong>subclassificação</strong> (opcional)</li>
                     <li>Defina se é <strong>estabelecimento familiar</strong> ou não</li>
-                    <li>Marque <strong>INC 02/2018</strong> se quiser apenas produtos obrigatórios à rastreabilidade (apenas agricultura)
+                    <li>Marque <strong>INC 02/2018</strong> se quiser apenas produtos obrigatórios à rastreabilidade
+                        (apenas agricultura)
                     </li>
                     <li>Use <strong>Top N</strong> para limitar a quantidade de produtos exibidos</li>
                     <li>Clique em <strong>"Atualizar Dashboard"</strong></li>
@@ -403,11 +492,6 @@
                     <strong>Dica:</strong> Comece com "Brasil" para ter uma visão macro, depois refine para regiões
                     específicas como "Alegrete" para análises locais.
                 </div>
-
-                <!-- <div class="screenshot-placeholder">
-                    <i class="fas fa-image" style="font-size: 48px; margin-bottom: 10px;"></i><br>
-                    [Imagem: Exemplo do Dashboard IBGE]
-                </div> -->
             </section>
 
             <!-- 2. IMPLEMENTAÇÃO RÁPIDA -->
@@ -445,21 +529,17 @@
                 </div>
 
                 <h3>🔧 Exemplo prático - Teste com um contrato real:</h3>
-                
+
                 <ol>
                     <li><strong>Baixe o contrato de exemplo:</strong>
-                        <a href="https://github.com/righisilva/agro-smart-cost/blob/main/contracts/contrato.sol" target="_blank"
-                            rel="noopener noreferrer" style="color: var(--accent); text-decoration: none;">
+                        <a href="https://github.com/righisilva/agro-smart-cost/blob/main/contracts/contrato.sol"
+                            target="_blank" rel="noopener noreferrer"
+                            style="color: var(--accent); text-decoration: none;">
                             <i class="fab fa-github"></i> contrato.sol (contrato com funções de exemplo)
                         </a>
                         <br>
                         Clique no link acima e copie o conteúdo ou faça download do arquivo <code>contrato.sol</code>
-
                     </li>
-                
-                    
-                    
-                    
                     <li><strong>Carregue na ferramenta: </strong> Clique para selecionar o arquivo baixado</li>
                     <li><strong>Visualize o custo das funções:</strong>
                         <ul>
@@ -469,19 +549,21 @@
                     </li>
                 </ol>
             </section>
-            
+
             <!-- 3. IMPLEMENTAÇÃO CONTROLADA -->
             <section id="implementacao-controlada" class="manual-section">
                 <h2><i class="fas fa-sliders-h"></i> 3. Implementação Controlada (Modo Iterativo)</h2>
-                <p><strong>Funcionalidade:</strong> Ferramenta para execução manual de funções de contratos inteligentes com
+                <p><strong>Funcionalidade:</strong> Ferramenta para execução manual de funções de contratos inteligentes
+                    com
                     controle total sobre argumentos e parâmetros.</p>
-            
+
                 <div class="tip-box" style="background: #FFF3E0; border-left-color: var(--secondary);">
                     <i class="fas fa-info-circle"></i>
-                    <strong>⚠️ Atenção:</strong> Diferente da "Implementação Rápida", aqui você tem controle total sobre cada função
+                    <strong>⚠️ Atenção:</strong> Diferente da "Implementação Rápida", aqui você tem controle total sobre
+                    cada função
                     e pode definir argumentos personalizados.
                 </div>
-            
+
                 <h3>🎯 Quando usar?</h3>
                 <ul>
                     <li>Contratos complexos com funções interdependentes</li>
@@ -489,10 +571,11 @@
                     <li>Para simular fluxos reais de negócio com dados reais</li>
                     <li>Quando quer controlar quantas vezes cada função será executada</li>
                 </ul>
-            
+
                 <h3>⚙️ Como usar - Passo a passo:</h3>
                 <ol>
-                    <li><strong>Carregar o contrato:</strong> Selecione o arquivo <code>.sol</code> do contrato Smart Contract</li>
+                    <li><strong>Carregar o contrato:</strong> Selecione o arquivo <code>.sol</code> do contrato Smart
+                        Contract</li>
                     <li><strong>Definir a cotação:</strong> Selecione o período para cálculo dos custos:
                         <ul>
                             <li><strong>Última Cotação:</strong> Preço mais recente registrado</li>
@@ -503,20 +586,24 @@
                         </ul>
                     </li>
                     <li>Clicar em <strong>Carregar ABI do Contrato:</strong></li>
-                    <li><strong>Verificar status:</strong> Confira se o contrato já está "Deployado" ou "Não Deployado"</li>
-                    <li><strong>Escolher o contrato:</strong> Na lista "Contratos Disponíveis", selecione o contrato desejado (um arquivo pode ter múltiplos contratos)</li>
+                    <li><strong>Verificar status:</strong> Confira se o contrato já está "Deployado" ou "Não Deployado"
+                    </li>
+                    <li><strong>Escolher o contrato:</strong> Na lista "Contratos Disponíveis", selecione o contrato
+                        desejado (um arquivo pode ter múltiplos contratos)</li>
                     <li><strong>Preencher argumentos:</strong> Para cada função, informe os argumentos necessários:
                         <ul>
                             <li>Use o botão <strong>"Auto-preenchimento"</strong> para gerar valores automáticos</li>
                             <li>Ou digite manualmente os valores desejados</li>
                         </ul>
                     </li>
-                    <li><strong>Definir execuções:</strong> No campo ao lado do botão "Executar", defina quantas vezes a função será
+                    <li><strong>Definir execuções:</strong> No campo ao lado do botão "Executar", defina quantas vezes a
+                        função será
                         repetida (ex: 1, 10, 1000)</li>
-                    <li><strong>Executar:</strong> Clique em <strong>"Executar Função"</strong> para iniciar a transação</li>
+                    <li><strong>Executar:</strong> Clique em <strong>"Executar Função"</strong> para iniciar a transação
+                    </li>
                     <li><strong>Acompanhar:</strong> Observe os resultados no painel de logs à direita</li>
                 </ol>
-            
+
                 <h3>📊 Entendendo os resultados no painel de logs:</h3>
                 <ul>
                     <li><strong>✅ Função executada:</strong> Nome da função que foi chamada</li>
@@ -527,41 +614,50 @@
                             <li><strong>Token nativo:</strong> ETH, BNB, MATIC, etc.</li>
                             <li><strong>USD:</strong> Valor em dólares americanos</li>
                             <li><strong>BRL:</strong> Valor em reais brasileiros</li>
-                            <li><strong>Gas price:</strong> Preço unitário do gas no momento da execução (na criptomoeda correspondente)</li>
+                            <li><strong>Gas price:</strong> Preço unitário do gas no momento da execução (na criptomoeda
+                                correspondente)</li>
                         </ul>
                     </li>
                 </ul>
-            
+
                 <h3>🛠️ Funcionalidades especiais:</h3>
                 <ul>
-                    <li><strong>Pré-preencher todas as funções:</strong> Botão no cabeçalho da seção de funções que preenche
+                    <li><strong>Pré-preencher todas as funções:</strong> Botão no cabeçalho da seção de funções que
+                        preenche
                         automaticamente TODOS os argumentos de TODAS as funções</li>
-                    <li><strong>Auto-preenchimento individual:</strong> Cada função tem seu próprio botão "Auto-preenchimento" para
+                    <li><strong>Auto-preenchimento individual:</strong> Cada função tem seu próprio botão
+                        "Auto-preenchimento" para
                         gerar valores compatíveis com o tipo do argumento</li>
-                    <li><strong>Execução repetida:</strong> Simule execuções em massa (ex: 10.000 propriedades rurais) ajustando o
+                    <li><strong>Execução repetida:</strong> Simule execuções em massa (ex: 10.000 propriedades rurais)
+                        ajustando o
                         número de repetições</li>
-                    <li><strong>Limpar/Copiar logs:</strong> Botões no painel direito para gerenciar o histórico de execuções</li>
+                    <li><strong>Limpar/Copiar logs:</strong> Botões no painel direito para gerenciar o histórico de
+                        execuções</li>
                 </ul>
-            
+
                 <div class="tip-box">
                     <i class="fas fa-lightbulb"></i>
                     <strong>Dicas importantes:</strong><br>
-                    • <strong>Tipos de dados:</strong> O auto-preenchimento gera valores compatíveis com o tipo do argumento
+                    • <strong>Tipos de dados:</strong> O auto-preenchimento gera valores compatíveis com o tipo do
+                    argumento
                     (address, uint256, string, bool, etc.)<br>
-                    • <strong>Execuções repetidas:</strong> Use valores grandes (ex: 10.000) para simular adoção em larga escala<br>
+                    • <strong>Execuções repetidas:</strong> Use valores grandes (ex: 10.000) para simular adoção em
+                    larga escala<br>
                     • <strong>Logs:</strong> Mantenha os logs abertos para acompanhar cada execução<br>
-                    • <strong>Contratos não deployados:</strong> Se o contrato não estiver deployado, o botão "Executar Função"
+                    • <strong>Contratos não deployados:</strong> Se o contrato não estiver deployado, o botão "Executar
+                    Função"
                     ficará desabilitado
                 </div>
-            
-                <h3>🔧 Exemplo prático - Teste com um contrato real:</h3>                
+
+                <h3>🔧 Exemplo prático - Teste com um contrato real:</h3>
 
                 <ol>
                     <li><strong>Baixe o contrato de exemplo:</strong>
-                        <a href="https://github.com/righisilva/agro-smart-cost/blob/main/contracts/multi.sol" target="_blank"
-                            rel="noopener noreferrer" style="color: var(--accent); text-decoration: none;">
+                        <a href="https://github.com/righisilva/agro-smart-cost/blob/main/contracts/multi.sol"
+                            target="_blank" rel="noopener noreferrer"
+                            style="color: var(--accent); text-decoration: none;">
                             <i class="fab fa-github"></i> multi.sol (contrato com funções de exemplo)
-                        </a>  
+                        </a>
                         <br>
                         Clique no link acima e copie o conteúdo ou faça download do arquivo <code>multi.sol</code>
                     </li>
@@ -571,9 +667,11 @@
                         <li><code>TestAddresses</code> - Funções para gerenciar owner e admin</li>
                         <li><code>Produto3</code> - Funções para gerenciar nome e preço de produtos</li>
                     </ul>
-                  
-                    <li><strong>Carregue na ferramenta:</strong> Use o botão "Selecione arquivo .sol" e escolha o arquivo baixado</li>
-                    <li><strong>Selecione um contrato:</strong> Escolha <code>Produto3</code> ou <code>TestAddresses</code> na lista
+
+                    <li><strong>Carregue na ferramenta:</strong> Use o botão "Selecione arquivo .sol" e escolha o
+                        arquivo baixado</li>
+                    <li><strong>Selecione um contrato:</strong> Escolha <code>Produto3</code> ou
+                        <code>TestAddresses</code> na lista
                         suspensa</li>
                     <li><strong>Teste as funções:</strong>
                         <ul>
@@ -582,8 +680,9 @@
                             <li><code>transferOwnership(address)</code> - Transfere a propriedade do contrato</li>
                         </ul>
                     </li>
-                    <li><strong>Simule adoção em larga escala:</strong> Defina "execuções = 1000" para ver o custo total de 1.000
-                        transações</li>           
+                    <li><strong>Simule adoção em larga escala:</strong> Defina "execuções = 1000" para ver o custo total
+                        de 1.000
+                        transações</li>
                 </ol>
 
             </section>
@@ -591,9 +690,10 @@
             <!-- 4. SIMULAÇÃO DE ADOÇÃO -->
             <section id="simulacao-adocao" class="manual-section">
                 <h2><i class="fas fa-chart-line"></i> 4. Simulação de Adoção</h2>
-                <p><strong>Funcionalidade:</strong> Ferramenta principal que cruza custos de transação blockchain com dados do Censo
+                <p><strong>Funcionalidade:</strong> Ferramenta principal que cruza custos de transação blockchain com
+                    dados do Censo
                     Agropecuário IBGE para estimar viabilidade de adoção em larga escala.</p>
-            
+
                 <div class="tip-box" style="background: #E8F0FE; border-left-color: var(--accent);">
                     <i class="fas fa-calculator"></i>
                     <strong>O que esta ferramenta calcula?</strong><br>
@@ -601,30 +701,34 @@
                     • Percentual do custo blockchain em relação ao valor de venda do produto<br>
                     • Comparação de viabilidade entre diferentes regiões, culturas e redes
                 </div>
-            
+
                 <h3>🎯 Cenários de uso:</h3>
                 <ul>
-                    <li><strong>Políticas públicas:</strong> Estimar custo de implementar rastreabilidade obrigatória</li>
+                    <li><strong>Políticas públicas:</strong> Estimar custo de implementar rastreabilidade obrigatória
+                    </li>
                     <li><strong>Cooperativas:</strong> Avaliar viabilidade de adotar blockchain para toda a base</li>
                     <li><strong>Pesquisa acadêmica:</strong> Comparar custos entre diferentes culturas e regiões</li>
                     <li><strong>Empresas de tecnologia:</strong> Identificar produtos com maior potencial de adoção</li>
                 </ul>
-            
+
                 <h3>⚙️ Como usar - Passo a passo completo:</h3>
-            
+
                 <h4>📁 BLOCO 1: Dados de Origem (Censo Agropecuário)</h4>
                 <ol>
-                    <li><strong>Região:</strong> Selecione Brasil (total), Sul, Rio Grande do Sul ou Alegrete (município)</li>
+                    <li><strong>Região:</strong> Selecione Brasil (total), Sul, Rio Grande do Sul ou Alegrete
+                        (município)</li>
                     <li><strong>Classificação/Subclassificação:</strong> Filtre por Agricultura, Pecuária, etc.</li>
                     <li><strong>Base de Cálculo:</strong> Escolha entre:
                         <ul>
-                            <li><strong>📊 Por Nº de Estabelecimentos:</strong> Cada propriedade rural = 1 unidade rastreável</li>
-                            <li><strong>📦 Por Produção (Quantidade):</strong> Cada unidade de medida (tonelada, cabeça, saca) = 1
+                            <li><strong>📊 Por Nº de Estabelecimentos:</strong> Cada propriedade rural = 1 unidade
+                                rastreável</li>
+                            <li><strong>📦 Por Produção (Quantidade):</strong> Cada unidade de medida (tonelada, cabeça,
+                                saca) = 1
                                 unidade rastreável</li>
                         </ul>
                     </li>
                 </ol>
-            
+
                 <h4>🔗 BLOCO 2: Configuração do Contrato</h4>
                 <ol>
                     <li><strong>Contrato:</strong> Selecione o contrato inteligente deployado</li>
@@ -633,7 +737,7 @@
                     <li><strong>Regulamentação:</strong> Marque "📜 Somente Obrigatório INC 02/2018" para produtos com
                         rastreabilidade obrigatória (somente agricultura)</li>
                 </ol>
-            
+
                 <h4>⚙️ BLOCO 3: Parâmetros da Simulação</h4>
                 <ol>
                     <li><strong>Período de Custo:</strong> Defina qual base de preços usar:
@@ -643,7 +747,8 @@
                             <li><strong>📆 Média da última semana:</strong> Preço médio semanal</li>
                             <li><strong>📆 Média do último mês:</strong> Preço médio mensal</li>
                             <li><strong>🕰️ Média histórica (all-time):</strong> Preço médio de todo período</li>
-                            <li><strong>🎯 Período personalizado:</strong> Selecione datas específicas (aparecem campos adicionais)
+                            <li><strong>🎯 Período personalizado:</strong> Selecione datas específicas (aparecem campos
+                                adicionais)
                             </li>
                         </ul>
                     </li>
@@ -656,15 +761,16 @@
                     </li>
                     <li><strong>Top N Produtos:</strong> Limite a quantidade exibida (ex: 10 = só os 10 maiores)</li>
                 </ol>
-            
+
                 <h4>🔧 BLOCO 4: Funções do Contrato para Simular</h4>
                 <ol>
                     <li>Selecione as funções que deseja executar (checkboxes)</li>
-                    <li>Para cada função, defina quantas <strong>execuções repetidas</strong> (ex: 1 = uma transação, 1000 = mil
+                    <li>Para cada função, defina quantas <strong>execuções repetidas</strong> (ex: 1 = uma transação,
+                        1000 = mil
                         transações)</li>
                     <li>Use "✅ Selecionar todas" ou "❌ Desmarcar todas" para agilizar</li>
                 </ol>
-            
+
                 <h4>📊 Executar e analisar resultados:</h4>
                 <ol>
                     <li>Clique em <strong>"Gerar Simulação"</strong></li>
@@ -673,9 +779,9 @@
                     <li>Explore o gráfico e a tabela detalhada</li>
                     <li>Use <strong>"Exportar CSV"</strong> ou <strong>"Imprimir"</strong> para salvar resultados</li>
                 </ol>
-            
+
                 <h3>📊 Entendendo os resultados:</h3>
-            
+
                 <h4>📈 Cards de estatísticas:</h4>
                 <ul>
                     <li><strong>Total Estimado:</strong> Soma do custo blockchain para todos os produtos da região</li>
@@ -684,37 +790,47 @@
                     <li><strong>Cenário Simulado:</strong> Nome do contrato utilizado</li>
                     <li><strong>Gás por Contrato:</strong> Total de gas consumido (por estabelecimento ou produção)</li>
                 </ul>
-            
+
                 <h4>📋 Tabela detalhada:</h4>
                 <ul>
                     <li><strong>Produto:</strong> Nome da cultura/atividade agropecuária</li>
-                    <li><strong>Custo Unitário de Rastreabilidade (BRL):</strong> Custo de UMA execução das funções selecionadas
+                    <li><strong>Custo Unitário de Rastreabilidade (BRL):</strong> Custo de UMA execução das funções
+                        selecionadas
                     </li>
-                    <li><strong>Estabelecimentos/Produção:</strong> Quantidade usada no cálculo (conforme base selecionada)</li>
+                    <li><strong>Estabelecimentos/Produção:</strong> Quantidade usada no cálculo (conforme base
+                        selecionada)</li>
                     <li><strong>Valor Vendido (BRL):</strong> Faturamento total do produto na região (fonte IBGE)</li>
-                    <li><strong>Total Estimado (BRL):</strong> Custo blockchain multiplicado pela quantidade (ex: 2.000 propriedades
+                    <li><strong>Total Estimado (BRL):</strong> Custo blockchain multiplicado pela quantidade (ex: 2.000
+                        propriedades
                         × R$ 0,50)</li>
                     <li><strong>% Custo/Valor:</strong> Indicador de viabilidade</li>
                 </ul>
-            
+
                 <div class="tip-box">
                     <i class="fas fa-chart-simple"></i>
                     <strong>Interpretação do percentual (% Custo/Valor):</strong><br>
-                    <span style="color: #10B981;">🟢 &lt; 5%</span> - Custo blockchain baixo, adoção economicamente viável<br>
-                    <span style="color: #F59E0B;">🟡 5% - 10%</span> - Custo moderado, avaliar caso a caso por produto/região<br>
-                    <span style="color: #EF4444;">🔴 &gt; 10%</span> - Custo alto, provavelmente inviabiliza a adoção neste cenário
+                    <span style="color: #10B981;">🟢 &lt; 5%</span> - Custo blockchain baixo, adoção economicamente
+                    viável<br>
+                    <span style="color: #F59E0B;">🟡 5% - 10%</span> - Custo moderado, avaliar caso a caso por
+                    produto/região<br>
+                    <span style="color: #EF4444;">🔴 &gt; 10%</span> - Custo alto, provavelmente inviabiliza a adoção
+                    neste cenário
                 </div>
-            
+
                 <h3>💡 Dicas específicas para esta ferramenta:</h3>
                 <ul>
-                    <li><strong>Comece com "Brasil" e "Última Execução":</strong> Visão geral rápida antes de detalhar</li>
-                    <li><strong>Compare redes diferentes:</strong> Execute a mesma simulação trocando apenas a rede blockchain</li>
+                    <li><strong>Comece com "Brasil" e "Última Execução":</strong> Visão geral rápida antes de detalhar
+                    </li>
+                    <li><strong>Compare redes diferentes:</strong> Execute a mesma simulação trocando apenas a rede
+                        blockchain</li>
                     <li><strong>Use "Top N = 10 ou 20":</strong> Gráficos ficam mais legíveis</li>
-                    <li><strong>Teste "Familiar = Sim":</strong> Agricultura familiar pode ter diferentes perfis de produção</li>
-                    <li><strong>Período personalizado:</strong> Útil para comparar custos antes/depois de eventos de mercado</li>
+                    <li><strong>Teste "Familiar = Sim":</strong> Agricultura familiar pode ter diferentes perfis de
+                        produção</li>
+                    <li><strong>Período personalizado:</strong> Útil para comparar custos antes/depois de eventos de
+                        mercado</li>
                     <li><strong>Exporte CSV:</strong> Ideal para análises adicionais em Excel/Planilhas</li>
                 </ul>
-            
+
                 <h3>🔧 Exemplo prático - Rastreabilidade da produção de soja no RS:</h3>
                 <ol>
                     <li><strong>Região:</strong> Rio Grande do Sul</li>
@@ -726,49 +842,58 @@
                     <li><strong>Período:</strong> Média última semana</li>
                     <li><strong>Executar → Analisar % Custo/Valor da soja</strong></li>
                 </ol>
-            
+
                 <div class="tip-box" style="margin-top: 15px;">
                     <i class="fas fa-lightbulb"></i>
-                    <strong>Interpretação do exemplo:</strong> Se o percentual da soja for &lt; 5%, a rastreabilidade blockchain é
-                    viável. Se for &gt; 10%, talvez seja melhor aguardar redução dos custos de gas ou escolher outra rede.
-                </div>  
+                    <strong>Interpretação do exemplo:</strong> Se o percentual da soja for &lt; 5%, a rastreabilidade
+                    blockchain é
+                    viável. Se for &gt; 10%, talvez seja melhor aguardar redução dos custos de gas ou escolher outra
+                    rede.
+                </div>
             </section>
 
-            
+
             <!-- 5. HISTÓRICO DE CUSTOS -->
             <section id="historico-custos" class="manual-section">
                 <h2><i class="fas fa-gas-pump"></i> 5. Histórico de Custos</h2>
-                <p><strong>Funcionalidade:</strong> Ferramenta para comparar custos de transação entre diferentes redes blockchain
+                <p><strong>Funcionalidade:</strong> Ferramenta para comparar custos de transação entre diferentes redes
+                    blockchain
                     ao longo do tempo, com dados reais de gas price e cotações.</p>
-            
+
                 <div class="tip-box" style="background: #E8F0FE; border-left-color: var(--accent);">
                     <i class="fas fa-chart-line"></i>
-                    <strong>Diferencial:</strong> Os dados são coletados em tempo real e armazenados no banco de dados, permitindo
+                    <strong>Diferencial:</strong> Os dados são coletados em tempo real e armazenados no banco de dados,
+                    permitindo
                     análises históricas e tendências de longo prazo.
                 </div>
-            
+
                 <h3>🎯 Para que serve?</h3>
                 <ul>
-                    <li><strong>Comparar redes:</strong> Ethereum vs BNB Chain vs Polygon vs Avalanche (e outras redes suportadas)
+                    <li><strong>Comparar redes:</strong> Ethereum vs BNB Chain vs Polygon vs Avalanche (e outras redes
+                        suportadas)
                     </li>
-                    <li><strong>Visualizar tendências:</strong> Identifique padrões de custo ao longo do tempo (horários mais
+                    <li><strong>Visualizar tendências:</strong> Identifique padrões de custo ao longo do tempo (horários
+                        mais
                         baratos, dias da semana, etc.)</li>
-                    <li><strong>Tomada de decisão:</strong> Escolha a rede mais adequada para seu caso de uso baseado em dados
+                    <li><strong>Tomada de decisão:</strong> Escolha a rede mais adequada para seu caso de uso baseado em
+                        dados
                         históricos reais</li>
-                    <li><strong>Planejamento financeiro:</strong> Estime custos futuros baseado em médias históricas</li>
+                    <li><strong>Planejamento financeiro:</strong> Estime custos futuros baseado em médias históricas
+                    </li>
                 </ul>
-            
+
                 <h3>⚙️ Como usar - Passo a passo:</h3>
-            
+
                 <h4>🌐 1. Seleção de Redes Blockchain</h4>
                 <ul>
                     <li>Marque os checkboxes das redes que deseja comparar</li>
                     <li><strong>Todas as redes ficam selecionadas por padrão</strong> ao carregar a página</li>
                     <li>As cores das redes são geradas automaticamente para fácil identificação no gráfico</li>
-                    <li><strong>Auto-atualização:</strong> Ao marcar/desmarcar uma rede, os dados recarregam automaticamente após
+                    <li><strong>Auto-atualização:</strong> Ao marcar/desmarcar uma rede, os dados recarregam
+                        automaticamente após
                         500ms</li>
                 </ul>
-            
+
                 <h4>📅 2. Período de Análise</h4>
                 <ul>
                     <li><strong>24 Horas:</strong> Dados das últimas 24 horas</li>
@@ -782,10 +907,11 @@
                         </ul>
                     </li>
                 </ul>
-            
+
                 <h4>⛽ 3. Configuração de Gas</h4>
                 <ul>
-                    <li><strong>Unidades de Gas por Transação:</strong> Defina quantas unidades de gas sua transação consome</li>
+                    <li><strong>Unidades de Gas por Transação:</strong> Defina quantas unidades de gas sua transação
+                        consome</li>
                     <li><strong>Valor padrão:</strong> 21.000 unidades (transferência simples em Ethereum)</li>
                     <li><strong>Exemplos:</strong>
                         <ul>
@@ -794,18 +920,20 @@
                             <li>Rastreabilidade de produto: ~150.000 - 300.000 gas</li>
                         </ul>
                     </li>
-                    <li><strong>Auto-atualização:</strong> Ao alterar o valor, os dados recarregam automaticamente após 800ms</li>
+                    <li><strong>Auto-atualização:</strong> Ao alterar o valor, os dados recarregam automaticamente após
+                        800ms</li>
                 </ul>
-            
+
                 <h4>🚀 4. Carregamento Automático</h4>
                 <ul>
-                    <li>Ao abrir a página, os dados <strong>carregam automaticamente</strong> com as configurações padrão</li>
+                    <li>Ao abrir a página, os dados <strong>carregam automaticamente</strong> com as configurações
+                        padrão</li>
                     <li>Não é necessário clicar em "Atualizar Análise" manualmente (botão disponível como fallback)</li>
                     <li>Todas as alterações nos filtros recarregam os dados automaticamente</li>
                 </ul>
-            
+
                 <h3>📊 Entendendo os resultados:</h3>
-            
+
                 <h4>📈 Gráfico de Evolução de Custos:</h4>
                 <ul>
                     <li><strong>Tipo de gráfico:</strong> Linha (padrão) ou Barras (use o botão "Alternar Gráfico")</li>
@@ -821,7 +949,7 @@
                     <li><strong>Zoom:</strong> Use Scroll do mouse para ampliar períodos específicos</li>
                     <li><strong>Download:</strong> Clique em "Baixar" para salvar o gráfico como imagem PNG</li>
                 </ul>
-            
+
                 <h4>📊 Cards de Estatísticas Comparativas:</h4>
                 <ul>
                     <li><strong>Custo Médio:</strong> Preço médio da transação no período selecionado</li>
@@ -830,11 +958,12 @@
                     <li><strong>Último:</strong> Custo da transação mais recente registrada</li>
                     <li>Cada rede tem seu próprio card com sua cor característica</li>
                 </ul>
-            
+
                 <h4>📋 Tabela de Dados Históricos:</h4>
                 <ul>
                     <li>Clique em <strong>"Mostrar Tabela"</strong> para visualizar os dados brutos</li>
-                    <li>Exibe os <strong>50 registros mais recentes</strong> em ordem decrescente (mais novos primeiro)</li>
+                    <li>Exibe os <strong>50 registros mais recentes</strong> em ordem decrescente (mais novos primeiro)
+                    </li>
                     <li>Colunas:
                         <ul>
                             <li><strong>Rede:</strong> Blockchain utilizada</li>
@@ -846,23 +975,27 @@
                     </li>
                     <li><strong>Exportar Dados:</strong> Botão no cabeçalho para baixar todos os dados em CSV</li>
                 </ul>
-            
+
                 <div class="tip-box">
                     <i class="fas fa-lightbulb"></i>
                     <strong>Dicas específicas para análise:</strong><br>
-                    • <strong>Melhor horário para transacionar:</strong> Use o gráfico para identificar horários de menor custo<br>
-                    • <strong>Compare redes:</strong> Polygon e BNB Chain geralmente são 70-90% mais baratas que Ethereum<br>
-                    • <strong>Ajuste o gas units:</strong> Transações mais complexas exigem mais gas, ajuste conforme seu
+                    • <strong>Melhor horário para transacionar:</strong> Use o gráfico para identificar horários de
+                    menor custo<br>
+                    • <strong>Compare redes:</strong> Polygon e BNB Chain geralmente são 70-90% mais baratas que
+                    Ethereum<br>
+                    • <strong>Ajuste o gas units:</strong> Transações mais complexas exigem mais gas, ajuste conforme
+                    seu
                     contrato<br>
                     • <strong>Período longo:</strong> Use "Todo Período" para ver tendências macro<br>
                     • <strong>Valores em BRL:</strong> Os custos consideram a cotação do token no momento (USD/BRL)<br>
                     • <strong>Fuso horário:</strong> Todos os horários são exibidos em UTC para padronização
                 </div>
-            
+
                 <h3>🔧 Exemplo prático - Escolhendo a melhor rede para rastreabilidade:</h3>
                 <ol>
                     <li>Deixe todas as redes selecionadas (Ethereum, BNB Chain, Polygon, Avalanche)</li>
-                    <li>Defina <strong>Gas Units = 150.000</strong> (estimativa para registrar um produto na blockchain)</li>
+                    <li>Defina <strong>Gas Units = 150.000</strong> (estimativa para registrar um produto na blockchain)
+                    </li>
                     <li>Selecione período <strong>7 Dias</strong> para ver a variação recente</li>
                     <li>Compare os cards de estatísticas:
                         <ul>
@@ -874,7 +1007,7 @@
                     <li>Exporte os dados em CSV para análise aprofundada em Excel</li>
                     <li>Desmarque Ethereum para melhor visualizar as demais</li>
                 </ol>
-            
+
                 <div class="tip-box" style="margin-top: 15px;">
                     <i class="fas fa-chart-line"></i>
                     <strong>Interpretação de exemplo:</strong><br>
@@ -882,14 +1015,16 @@
                     • Se BNB Chain tem menor variação → Custos mais previsíveis, melhor para orçamento<br>
                     • Ideal para rastreabilidade: Rede com menor custo médio e menor variação
                 </div>
-            
+
                 <h3>🛠️ Funcionalidades avançadas:</h3>
                 <ul>
                     <li><strong>Modo Claro/Escuro:</strong> Botão de lua/sol no cabeçalho para alternar o tema</li>
                     <li><strong>Auto-refresh completo:</strong> Todos os filtros (redes, período, gas units) atualizam
                         automaticamente</li>
-                    <li><strong>Dados em tempo real:</strong> Novas coletas de gas price são inseridas no banco a cada 15 minutos</li>
-                    <li><strong>Suporte a múltiplas redes:</strong> Além das padrão, novas redes aparecem automaticamente ao serem
+                    <li><strong>Dados em tempo real:</strong> Novas coletas de gas price são inseridas no banco a cada
+                        15 minutos</li>
+                    <li><strong>Suporte a múltiplas redes:</strong> Além das padrão, novas redes aparecem
+                        automaticamente ao serem
                         adicionadas</li>
                 </ul>
             </section>
@@ -899,17 +1034,20 @@
                 <h2><i class="fas fa-compass"></i> Guia Rápido - Primeiros Passos</h2>
                 <p>O Smart Agro Cost oferece 5 ferramentas diferentes. O fluxo básico de uso é:</p>
                 <ul class="step-list" style="list-style: none; padding: 0;">
-                    <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px;">
+                    <li
+                        style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 15px;">
                         <span
                             style="width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold;">1</span>
                         Escolha a ferramenta desejada na página inicial (consulte cada seção deste manual para detalhes)
                     </li>
-                    <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px;">
+                    <li
+                        style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 15px;">
                         <span
                             style="width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold;">2</span>
                         Configure os filtros específicos da ferramenta (região, redes, contratos, funções)
                     </li>
-                    <li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px;">
+                    <li
+                        style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 15px;">
                         <span
                             style="width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold;">3</span>
                         Execute a análise (botão "Gerar Simulação", "Atualizar Dashboard" ou "Executar Função")
@@ -922,38 +1060,41 @@
                 </ul>
                 <div class="tip-box" style="margin-top: 15px;">
                     <i class="fas fa-info-circle"></i>
-                    <strong>Para detalhes de cada ferramenta:</strong> Consulte as seções específicas no índice lateral (Indicadores
+                    <strong>Para detalhes de cada ferramenta:</strong> Consulte as seções específicas no índice lateral
+                    (Indicadores
                     IBGE, Implementação Rápida, etc.)
                 </div>
             </section>
-            
+
             <!-- Entendendo os resultados - VERSÃO REVISADA (generalizada) -->
             <section id="resultados" class="manual-section">
                 <h2><i class="fas fa-chart-line"></i> Entendendo os Resultados</h2>
                 <p>Cada ferramenta apresenta resultados específicos. Abaixo os conceitos comuns:</p>
-            
+
                 <h3>📊 Simulação de Adoção / Indicadores IBGE:</h3>
                 <ul>
                     <li><strong>Total Estimado (BRL):</strong> Custo total de rastreabilidade para todos os
                         estabelecimentos/produtos da região</li>
-                    <li><strong>Custo Médio por Rastreio:</strong> Custo médio de uma execução de função na rede blockchain
+                    <li><strong>Custo Médio por Rastreio:</strong> Custo médio de uma execução de função na rede
+                        blockchain
                         escolhida</li>
-                    <li><strong>% Custo/Valor:</strong> Percentual do custo blockchain em relação ao valor de venda do produto</li>
+                    <li><strong>% Custo/Valor:</strong> Percentual do custo blockchain em relação ao valor de venda do
+                        produto</li>
                 </ul>
-            
+
                 <h3>⛽ Histórico de Custos:</h3>
                 <ul>
                     <li><strong>Gráfico linha/barra:</strong> Evolução do custo por rede ao longo do tempo</li>
                     <li><strong>Cards de estatísticas:</strong> Média, mínimo, máximo e último valor por rede</li>
                     <li><strong>Tabela:</strong> Dados brutos com timestamp, gas price e custo em BRL</li>
                 </ul>
-            
+
                 <h3>🔧 Implementação (Rápida/Controlada):</h3>
                 <ul>
                     <li><strong>Logs de execução:</strong> Status, gas usado, custo e retorno de cada função</li>
                     <li><strong>Custos por rede:</strong> Detalhamento em token nativo, USD e BRL</li>
                 </ul>
-            
+
                 <h3>🎨 Indicadores de viabilidade (Simulação de Adoção):</h3>
                 <div class="tip-box">
                     <i class="fas fa-chart-simple"></i> <strong>Interpretação do percentual % Custo/Valor:</strong><br>
@@ -962,96 +1103,176 @@
                     <span style="color: #EF4444;">🔴 &gt; 10%</span> - Custo alto, pode inviabilizar a adoção
                 </div>
             </section>
-            
+
             <!-- Dicas - mantém como está, é boa -->
             <section id="dicas" class="manual-section">
                 <h2><i class="fas fa-lightbulb"></i> Dicas e Boas Práticas</h2>
                 <ul>
                     <li><strong>Comece pelo Brasil / Todo Período:</strong> Tenha uma visão geral antes de detalhar</li>
-                    <li><strong>Teste redes diferentes:</strong> Compare Ethereum vs Polygon vs BNB Chain - os custos variam muito!
+                    <li><strong>Teste redes diferentes:</strong> Compare Ethereum vs Polygon vs BNB Chain - os custos
+                        variam muito!
                     </li>
-                    <li><strong>Use o filtro Top N:</strong> Para gráficos mais legíveis, limite a 10 ou 20 produtos</li>
-                    <li><strong>Explore o histórico de custos:</strong> Identifique melhores horários e redes mais baratas</li>
-                    <li><strong>Verifique produtos obrigatórios (INC 02/2018):</strong> Têm maior potencial de adoção</li>
-                    <li><strong>Exporte seus resultados:</strong> Use CSV para análises avançadas em Excel/Planilhas</li>
-                    <li><strong>Modo claro/escuro:</strong> No Histórico de Custos e Interface de Contratos, use o botão de lua/sol
+                    <li><strong>Use o filtro Top N:</strong> Para gráficos mais legíveis, limite a 10 ou 20 produtos
                     </li>
-                    <li><strong>Auto-preenchimento:</strong> Na ferramenta de Implementação Controlada, use para gerar argumentos
+                    <li><strong>Explore o histórico de custos:</strong> Identifique melhores horários e redes mais
+                        baratas</li>
+                    <li><strong>Verifique produtos obrigatórios (INC 02/2018):</strong> Têm maior potencial de adoção
+                    </li>
+                    <li><strong>Exporte seus resultados:</strong> Use CSV para análises avançadas em Excel/Planilhas
+                    </li>
+                    <li><strong>Modo claro/escuro:</strong> No Histórico de Custos e Interface de Contratos, use o botão
+                        de lua/sol
+                    </li>
+                    <li><strong>Auto-preenchimento:</strong> Na ferramenta de Implementação Controlada, use para gerar
+                        argumentos
                         automaticamente</li>
                 </ul>
             </section>
-            
+
             <!-- FAQ - mantém, está bom mas vou adicionar uma pergunta -->
             <section id="faq" class="manual-section">
                 <h2><i class="fas fa-question-circle"></i> Perguntas Frequentes (FAQ)</h2>
-            
+
                 <div class="faq-item" style="margin-bottom: 20px;">
-                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓ Como sei qual
+                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓
+                        Como sei qual
                         rede blockchain escolher?</div>
-                    <div class="faq-answer">Compare os custos exibidos nas simulações. Redes como Polygon e BNB Chain geralmente têm
-                        custos menores que Ethereum. Use o <strong>Histórico de Custos</strong> para analisar tendências ao longo do
+                    <div class="faq-answer">Compare os custos exibidos nas simulações. Redes como Polygon e BNB Chain
+                        geralmente têm
+                        custos menores que Ethereum. Use o <strong>Histórico de Custos</strong> para analisar tendências
+                        ao longo do
                         tempo.</div>
                 </div>
-            
+
                 <div class="faq-item" style="margin-bottom: 20px;">
-                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓ O que
+                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓ O
+                        que
                         significa "Base de Cálculo: Estabelecimentos vs Produção"?</div>
-                    <div class="faq-answer">"Estabelecimentos" considera cada propriedade rural como unidade rastreável (ex: 1.000
-                        propriedades). "Produção" considera a quantidade produzida (ex: 10.000 toneladas de soja). A escolha impacta
+                    <div class="faq-answer">"Estabelecimentos" considera cada propriedade rural como unidade rastreável
+                        (ex: 1.000
+                        propriedades). "Produção" considera a quantidade produzida (ex: 10.000 toneladas de soja). A
+                        escolha impacta
                         diretamente o custo total estimado.</div>
                 </div>
-            
+
                 <div class="faq-item" style="margin-bottom: 20px;">
-                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓ Posso testar
+                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓
+                        Posso testar
                         contratos próprios?</div>
-                    <div class="faq-answer">Sim! Na <strong>Implementação Controlada</strong>, carregue seu arquivo .sol com o
-                        contrato. As funções serão listadas automaticamente para você executar com argumentos personalizados.</div>
+                    <div class="faq-answer">Sim! Na <strong>Implementação Controlada</strong>, carregue seu arquivo .sol
+                        com o
+                        contrato. As funções serão listadas automaticamente para você executar com argumentos
+                        personalizados.</div>
                 </div>
-            
+
                 <div class="faq-item" style="margin-bottom: 20px;">
-                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓ Os dados do
+                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓ Os
+                        dados do
                         IBGE são atuais?</div>
-                    <div class="faq-answer">A ferramenta utiliza os dados mais recentes do Censo Agropecuário (última atualização
+                    <div class="faq-answer">A ferramenta utiliza os dados mais recentes do Censo Agropecuário (última
+                        atualização
                         completa). As cotações e gas prices são atualizadas em tempo real.</div>
                 </div>
-            
+
                 <div class="faq-item" style="margin-bottom: 20px;">
-                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓ Quanto tempo
+                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓
+                        Quanto tempo
                         demora uma simulação?</div>
-                    <div class="faq-answer">Geralmente entre 2 e 10 segundos. Simulações com "Todo Período" no Histórico de Custos
+                    <div class="faq-answer">Geralmente entre 2 e 10 segundos. Simulações com "Todo Período" no Histórico
+                        de Custos
                         ou muitas funções na Simulação de Adoção podem levar alguns segundos a mais.</div>
                 </div>
-            
+
                 <div class="faq-item" style="margin-bottom: 20px;">
-                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓ O que
+                    <div class="faq-question" style="font-weight: bold; color: var(--primary); margin-bottom: 5px;">❓ O
+                        que
                         significa "Período Personalizado" no Histórico de Custos?</div>
-                    <div class="faq-answer">Permite selecionar datas específicas para análise. Após escolher as datas, os dados
+                    <div class="faq-answer">Permite selecionar datas específicas para análise. Após escolher as datas,
+                        os dados
                         carregam automaticamente. Útil para comparar custos antes/depois de eventos específicos.</div>
                 </div>
             </section>
-            
+
             <!-- Suporte - mantém -->
             <section id="suporte" class="manual-section">
                 <h2><i class="fas fa-headset"></i> Precisa de ajuda?</h2>
                 <p>Se tiver dificuldades, sugestões ou encontrar algum problema, entre em contato:</p>
                 <ul>
                     <li><i class="fas fa-envelope"></i> <strong>E-mail:</strong> fabiosilva@unipampa.edu.br</li>
-                    <li><i class="fab fa-github"></i> <strong>Repositório:</strong> github.com/fabiosilva/agro-smart-cost</li>
+                    <li><i class="fab fa-github"></i> <strong>Repositório:</strong>
+                        github.com/fabiosilva/agro-smart-cost</li>
                 </ul>
                 <div class="tip-box" style="margin-top: 15px;">
                     <i class="fas fa-clipboard-list"></i>
-                    <strong>Para avaliação da ferramenta:</strong> Após testar todas as funcionalidades, não esqueça de preencher o
+                    <strong>Para avaliação da ferramenta:</strong> Após testar todas as funcionalidades, não esqueça de
+                    preencher o
                     formulário de avaliação disponibilizado. Sua opinião é muito importante!
                 </div>
             </section>
 
-
-
-
+            <footer class="footer-manual">
+                <p>&copy; 2025 Smart Agro Cost - Todos os direitos reservados.</p>
+            </footer>
         </main>
     </div>
 
     <script>
+        // ============================================
+        // FUNCIONALIDADE DE TEMA CLARO/ESCURO
+        // ============================================
+
+        let isDarkMode = false;
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+
+            isDarkMode = !isDarkMode;
+
+            if (isDarkMode) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                icon.className = 'fas fa-moon';
+                themeToggle.title = 'Alternar para modo claro';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                icon.className = 'fas fa-sun';
+                themeToggle.title = 'Alternar para modo escuro';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+
+            if (!themeToggle) return;
+
+            const icon = themeToggle.querySelector('i');
+            const body = document.body;
+
+            if (savedTheme === 'light') {
+                isDarkMode = false;
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                icon.className = 'fas fa-sun';
+                themeToggle.title = 'Alternar para modo escuro';
+            } else {
+                isDarkMode = true;
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                icon.className = 'fas fa-moon';
+                themeToggle.title = 'Alternar para modo claro';
+            }
+        }
+
+        // ============================================
+        // FUNCIONALIDADE EXISTENTE (DESTAQUE DO ÍNDICE)
+        // ============================================
+
         // Destacar link ativo no índice conforme rolagem
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.index-link');
@@ -1093,6 +1314,20 @@
                     }
                 }
             });
+        });
+
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function () {
+            // Carregar tema salvo
+            loadSavedTheme();
+
+            // Configurar botão de tema
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
         });
     </script>
 </body>

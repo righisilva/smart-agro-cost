@@ -811,7 +811,7 @@
                         </div>
                         <div style="margin-top: 10px; font-size: 12px; color: var(--text-light);">
                             <i class="fas fa-info-circle"></i>
-                            <span data-i18n="filters.gas_default">Padrão: 21,000 (transação simples ETH)</span>
+                            <span data-i18n="filters.gas_default">Padrão: 21000 (transação simples ETH)</span>
                         </div>
                     </div>
                 </div>
@@ -1073,38 +1073,71 @@
         // ============================================
         // FUNÇÃO DE MUDANÇA DE IDIOMA
         // ============================================
-        function changeLanguage(lang) {
-            currentLang = lang;
-            
-            // Atualizar botões ativos
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.lang === lang) {
-                    btn.classList.add('active');
-                }
-            });
+    // ============================================
+    // FUNÇÃO DE MUDANÇA DE IDIOMA - VERSÃO CORRIGIDA
+    // ============================================
+    function changeLanguage(lang) {
+        currentLang = lang;
 
-            // Atualizar elementos com data-i18n
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
-            });
+        // Atualizar botões ativos
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.lang === lang) {
+                btn.classList.add('active');
+            }
+        });
 
-            // Atualizar placeholders se houver
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (translations[lang] && translations[lang][key]) {
-                    el.placeholder = translations[lang][key];
-                }
-            });
+        // Atualizar elementos com data-i18n
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+                el.textContent = translations[lang][key];
+            }
+        });
 
-            // Atualizar gráfico se existir
-            updateChartLanguage(lang);
-            
-            // Atualizar estatísticas se existirem
-            updateStatsLanguage(lang);
+        // Atualizar placeholders se houver
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (translations[lang] && translations[lang][key]) {
+                el.placeholder = translations[lang][key];
+            }
+        });
+
+        // 🔥 ATUALIZAR GRÁFICO
+        updateChartLanguage(lang);
+
+        // 🔥 ATUALIZAR ESTATÍSTICAS - RECRIAR COM OS DADOS EXISTENTES
+        if (historicalData && historicalData.length > 0) {
+            // Recalcula e recria as estatísticas com o novo idioma
+            atualizarEstatisticas(historicalData);
+        } else {
+            // Se não tem dados, mostra o estado vazio
+            atualizarEstatisticas([]);
+        }
+
+        // 🔥 ATUALIZAR TABELA (se estiver visível)
+        if (historicalData && historicalData.length > 0) {
+            atualizarTabela(historicalData);
+        }
+
+        localStorage.setItem('language', lang);
+    }
+
+    // ============================================
+        // CARREGANDO O IDIOMA SALVO
+        // ============================================
+
+        function loadSavedLanguage() {
+            // 🔥 BUSCAR NO localStorage
+            const savedLang = localStorage.getItem('language');
+
+            if (savedLang && translations[savedLang]) {
+                // Aplicar o idioma salvo
+                changeLanguage(savedLang);
+            } else {
+                // Idioma padrão (português)
+                changeLanguage('pt-BR');
+            }
         }
 
         // ============================================
@@ -1783,66 +1816,87 @@
             atualizarTabela([]);
         }
 
-        // Atualizar estatísticas
-        function atualizarEstatisticas(data) {
-            const statsGrid = document.getElementById('statsGrid');
+    // ============================================
+    // ATUALIZAR ESTATÍSTICAS - VERSÃO COMPLETA
+    // ============================================
+    function atualizarEstatisticas(data) {
+        const statsGrid = document.getElementById('statsGrid');
 
-            if (!data || data.length === 0) {
-                statsGrid.innerHTML = `
-                    <div class="stat-card">
-                        <div class="stat-value">-</div>
-                        <div class="stat-label" data-i18n="charts.no_data">${translations[currentLang]['charts.no_data'] || 'Nenhum dado'}</div>
-                        <div class="stat-network" data-i18n="charts.waiting">${translations[currentLang]['charts.waiting'] || 'Selecione redes'}</div>
-                    </div>
-                `;
-                return;
-            }
-
-            const networkStats = {};
-            data.forEach(item => {
-                const network = item.network;
-                const cost = parseFloat(item.gas_cost_brl);
-
-                if (!networkStats[network]) {
-                    networkStats[network] = {
-                        values: [],
-                        network: network
-                    };
-                }
-                networkStats[network].values.push(cost);
-            });
-
-            const avgLabel = translations[currentLang]['charts.avg'] || 'Médio';
-            const minLabel = translations[currentLang]['charts.min'] || 'Mín';
-            const maxLabel = translations[currentLang]['charts.max'] || 'Máx';
-            const lastLabel = translations[currentLang]['charts.last'] || 'Último';
-
-            let statsHTML = '';
-            Object.values(networkStats).forEach(stats => {
-                if (stats.values.length === 0) return;
-
-                const avg = stats.values.reduce((a, b) => a + b, 0) / stats.values.length;
-                const min = Math.min(...stats.values);
-                const max = Math.max(...stats.values);
-                const last = stats.values[stats.values.length - 1];
-                const color = getNetworkColor(stats.network);
-
-                statsHTML += `
-                    <div class="stat-card">
-                        <div class="stat-value" style="color: ${color}">${formatCurrency(avg)}</div>
-                        <div class="stat-label">${translations[currentLang]['charts.avg_cost'] || 'Custo Médio'}</div>
-                        <div class="stat-network" style="color: ${color}">${stats.network}</div>
-                        <div style="margin-top: 10px; font-size: 11px; color: var(--text-light);">
-                            <div>${minLabel}: ${formatCurrency(min)}</div>
-                            <div>${maxLabel}: ${formatCurrency(max)}</div>
-                            <div>${lastLabel}: ${formatCurrency(last)}</div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            statsGrid.innerHTML = statsHTML;
+        if (!data || data.length === 0) {
+            statsGrid.innerHTML = `
+            <div class="stat-card">
+                <div class="stat-value">-</div>
+                <div class="stat-label">${translations[currentLang]['charts.no_data'] || 'Nenhum dado'}</div>
+                <div class="stat-network">${translations[currentLang]['charts.waiting'] || 'Selecione redes'}</div>
+            </div>
+        `;
+            return;
         }
+
+        // Group by network
+        const networkStats = {};
+        data.forEach(item => {
+            const network = item.network;
+            const cost = parseFloat(item.gas_cost_brl);
+
+            if (!networkStats[network]) {
+                networkStats[network] = {
+                    values: [],
+                    network: network
+                };
+            }
+            networkStats[network].values.push(cost);
+        });
+
+        // Pegar o locale atual
+        const locale = translations[currentLang].locale || 'pt-BR';
+
+        // Função auxiliar para formatar números
+        function formatarNumeroLocal(value) {
+            return new Intl.NumberFormat(locale, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 6
+            }).format(value);
+        }
+
+        // Traduções
+        const avgLabel = translations[currentLang]['charts.avg'] || 'Médio';
+        const minLabel = translations[currentLang]['charts.min'] || 'Mín';
+        const maxLabel = translations[currentLang]['charts.max'] || 'Máx';
+        const lastLabel = translations[currentLang]['charts.last'] || 'Último';
+        const costLabel = translations[currentLang]['charts.avg_cost'] || 'Custo Médio';
+
+        let statsHTML = '';
+        Object.values(networkStats).forEach(stats => {
+            if (stats.values.length === 0) return;
+
+            const avg = stats.values.reduce((a, b) => a + b, 0) / stats.values.length;
+            const min = Math.min(...stats.values);
+            const max = Math.max(...stats.values);
+            const last = stats.values[stats.values.length - 1];
+            const color = getNetworkColor(stats.network);
+
+            const avgFormatado = formatCurrency(avg);
+            const minFormatado = formatCurrency(min);
+            const maxFormatado = formatCurrency(max);
+            const lastFormatado = formatCurrency(last);
+
+            statsHTML += `
+            <div class="stat-card">
+                <div class="stat-value" style="color: ${color}">${avgFormatado}</div>
+                <div class="stat-label">${costLabel}</div>
+                <div class="stat-network" style="color: ${color}">${stats.network}</div>
+                <div style="margin-top: 10px; font-size: 11px; color: var(--text-light);">
+                    <div>${minLabel}: ${minFormatado}</div>
+                    <div>${maxLabel}: ${maxFormatado}</div>
+                    <div>${lastLabel}: ${lastFormatado}</div>
+                </div>
+            </div>
+        `;
+        });
+
+        statsGrid.innerHTML = statsHTML;
+    }
 
         // Atualizar tabela
         function atualizarTabela(data) {
@@ -2036,6 +2090,8 @@
 
             // Carregar tema salvo
             loadSavedTheme();
+            // 🔥 Carregar idioma salvo
+            loadSavedLanguage();
 
             // Configurar botão de tema
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);

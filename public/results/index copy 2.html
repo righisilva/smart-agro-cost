@@ -1548,10 +1548,10 @@
                 'filters.region_alegrete': 'Alegrete (Municipality)',
                 'filters.classification': 'Classification',
                 'filters.classification_all': 'All',
-                'filters.classification_agriculture': 'Crop Production',
-                'filters.classification_livestock': 'Livestock Production',
+                'filters.classification_agriculture': 'Agriculture',
+                'filters.classification_livestock': 'Livestock',
                 'filters.classification_forestry': 'Forestry',
-                'filters.classification_extraction': 'Forest Extractive Activities',
+                'filters.classification_extraction': 'Plant Extraction',
                 'filters.classification_aquaculture': 'Aquaculture',
                 'filters.classification_agroindustry': 'Agroindustry',
                 'filters.subclassification': 'Subclassification',
@@ -1653,10 +1653,10 @@
                 'filters.region_alegrete': 'Alegrete (Municipio)',
                 'filters.classification': 'Clasificación',
                 'filters.classification_all': 'Todas',
-                'filters.classification_agriculture': 'Producción de Cultivos',
-                'filters.classification_livestock': 'Producción Pecuaria',
+                'filters.classification_agriculture': 'Agricultura',
+                'filters.classification_livestock': 'Ganadería',
                 'filters.classification_forestry': 'Silvicultura',
-                'filters.classification_extraction': 'Actividades Extractivas Forestales',
+                'filters.classification_extraction': 'Extracción Vegetal',
                 'filters.classification_aquaculture': 'Acuicultura',
                 'filters.classification_agroindustry': 'Agroindustria',
                 'filters.subclassification': 'Subclasificación',
@@ -1790,13 +1790,6 @@
         // 🔥 ATUALIZAR ESTATÍSTICAS
         if (currentData && currentData.length > 0) {
             atualizarEstatisticas(currentData);
-        }
-
-        if (filtroClassificacao.value) {
-            carregarSubclassificacoes();
-        }
-        if (currentData && currentData.length > 0) {
-            carregarResultados();
         }
 
         // SALVAR IDIOMA
@@ -2145,46 +2138,25 @@
             return true;
         }
 
+        const subclassificacoes = {
+            "Agricultura": [
+                "Floricultura",
+                "Horticultura",
+                "Lavouras permanentes",
+                "Lavouras temporárias"
+            ],
+            "Pecuária": [
+                "Animais",
+                "Produtos primários"
+            ],
+            "Silvicultura": ["Não especificada"],
+            "Extração Vegetal": ["Não especificada"],
+            "Aquicultura": ["Não especificada"],
+            "Agroindústria": ["Não especificada"]
+        };
 
-            const filtroClassificacao = document.getElementById("filtroClassificacao");
-            const filtroSubclassificacao = document.getElementById("filtroSubclassificacao");
-
-            async function carregarSubclassificacoes() {
-                const classificacao = filtroClassificacao.value;
-
-                filtroSubclassificacao.innerHTML = `<option value="">${translations[currentLang]['filters.subclassification_all']}</option>`;
-
-                if (!classificacao) {
-                    filtroSubclassificacao.disabled = true;
-                    document.getElementById("filtroProduto").disabled = true;
-                    document.getElementById("filtroProduto").innerHTML = '<option value="">Selecione classificação primeiro</option>';
-                    return;
-                }
-
-                const idiomaMap = { 'pt-BR': 'pt', 'en': 'en', 'es': 'es' };
-                const idioma = idiomaMap[currentLang] || 'pt';
-
-                try {
-                    const res = await fetch(`/api/results/subclassificacoes-list?classificacao=${encodeURIComponent(classificacao)}&idioma=${idioma}`);
-                    const dados = await res.json();
-
-                    dados.forEach(sub => {
-                        const option = document.createElement("option");
-                        option.value = sub.value;   // sempre pt, pro filtro
-                        option.textContent = sub.label; // traduzido, pra exibição
-                        filtroSubclassificacao.appendChild(option);
-                    });
-
-                    filtroSubclassificacao.disabled = dados.length === 0;
-                } catch (err) {
-                    console.error('❌ Erro ao carregar subclassificações:', err);
-                    filtroSubclassificacao.disabled = true;
-                }
-
-                carregarProdutos();
-            }
-
-            filtroClassificacao.addEventListener("change", carregarSubclassificacoes);
+        const filtroClassificacao = document.getElementById("filtroClassificacao");
+        const filtroSubclassificacao = document.getElementById("filtroSubclassificacao");
 
         filtroClassificacao.addEventListener("change", () => {
             const classificacao = filtroClassificacao.value;
@@ -2261,9 +2233,6 @@
                 params.append("regiao", regiao);
                 params.append("familiar", familiar);
                 params.append("obrigatorio", obrigatorio);
-
-                const idiomaMap = { 'pt-BR': 'pt', 'en': 'en', 'es': 'es' };
-                params.append("idioma", idiomaMap[currentLang] || 'pt');
                 
                 const response = await fetch(`/api/results/produtos-list?${params.toString()}`);
                 const produtos = await response.json();
@@ -2275,7 +2244,7 @@
                     produtoSelect.innerHTML = '<option value="">Todos os produtos</option>';
                     produtos.forEach(produto => {
                         const option = document.createElement("option");
-                        option.value = produto.value;   // ⭐ Use produto.nome em vez de produto
+                        option.value = produto.nome;  // ⭐ Use produto.nome em vez de produto
                         option.textContent = produto.nome;
                         produtoSelect.appendChild(option);
                     });
@@ -2317,9 +2286,6 @@
 
             const familiarCheckbox = document.getElementById("filtroFamiliar");
             params.append("familiar", familiarCheckbox.checked ? "1" : "0");
-
-            const idiomaMap = { 'pt-BR': 'pt', 'en': 'en', 'es': 'es' };
-            params.append("idioma", idiomaMap[currentLang] || 'pt');
 
             const classificacao = document.getElementById("filtroClassificacao").value;
             const subclassificacao = document.getElementById("filtroSubclassificacao").value;
@@ -3317,6 +3283,7 @@
                     <tr class="total-row">
                         <td colspan="${isProducao ? 6 : 4}" style="text-align: right;"><strong>${t['table.totals'] || 'TOTAIS:'}</strong></td>
                         <td style="text-align: right;"><strong>${fmtCurrency(totalValorVendas)}</strong></td>
+                        <td style="text-align: right;"><strong>${fmtCurrency(totalCustoUnitario)}</strong></td>
                         <td style="text-align: right;"><strong>${fmtCurrency(totalGeral)}</strong></td>
                         <td class="percent-cell ${percentualMedio > 10 ? 'percent-high' : percentualMedio > 5 ? 'percent-medium' : 'percent-low'}">
                             <strong>${percentualMedio}%</strong>

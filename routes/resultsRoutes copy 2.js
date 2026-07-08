@@ -10,124 +10,70 @@ module.exports = (db) => {
     ssl: { rejectUnauthorized: false },
   });
 
-  // ============================================
-  // 🌐 HELPERS DE IDIOMA (usados em todos os endpoints)
-  // ============================================
-  const SUFIXOS_IDIOMA = { pt: "", en: "_en", es: "_es" };
+  // Endpoint para listar produtos baseado nos filtros
+router.get("/produtos-list", async (req, res) => {
+  try {
+    const {
+      classificacao,
+      subclassificacao,
+      regiao,
+    } = req.query;
 
-  function getSufixo(idioma) {
-    return SUFIXOS_IDIOMA.hasOwnProperty(idioma) ? SUFIXOS_IDIOMA[idioma] : "";
-  }
+    let query = `
+      SELECT DISTINCT
+        p.id,
+        p.nome
+      FROM ibge_dados i
+      JOIN produtos p ON i.produto_id = p.id
+      JOIN regioes r ON i.regiao_id = r.id
+      LEFT JOIN subclassificacoes_ibge s
+        ON p.subclassificacao_id = s.id
+      LEFT JOIN classificacoes_ibge c
+        ON s.classificacao_id = c.id
+      WHERE 1=1
+    `;
 
-  // Monta expressão de coluna traduzida com fallback pro português
-  // quando a tradução estiver vazia/nula. NUNCA aceita `idioma` cru:
-  // sempre passa pelo getSufixo() acima, que só libera valores da whitelist.
-  function colTraduzida(sufixo, tabela, campoBase = "nome") {
-    if (!sufixo) return `${tabela}.${campoBase}`;
-    return `COALESCE(NULLIF(${tabela}.${campoBase}${sufixo}, ''), ${tabela}.${campoBase})`;
-  }
+    const params = {};
 
-  // ============================================
-  // 🔹 GET /subclassificacoes-list
-  // Substitui o objeto estático `subclassificacoes` do front.
-  // Retorna { value, label } -> value sempre em pt (usado no filtro),
-  // label traduzido (usado na exibição).
-  // ============================================
-  router.get("/subclassificacoes-list", (req, res) => {
-    try {
-      const { classificacao, idioma } = req.query;
-      const sufixo = getSufixo(idioma);
-
-      if (!classificacao) {
-        return res.json([]);
-      }
-
-      const colLabel = colTraduzida(sufixo, "s");
-
-      const query = `
-        SELECT DISTINCT
-          s.nome AS value,
-          ${colLabel} AS label
-        FROM subclassificacoes_ibge s
-        JOIN classificacoes_ibge c ON s.classificacao_id = c.id
-        WHERE c.nome = @classificacao
-        ORDER BY s.nome
-      `;
-
-      const dados = db.prepare(query).all({ classificacao });
-      res.json(dados);
-
-    } catch (err) {
-      console.error("❌ Erro em /subclassificacoes-list:", err);
-      res.status(500).json({ error: "Erro ao listar subclassificações", details: err.message });
+    if (classificacao && classificacao !== "") {
+      query += " AND c.nome = @classificacao";
+      params.classificacao = classificacao;
     }
-  });
 
-  // ============================================
-  // 🔹 GET /produtos-list
-  // ============================================
-  router.get("/produtos-list", async (req, res) => {
-    try {
-      const {
-        classificacao,
-        subclassificacao,
-        regiao,
-        idioma,
-      } = req.query;
-
-      const sufixo = getSufixo(idioma);
-      const colProdutoLabel = colTraduzida(sufixo, "p");
-
-      let query = `
-        SELECT DISTINCT
-          p.id,
-          p.nome AS value,
-          ${colProdutoLabel} AS nome
-        FROM ibge_dados i
-        JOIN produtos p ON i.produto_id = p.id
-        JOIN regioes r ON i.regiao_id = r.id
-        LEFT JOIN subclassificacoes_ibge s
-          ON p.subclassificacao_id = s.id
-        LEFT JOIN classificacoes_ibge c
-          ON s.classificacao_id = c.id
-        WHERE 1=1
-      `;
-
-      const params = {};
-
-      if (classificacao && classificacao !== "") {
-        query += " AND c.nome = @classificacao";
-        params.classificacao = classificacao;
-      }
-
-      if (subclassificacao && subclassificacao !== "") {
-        query += " AND s.nome = @subclassificacao";
-        params.subclassificacao = subclassificacao;
-      }
-
-      if (regiao && regiao !== "") {
-        query += " AND r.nome = @regiao";
-        params.regiao = regiao;
-      }
-
-      query += " ORDER BY nome";
-
-      const produtos = db.prepare(query).all(params);
-
-      console.log(`📦 /produtos-list retornou ${produtos.length} produtos`);
-      console.log(`📦 Primeiro produto: ${produtos[0]?.nome || 'nenhum'}`);
-
-      res.json(produtos);
-
-    } catch (err) {
-      console.error("❌ Erro em /produtos-list:", err);
-
-      res.status(500).json({
-        error: "Erro ao listar produtos",
-        details: err.message,
-      });
+    if (subclassificacao && subclassificacao !== "") {
+      query += " AND s.nome = @subclassificacao";
+      params.subclassificacao = subclassificacao;
     }
-  });
+
+    if (regiao && regiao !== "") {
+      query += " AND r.nome = @regiao";
+      params.regiao = regiao;
+    }
+
+    query += " ORDER BY p.nome";
+
+    const produtos = db.prepare(query).all(params);
+    
+    // ⭐ Adicione este log para debug
+    console.log(`📦 /produtos-list retornou ${produtos.length} produtos`);
+    console.log(`📦 Primeiro produto: ${produtos[0]?.nome || 'nenhum'}`);
+    
+
+    res.json(produtos);
+
+  } catch (err) {
+    console.error("❌ Erro em /produtos-list:", err);
+
+    res.status(500).json({
+      error: "Erro ao listar produtos",
+      details: err.message,
+    });
+  }
+});
+
+
+
+
 
   // --- Endpoint combinado: IBGE + Custos de Contrato ---
   router.get("/", async (req, res) => {
@@ -147,24 +93,19 @@ module.exports = (db) => {
         funcoes,
         data_inicio,
         data_fim,
-        base_calculo,
+        base_calculo,         
         escopo_deploy,
-        produto,
-        idioma,
+        produto,    
       } = req.query;
 
       console.log("📦 Produto selecionado:", produto);
-      console.log("🌐 Idioma:", idioma);
+      // console.log(req.query);
 
-      const sufixo = getSufixo(idioma);
-
-      // Colunas traduzidas — usadas SÓ no SELECT (o que volta pro front)
-      const colRegiaoSelect = colTraduzida(sufixo, "r");
-      const colProdutoSelect = colTraduzida(sufixo, "p");
-      const colClassificacaoSelect = colTraduzida(sufixo, "c");
-      const colSubclassificacaoSelect = colTraduzida(sufixo, "s");
-      const colUnidadeSelect = colTraduzida(sufixo, "um");
-
+      // console.log("🔧 Tipo de cálculo selecionado:", tipo_calculo);
+      // console.log("🔧 Subclassificação:", subclassificacao);
+      // console.log("🔧 Base de cálculo:", base_calculo || 'estabelecimentos (padrão)');
+      
+      // 🔥 Log das datas se for período personalizado
       if (tipo_calculo === 'custom') {
         console.log("📅 Período personalizado:");
         console.log({
@@ -175,16 +116,16 @@ module.exports = (db) => {
         console.log("   Data Início:", data_inicio, new Date(Number(data_inicio)).toLocaleString('pt-BR'));
         console.log("   Data Fim:", data_fim, new Date(Number(data_fim)).toLocaleString('pt-BR'));
       }
-
+      
       // Parse das funções selecionadas
       let funcoesSelecionadas = [];
       let usarTodasFuncoes = false;
-
+      
       if (funcoes && funcoes !== 'undefined' && funcoes !== 'null') {
         try {
           funcoesSelecionadas = JSON.parse(funcoes);
           console.log("📋 Funções selecionadas:", funcoesSelecionadas);
-
+          
           if (funcoesSelecionadas.length === 0) {
             usarTodasFuncoes = true;
           }
@@ -200,16 +141,13 @@ module.exports = (db) => {
       }
 
       // ---------------- IBGE (Estabelecimentos) ----------------
-      // Filtros SEMPRE em português (r.nome, c.nome, s.nome, p.nome).
-      // SELECT usa as colunas traduzidas + produto_id para agregação segura.
       let queryEstabelecimentos = `
         SELECT
           i.id,
-          p.id AS produto_id,
-          ${colRegiaoSelect} AS regiao,
-          ${colProdutoSelect} AS produto,
-          ${colClassificacaoSelect} AS classificacao,
-          ${colSubclassificacaoSelect} AS subclassificacao,
+          r.nome AS regiao,
+          p.nome AS produto,
+          c.nome AS classificacao,
+          s.nome AS subclassificacao,
           i.estabelecimentos,
           i.valor_vendas,
           i.familiar,
@@ -230,28 +168,27 @@ module.exports = (db) => {
       if (subclassificacao && subclassificacao !== "undefined") {
         queryEstabelecimentos += " AND s.nome = @subclassificacao";
         paramsIBGE.subclassificacao = subclassificacao;
-      }
+      }    
       if (produto && produto !== "") {
         queryEstabelecimentos += " AND p.nome = @produto";
         paramsIBGE.produto = produto;
-      }
+      }  
       if (familiar !== undefined) { queryEstabelecimentos += " AND i.familiar = @familiar"; paramsIBGE.familiar = Number(familiar); }
       if (obrigatorio !== undefined) { queryEstabelecimentos += " AND p.rastreabilidade_obrigatoria = @obrigatorio"; paramsIBGE.obrigatorio = Number(obrigatorio); }
 
       const dadosEstabelecimentos = db.prepare(queryEstabelecimentos).all(paramsIBGE);
-
+      
       // ---------------- PRODUÇÃO IBGE ----------------
       let queryProducao = `
         SELECT
-          p.id AS produto_id,
-          ${colProdutoSelect} AS produto,
-          ${colClassificacaoSelect} AS classificacao,
-          ${colSubclassificacaoSelect} AS subclassificacao,
-          ${colRegiaoSelect} AS regiao,
+          p.nome AS produto,
+          c.nome AS classificacao,
+          s.nome AS subclassificacao,
+          r.nome AS regiao,
           p.rastreabilidade_obrigatoria AS obrigatorio,
           pr.familiar,
           pr.quantidade,
-          ${colUnidadeSelect} AS unidade_medida,
+          um.nome AS unidade_medida,
           i.valor_vendas
         FROM producao_ibge pr
         JOIN produtos p ON pr.produto_id = p.id
@@ -262,7 +199,7 @@ module.exports = (db) => {
         LEFT JOIN ibge_dados i ON i.produto_id = p.id AND i.regiao_id = r.id AND i.familiar = pr.familiar
         WHERE 1=1
       `;
-
+      
       const paramsProducao = {};
 
       if (regiao) { queryProducao += " AND r.nome = @regiao"; paramsProducao.regiao = regiao; }
@@ -270,7 +207,7 @@ module.exports = (db) => {
       if (subclassificacao && subclassificacao !== "undefined") {
         queryProducao += " AND s.nome = @subclassificacao";
         paramsProducao.subclassificacao = subclassificacao;
-      }
+      }      
       if (produto && produto !== "") {
         queryProducao += " AND p.nome = @produto";
         paramsProducao.produto = produto;
@@ -279,10 +216,11 @@ module.exports = (db) => {
       if (obrigatorio !== undefined) { queryProducao += " AND p.rastreabilidade_obrigatoria = @obrigatorio"; paramsProducao.obrigatorio = Number(obrigatorio); }
 
       const dadosProducao = db.prepare(queryProducao).all(paramsProducao);
-
+      
       console.log(`📊 Estabelecimentos: ${dadosEstabelecimentos.length} registros`);
       console.log(`📊 Produção: ${dadosProducao.length} registros`);
 
+      // Verificar se pelo menos uma fonte tem dados
       if (dadosEstabelecimentos.length === 0 && dadosProducao.length === 0) {
         return res.json([]);
       }
@@ -305,18 +243,19 @@ module.exports = (db) => {
         JOIN networks n ON n.id = d.network_id
         WHERE 1=1
       `;
-
+      
       const paramsContratos = {};
 
-      if (contract) {
-        queryContratos += " AND c.name = @contract";
+      if (contract) { 
+        queryContratos += " AND c.name = @contract"; 
         paramsContratos.contract = contract;
       }
-      if (network) {
-        queryContratos += " AND n.name = @network";
+      if (network) { 
+        queryContratos += " AND n.name = @network"; 
         paramsContratos.network = network;
       }
-
+      
+      // Se temos funções específicas, construir IN clause com nomes literais
       if (!usarTodasFuncoes && funcoesSelecionadas.length > 0) {
         const functionNames = funcoesSelecionadas.map(f => `'${f.name.replace(/'/g, "''")}'`).join(',');
         queryContratos += ` AND f.name IN (${functionNames})`;
@@ -326,7 +265,7 @@ module.exports = (db) => {
       console.log("📝 Params:", paramsContratos);
 
       const dadosContratos = db.prepare(queryContratos).all(paramsContratos);
-
+      
       if (!dadosContratos.length) {
         console.log("⚠️ Nenhum contrato encontrado");
         return res.json([]);
@@ -338,7 +277,7 @@ module.exports = (db) => {
         const funcName = d.function_name;
         const networkName = d.network;
         const key = `${funcName}|${networkName}`;
-
+        
         if (!custoPorFuncao[key]) {
           custoPorFuncao[key] = {
             function_name: funcName,
@@ -348,30 +287,30 @@ module.exports = (db) => {
           };
         }
       });
-
+      
       // Calcular custo base por função considerando tipo de cálculo
       const custoBasePorFuncao = {};
       for (const [key, value] of Object.entries(custoPorFuncao)) {
         let custoFuncaoBRL = value.cost_brl;
         const gasFuncao = value.gas_used;
-
+        
         if (tipo_calculo !== 'ultima') {
           console.log(`📊 Buscando dados históricos para função ${value.function_name} na rede ${value.network}`);
-
+          
           let queryGas = `
             SELECT AVG(g.gas_gwei * 1e-9 * g.price_brl) AS avg_cost_per_gas
             FROM gas_history g
             JOIN networks n ON n.id = g.network_id
             WHERE n.name = $1
           `;
-
+          
           const queryParams = [value.network];
-
+          
           if (tipo_calculo === 'custom') {
             if (data_inicio && data_fim) {
               const dataInicioDate = new Date(Number(data_inicio));
               const dataFimDate = new Date(Number(data_fim));
-
+              
               queryGas += ` AND g.timestamp >= $2 AND g.timestamp <= $3`;
               queryParams.push(dataInicioDate, dataFimDate);
               console.log(`   📅 Filtro personalizado: ${dataInicioDate.toISOString()} até ${dataFimDate.toISOString()}`);
@@ -380,25 +319,25 @@ module.exports = (db) => {
               tipo_calculo = 'all';
             }
           }
-
+          
           const intervals = {
             day: "1 day",
             week: "7 days",
             month: "30 days"
           };
-
+          
           if (intervals[tipo_calculo] && tipo_calculo !== 'custom') {
             queryGas += ` AND g.timestamp >= NOW() - INTERVAL '${intervals[tipo_calculo]}'`;
           }
-
+          
           try {
             console.log("📝 Query Gas:", queryGas);
             console.log("📝 Params:", queryParams);
-
+            
             const { rows } = await pgPool.query(queryGas, queryParams);
             const custoMedioPorGas = Number(rows[0]?.avg_cost_per_gas) || 0;
             custoFuncaoBRL = gasFuncao * custoMedioPorGas;
-
+            
             console.log(`   📊 Custo médio por gas: ${custoMedioPorGas.toFixed(10)}`);
             console.log(`   💰 Custo função: ${custoFuncaoBRL.toFixed(6)}`);
           } catch (err) {
@@ -406,20 +345,21 @@ module.exports = (db) => {
             custoFuncaoBRL = value.cost_brl;
           }
         }
-
+        
         custoBasePorFuncao[value.function_name] = {
           custo_brl: custoFuncaoBRL,
           gas_used: gasFuncao
         };
       }
-
+      
       // Calcular custo TOTAL considerando múltiplas execuções
       let custoTotalFuncoesBRL = 0;
-      let gasTotal = 0;
+      let gasTotal = 0;      
 
       let custoDeployBRL = 0;
       let gasDeploy = 0;
-
+      
+      
       if (usarTodasFuncoes) {
         for (const [funcName, custoData] of Object.entries(custoBasePorFuncao)) {
           const ehDeploy = funcName.toLowerCase().includes('deploy') || funcName.toLowerCase().includes('constructor');
@@ -437,7 +377,7 @@ module.exports = (db) => {
           const custoData = custoBasePorFuncao[funcSelecionada.name];
           if (custoData) {
             const multiplicador = Number(funcSelecionada.executions) || 1;
-
+            
             const ehDeploy = funcSelecionada.name.toLowerCase().includes('deploy') || funcSelecionada.name.toLowerCase().includes('constructor');
             if (ehDeploy) {
               custoDeployBRL += custoData.custo_brl;
@@ -457,44 +397,52 @@ module.exports = (db) => {
       console.log(`💰 Custo Total Funções: R$ ${custoTotalFuncoesBRL.toFixed(6)}`);
       console.log(`⛽ Gas Total: ${gasTotal}`);
 
+      
       function resolverNumeroDeploys(escopoDeploy, regiao, quantidadeExecucoes) {
+
+        // padrão
         if (!escopoDeploy || escopoDeploy === '1_por_estabelecimento') {
           return quantidadeExecucoes;
         }
-
+      
+        // global
         if (escopoDeploy === 'global') {
           return 1;
         }
-
+      
+        // por cidade/região
         if (escopoDeploy === '1_por_cidade') {
+      
           const mapaRegioes = {
             "Brasil": 5570,
             "Sul": 1191,
             "RS": 497,
             "Alegrete": 1
           };
-
+      
           return mapaRegioes[regiao] || 1;
         }
-
+      
+        // número fixo vindo do frontend
         const numero = Number(escopoDeploy);
-
+      
         if (!isNaN(numero) && numero > 0) {
           return numero;
         }
-
+      
+        // fallback
         return quantidadeExecucoes;
       }
 
-      // ---------------- AGREGAÇÃO (usando a base de cálculo selecionada) ----------------
-      // 🔥 Agrupamos por produto_id (estável, não depende do idioma), em vez de
-      // `${d.produto} | ${d.classificacao}` — evita colisão quando dois produtos
-      // diferentes tiverem nomes traduzidos iguais.
-      const agregados = {};
 
+
+      // ---------------- AGREGAÇÃO (usando a base de cálculo selecionada) ----------------
+      const agregados = {};
+      
+      // Determinar qual fonte de dados usar para a quantidade
       const usarProducao = base_calculo === 'producao';
       const dadosFonte = usarProducao ? dadosProducao : dadosEstabelecimentos;
-
+      
       console.log(`📊 Usando fonte: ${usarProducao ? 'Produção' : 'Estabelecimentos'}`);
       let estabelecimentosTotais = 0;
       let custoDeployTotalBRL = 0;
@@ -503,19 +451,19 @@ module.exports = (db) => {
         custoTotalFuncoesBRL += custoDeployBRL;
         gasTotal += gasDeploy;
       }
-
+      
       dadosFonte.forEach(d => {
         let quantidade = 0;
         let unidadeMedida = null;
-
+        
         if (usarProducao) {
           quantidade = Number(d.quantidade) || 0;
           unidadeMedida = d.unidade_medida;
         } else {
           quantidade = Number(d.estabelecimentos) || 0;
         }
-
-        const chave = d.produto_id;
+        
+        const chave = `${d.produto} | ${d.classificacao}`;
 
         if (!agregados[chave]) {
           agregados[chave] = {
@@ -536,7 +484,7 @@ module.exports = (db) => {
         agregados[chave].quantidade += quantidade;
         agregados[chave].total_estimado_brl += quantidade * custoTotalFuncoesBRL;
         estabelecimentosTotais += quantidade;
-
+        // Manter os valores separados para referência
         if (usarProducao) {
           agregados[chave].producao += quantidade;
           agregados[chave].unidade_medida = unidadeMedida;
@@ -554,40 +502,41 @@ module.exports = (db) => {
         custoDeployRateado = custoDeployTotalBRL / estabelecimentosTotais;
         gasDeployRateado = gasDeploy * numeroDeploys / estabelecimentosTotais;
       }
+      
 
       console.log(`📊 Quantidade total usada para cálculo: ${estabelecimentosTotais}`);
       console.log(`📊 Custo deploy estimado (BRL): R$ ${custoDeployBRL}`);
       console.log(`📊 Custo deploy total considerando escopo (${escopo_deploy}): R$ ${custoDeployTotalBRL}`);
 
-      // 🔥 Se usou produção, ainda buscar estabelecimentos para referência (por produto_id)
+      // 🔥 Se usou produção, ainda buscar estabelecimentos para referência
       if (usarProducao && dadosEstabelecimentos.length > 0) {
         const estabelecimentosMap = {};
         dadosEstabelecimentos.forEach(d => {
-          const chave = d.produto_id;
+          const chave = `${d.produto} | ${d.classificacao}`;
           if (!estabelecimentosMap[chave]) {
             estabelecimentosMap[chave] = 0;
           }
           estabelecimentosMap[chave] += Number(d.estabelecimentos) || 0;
         });
-
+        
         Object.keys(agregados).forEach(chave => {
           if (estabelecimentosMap[chave] !== undefined) {
             agregados[chave].estabelecimentos = estabelecimentosMap[chave];
           }
         });
       }
-
-      // 🔥 Se usou estabelecimentos, ainda buscar produção para referência (por produto_id)
+      
+      // 🔥 Se usou estabelecimentos, ainda buscar produção para referência
       if (!usarProducao && dadosProducao.length > 0) {
         const producaoMap = {};
         dadosProducao.forEach(d => {
-          const chave = d.produto_id;
+          const chave = `${d.produto} | ${d.classificacao}`;
           if (!producaoMap[chave]) {
             producaoMap[chave] = { quantidade: 0, unidade: d.unidade_medida };
           }
           producaoMap[chave].quantidade += Number(d.quantidade) || 0;
         });
-
+        
         Object.keys(agregados).forEach(chave => {
           if (producaoMap[chave] !== undefined) {
             agregados[chave].producao = producaoMap[chave].quantidade;
@@ -595,6 +544,8 @@ module.exports = (db) => {
           }
         });
       }
+
+
 
       const resultado = Object.values(agregados).map(d => {
         const totalEstimado = d.total_estimado_brl + (custoDeployRateado * d.quantidade);
@@ -611,7 +562,7 @@ module.exports = (db) => {
           estabelecimentos: d.estabelecimentos,
           producao: d.producao,
           unidade_medida: d.unidade_medida,
-          quantidade_utilizada: d.quantidade,
+          quantidade_utilizada: d.quantidade,  // Quantidade usada no cálculo
           base_calculo_utilizada: base_calculo || 'estabelecimentos',
           valor_vendas: valorVendas,
           total_estimado_brl: Number(totalEstimado.toFixed(2)),
@@ -619,12 +570,13 @@ module.exports = (db) => {
           custo_medio_contrato_brl: Number((custoTotalFuncoesBRL + custoDeployRateado).toFixed(2)),
           percentual_custo: percentual,
           gas_contrato: (gasTotal + gasDeployRateado).toFixed(0),
-          periodo_usado: tipo_calculo === 'custom' ?
-            `Personalizado: ${data_inicio ? new Date(Number(data_inicio)).toLocaleDateString('pt-BR') : '?'} até ${data_fim ? new Date(Number(data_fim)).toLocaleDateString('pt-BR') : '?'}` :
+          periodo_usado: tipo_calculo === 'custom' ? 
+            `Personalizado: ${data_inicio ? new Date(Number(data_inicio)).toLocaleDateString('pt-BR') : '?'} até ${data_fim ? new Date(Number(data_fim)).toLocaleDateString('pt-BR') : '?'}` : 
             tipo_calculo
         };
       });
 
+      // Ordenação
       switch (orderBy) {
         case "estabelecimentos":
           resultado.sort((a, b) => b.estabelecimentos - a.estabelecimentos);
@@ -643,19 +595,23 @@ module.exports = (db) => {
       }
 
       const topN = top ? Number(top) : resultado.length;
-
+      
       console.log(`✅ Simulação concluída: ${resultado.slice(0, topN).length} produtos retornados`);
 
       console.log("=== QUERY RECEBIDA ===");
       console.log(req.query);
 
+      // console.log("=== RESULTADO ===");
+      // console.log(JSON.stringify(resultado.slice(0, topN), null, 2));
+
+      
       res.json(resultado.slice(0, topN));
 
     } catch (err) {
       console.error("❌ Erro em /results:", err);
-      res.status(500).json({
+      res.status(500).json({ 
         error: "Erro ao gerar resultados combinados",
-        details: err.message
+        details: err.message 
       });
     }
   });
