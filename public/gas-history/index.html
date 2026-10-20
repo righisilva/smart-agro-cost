@@ -961,6 +961,7 @@
                 'charts.avg': 'Médio',
                 'charts.min': 'Mín',
                 'charts.max': 'Máx',
+                'charts.median': 'Mediana',
                 'charts.last': 'Último',
                 'charts.no_data_msg': 'Nenhum dado encontrado',
                 'charts.try_adjust': 'Tente ajustar os filtros ou período',
@@ -1011,6 +1012,7 @@
                 'charts.avg': 'Avg',
                 'charts.min': 'Min',
                 'charts.max': 'Max',
+                'charts.median': 'Median',
                 'charts.last': 'Last',
                 'charts.no_data_msg': 'No data found',
                 'charts.try_adjust': 'Try adjusting filters or period',
@@ -1061,6 +1063,7 @@
                 'charts.avg': 'Prom',
                 'charts.min': 'Mín',
                 'charts.max': 'Máx',
+                'charts.median': 'Mediana',
                 'charts.last': 'Último',
                 'charts.no_data_msg': 'No se encontraron datos',
                 'charts.try_adjust': 'Intente ajustar los filtros o el período',
@@ -1868,10 +1871,20 @@
                 }).format(value);
             }
 
+            // Função auxiliar para calcular a mediana
+            function calcularMediana(valores) {
+                const sorted = [...valores].sort((a, b) => a - b);
+                const mid = Math.floor(sorted.length / 2);
+                return sorted.length % 2 !== 0
+                    ? sorted[mid]
+                    : (sorted[mid - 1] + sorted[mid]) / 2;
+            }
+
             // Traduções
             const avgLabel = translations[currentLang]['charts.avg'] || 'Médio';
             const minLabel = translations[currentLang]['charts.min'] || 'Mín';
             const maxLabel = translations[currentLang]['charts.max'] || 'Máx';
+            const medianLabel = translations[currentLang]['charts.median'] || 'Mediana';
             const lastLabel = translations[currentLang]['charts.last'] || 'Último';
             const costLabel = translations[currentLang]['charts.avg_cost'] || 'Custo Médio';
 
@@ -1882,12 +1895,14 @@
                 const avg = stats.values.reduce((a, b) => a + b, 0) / stats.values.length;
                 const min = Math.min(...stats.values);
                 const max = Math.max(...stats.values);
+                const median = calcularMediana(stats.values);
                 const last = stats.values[stats.values.length - 1];
                 const color = getNetworkColor(stats.network);
 
                 const avgFormatado = formatCurrency(avg);
                 const minFormatado = formatCurrency(min);
                 const maxFormatado = formatCurrency(max);
+                const medianFormatado = formatCurrency(median);
                 const lastFormatado = formatCurrency(last);
 
                 statsHTML += `
@@ -1897,6 +1912,7 @@
                 <div class="stat-network" style="color: ${color}">${stats.network}</div>
                 <div style="margin-top: 10px; font-size: 11px; color: var(--text-light);">
                     <div>${minLabel}: ${minFormatado}</div>
+                    <div>${medianLabel}: ${medianFormatado}</div>
                     <div>${maxLabel}: ${maxFormatado}</div>
                     <div>${lastLabel}: ${lastFormatado}</div>
                 </div>
