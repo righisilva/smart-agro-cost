@@ -196,6 +196,9 @@ module.exports = function contractsRoutes(db, networks) {
             const estimatedGas = await contract.estimateGas[nomeFuncao](...processedArgs);
             const tx = await contract[nomeFuncao](...processedArgs);
             const receipt = await tx.wait();
+            // gasTotalSimulado é usado SOMENTE para exibição (simula o custo de
+            // rodar a função execCount vezes). O que é persistido no banco é
+            // sempre o custo de UMA execução real (receipt.gasUsed).
             const gasTotalSimulado = receipt.gasUsed.mul(execCount);
 
             const custosPorRede = {};
@@ -207,24 +210,31 @@ module.exports = function contractsRoutes(db, networks) {
                     const tokenPrice = tokenPrices[token];
                     if (!tokenPrice) continue;
 
-                    const costInToken = ethers.utils.formatEther(gasTotalSimulado.mul(data.gasPrice));
-                    const costUSD = parseFloat(costInToken) * tokenPrice.usd;
-                    const costBRL = parseFloat(costInToken) * tokenPrice.brl;
+                    // Custo de UMA execução — é isso que vai para o banco.
+                    const costInTokenUnico = ethers.utils.formatEther(receipt.gasUsed.mul(data.gasPrice));
+                    const costUSDUnico = parseFloat(costInTokenUnico) * tokenPrice.usd;
+                    const costBRLUnico = parseFloat(costInTokenUnico) * tokenPrice.brl;
+
+                    // Custo total simulado (execCount execuções) — apenas para exibição.
+                    const costInTokenTotal = ethers.utils.formatEther(gasTotalSimulado.mul(data.gasPrice));
+                    const costUSDTotal = parseFloat(costInTokenTotal) * tokenPrice.usd;
+                    const costBRLTotal = parseFloat(costInTokenTotal) * tokenPrice.brl;
 
                     custosPorRede[token] = {
                         name: data.name,
                         token,
                         gasPrice: ethers.utils.formatUnits(data.gasPrice, "gwei") + " Gwei",
-                        custoTotalToken: costInToken,
-                        custoUSD: costUSD ? `$${costUSD.toFixed(4)}` : "N/A",
-                        custoBRL: costBRL ? `R$${costBRL.toFixed(4)}` : "N/A",
+                        custoTotalToken: costInTokenTotal,
+                        custoUSD: costUSDTotal ? `$${costUSDTotal.toFixed(4)}` : "N/A",
+                        custoBRL: costBRLTotal ? `R$${costBRLTotal.toFixed(4)}` : "N/A",
                         cotacao: tokenPrice
                             ? { usd: tokenPrice.usd, brl: tokenPrice.brl }
                             : { usd: null, brl: null },
                     };
 
                     const networkId = networks[token].id;
-                    repo.salvarFuncaoNoDB(functionId, networkId, gasTotalSimulado.toNumber(), costUSD, costBRL);
+                    // Grava no banco o custo de UMA execução, não o total simulado.
+                    repo.salvarFuncaoNoDB(functionId, networkId, receipt.gasUsed.toNumber(), costUSDUnico, costBRLUnico);
                 }
             });
             insertFunc();
